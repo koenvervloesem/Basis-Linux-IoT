@@ -1,66 +1,59 @@
 # Basis Linux
 
-Met deze cursus willen bereiken dat je als "IoT-er" je weg kan vinden binnen een GNU/Linux-systeem.  
-Het is geen cursus over "Operating Systems" of een deep-dive in Linux en bijhorende distributies.  
-De cursus heeft als doel handigheid op te bouwen in het werken met Linux.
+## Doel van de cursus
 
-## Introductie
-
-### Doel van de cursus
-
-* Inloggen op een Linux machine (via de console)
-* Configureren en opzetten een Linux Distributie
-* Navigeren binnen een Linux machine
-* Basis skill om files, directories en users te beheren
+Met deze cursus willen we bereiken dat je als "IoT'er" je weg kan vinden binnen een GNU/Linux-systeem.  
+Het is geen cursus over besturingssystemen of een *deep dive* in Linux-distributies.  
+De cursus heeft als doel om wat handigheid op te bouwen in het werken met Linux.
 
 ## Waarom Linux binnen IoT?
 
 * Basiskennis vanuit het standpunt van een IoT-gebruiker/ontwikkelaar 
-* 6 lessen
+* 7 lessen
   * Focus op praktische kennis als gebruiker
-  * Dus je wordt geen system-admin
-* Focus op beheer en gebruik vanuit de terminal (desktop is bijkomstig)
+  * Dus je wordt geen systeembeheerder
+* Focus op beheer en gebruik vanuit de terminal (de grafische omgeving is bijkomstig)
 * Wel praktisch gericht
-  * Inloggen op een Linux machine (via de console)
-  * Configureren en opzetten een Linux Distributie
-  * Navigeren binnen een Linux machine
-  * Basis skill om files, directories en users te beheren
+  * Inloggen op een Linux-machine (via de console)
+  * Configureren en opzetten een Linux-distributie
+  * Navigeren binnen een Linux-machine
+  * Basisvaardigheden om bestanden, directory's en gebruikers te beheren
   * Automatisatie
   * Configuratie
-  * Netwerk, connecteren en setup
+  * Netwerk configureren en opzetten
   * Logging
   * ... 
 
-### Wat is Linux? Is het een besturingssysteem?
+## Wat is Linux? Is het een besturingssysteem?
 
-#### Linux is een kernel
+### Linux is een kernel
 
 Linux is een **kernel**, dat is het **deel** van je **besturingssysteem** dat instaat voor:
 
-* **Beheren** en **interageren** met de **hardware** van je computer, smarthphone, IoT-device
-* **Controleren** en **shedulen** van **processen** binnen je besturingssysteem
-* **Beheren** van lowel level **(IO-)services** zoals networking, storage, virtualisatie, ...
-* Voorzien in een **bestandsysteem**
+* **Beheren** van en **interageren** met de **hardware** van je computer, smartphone, IoT-apparaat
+* **Controleren** en **uitvoeren** van **processen** binnen je besturingssysteem
+* **Beheren** van *low-level* diensten voor in- en uitvoer zoals netwerken, opslag, virtualisatie, ...
+* Voorzien in een **bestandssysteem**
 * ...
 
-Zo'n kernel kan je bekijken als de **motor** van het **besturingssysteem**.  
-Deze zorgt er voor dat je **applicaties**, **scripten** en andere **software** kan **draaien** **zonder** de **details** te moeten kennen van de **hardware**.
+Zo'n kernel kan je beshouwen als de **motor** van het **besturingssysteem**.  
+Deze zorgt er voor dat je **toepassingen**, **scripts** en andere **software** kan **draaien** **zonder** de **details** te moeten kennen van de **hardware**.
 
-#### Van Linux naar GNU/Linux (of beter gezegd van GNU naar GNU/Linux)
+### GNU/Linux
 
-Met een motor alleen ben je echter niet veel, je moet als gewone eindgebruiker met dit besturingssysteem kunnen werken.  
-Daarvoor worden en binnen een besturingssysteem - bovenop deze kernel - vele andere elementen voorzien zoals:
+Met een motor alleen ben je niet veel. Je moet als gewone eindgebruiker met het besturingssysteem kunnen werken.  
+Daarvoor worden en binnen een besturingssysteem - bovenop deze kernel - vele andere elementen voorzien, zoals:
 
 * Shell
-* Systeem-utilities
+* Hulpmiddelen
 * Services
-* Libraries
-* Window-managers
-* Compilers, linkers, assembler, debuggers, ...
-* Andere tools zoals tekst-editors, documentatie, ...
+* Bibliotheken
+* Window managers
+* Compiler, linker, assembler, debugger, ...
+* Andere tools zoals teksteditors, documentatie, ...
 * ...
 
-Het eigenlijke besturingssysteem dat wij gaan gebruiken in de cursus is **GNU/Linux** waar GNU het systeem is dat bovenop deze kernel ageert.  
+Het eigenlijke besturingssysteem dat wij gaan gebruiken in de cursus is **GNU/Linux**, waar GNU de collectie van software is die bovenop de Linux-kernel werkt.
 
 ~~~
        GNU/Linux     
@@ -72,7 +65,7 @@ Het eigenlijke besturingssysteem dat wij gaan gebruiken in de cursus is **GNU/Li
     +------+------+ 
            |   * system calls
            |   * ioctl
-           |   * node files
+           |   * files
            v   * ...    
     +-------------+ 
     |             | 
@@ -81,16 +74,16 @@ Het eigenlijke besturingssysteem dat wij gaan gebruiken in de cursus is **GNU/Li
     +-------------+ 
 ~~~
 
-#### Een beetje geschiedenis...
+### Een beetje geschiedenis...
 
-GNU is een software-project dat opgestart werd in 1984 (+- 10 jaar voor Linux) door **Richard M. Stallman** (ook soms verwezen als RMS) en beoogde een compleet UNIX-compatibel systeem dat bestaat uit enkel "Free Software" (komen zo dadelijk terug op deze term).
+GNU is een softwareproject dat in 1984 (zo'n 10 jaar vóór Linux) opgestart werd door **Richard M. Stallman** (ook soms afgekort als RMS). Het beoogde een compleet UNIX-compatibel systeem te maken dat bestaat uit alleen "Free Software". We komen zo dadelijk terug op deze term.
 
-> GNU staat voor "GNU's not UNIX", Stallman kon het gekibbel en licentievoorwaarden binnen de UNIX-wereld niet meer verkroppen
+> GNU staat voor "GNU's not UNIX". Stallman kon het gekibbel en de licentieproblematiek binnen de UNIX-wereld niet meer verkroppen.
 
-Begin jaren 90 was deze (huzaren)-taak voor een groot deel afgewerkt maar...  
-Eén belangrijk onderdeel was echter nog niet afgewerkt, de kernel (met was gestart met GNU Hurd maar deze was nog niet klaar).
+Begin jaren 1990 was deze (huzaren)-taak voor een groot deel afgewerkt maar...  
+Eén belangrijk onderdeel was echter nog niet afgewerkt, de kernel. Men was gestart met GNU Hurd als kernel, maar deze was nog niet klaar.
 
-In 1991 stuurde echter een jong Finse student Linux Torvalds onderstaand volgende mail verstuurde naar een mailing-lijst
+In 1991 stuurde echter een jonge Finse student, Linus Torvalds, onderstaande mail naar een mailing-lijst:
 
 ~~~
 From: torvalds@klaava.Helsinki.FI (Linus Benedict Torvalds)
@@ -116,35 +109,35 @@ It is NOT portable (uses 386 task switching etc), and it probably never
 will support anything other than AT-harddisks, as that's all I have :-(.
 ~~~
 
-Deze mail is de start geweest van Linux, een "kleine" maar vrije kernel die zou uitgroeien
+Deze mail was de start van Linux, een "kleine" maar vrije kernel die zou uitgroeien
 tot het meest gebruikte en gedeelde stuk software uit de geschiedenis.
 
-Rond 1992, combineerde men de Linux Kernel als ontbrekend puzzelstuk met GNU en onstond er een nieuw
-besturingssyteem dat een paar jaar later een enorme impact zou hebben op de wereld.
+Rond 1992 combineerde men de Linux-kernel als ontbrekend puzzelstuk met GNU en ontstond er een nieuw
+besturingssysteem dat een paar jaar later een enorme impact zou hebben op de wereld.
 
-> Zie ook https://www.cs.cmu.edu/~awb/linux.history.html voor een diepgaande uitleg
+> Zie ook https://www.cs.cmu.edu/~awb/linux.history.html voor een diepgaandere uitleg over de geschiedenis van Linux.
 
 
-#### GNU/Linux Distributies
+### GNU/Linux-distributies
 
-Met GNU/Linux heb je echter in de praktijk nog geen werkend besturinggsysteem.  
+Met GNU/Linux heb je echter in de praktijk nog geen werkend besturingssysteem.  
 Je moet deze tools en de kernel nog compileren, alles bundelen, de verschillende tools binnen een bestandssysteem organiseren, ...
 
-Hiervoor bestaan de distributes zoals we vandaag kennen:
+Hiervoor bestaan de distributies zoals we vandaag kennen:
 
 * Debian
 * Fedora
 * Ubuntu
-* Suse
+* openSUSE
 * ...
 
-Deze zorgen distrubuties zorgen ervoor dat:
+Distributies zorgen ervoor dat:
 
-* De kernel, GNU-software en andere systeem-software wordt samengesteld tot een installeer pakket
-* Testen en distributie
-* Selectie van software
-* Configuratie en keuze van frameworks
-* Voorzien extra software om je systeem up to date te houden
+* De kernel, GNU-software en andere systeemsoftware wordt samengesteld tot één pakket dat je eenvoudig installeert.
+* De combinatie getest en gepubliceerd wordt.
+* Er software geselecteerd wordt.
+* Softwareframeworks gekozen en geconfigureerd worden.
+* Je systeem up-to-date wordt gehouden.
 * ...
 
 
@@ -152,7 +145,7 @@ Deze zorgen distrubuties zorgen ervoor dat:
        GNU/Linux    
 
     +-------------+ 
-    |   DISTRO    |  (Debian, Fedora, Ubuntu, Suse, ...)
+    |   DISTRO    |  (Debian, Fedora, Ubuntu, openSUSE, ...)
     +-------------+ 
     +-------------+ 
     |             | 
@@ -166,7 +159,7 @@ Deze zorgen distrubuties zorgen ervoor dat:
     +-------------+ 
 ~~~
 
-#### Zijn er niet GNU/Linux distro's
+### Zijn er Linux-distributies zonder GNU?
 
 Linux is echter niet onlosmakelijk aan GNU verbonden en vormt
 bijvoorbeeld ook de basis van Android.
@@ -189,5 +182,7 @@ bijvoorbeeld ook de basis van Android.
     +-------------+          +-------------+
 ~~~
 
-Daarnaast zijn er in de embedded Linux veel alternatieve systemen op basis van de Linux Kernel
-die niet noodzakelijk gebruik maken van GNU-software
+Zie https://source.android.com voor het Android Open Source Project (AOSP).
+
+Daarnaast zijn er in embedded Linux veel alternatieve systemen op basis van de Linux-kernel
+die niet noodzakelijk gebruikmaken van GNU-software.

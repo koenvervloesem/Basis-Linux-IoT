@@ -46,10 +46,10 @@ CHAPTER_02 += ssh.md
 CHAPTERS += $(CHAPTER_01) $(CHAPTER_02)
 
 all:
-	pandoc $(CHAPTERS) -o dist/linux_cursus_epub_nl.epub --css ./Style/base.css\
+	pandoc $(CHAPTERS) -o dist/basis_linux_epub.epub --css ./Style/base.css\
 
-	pandoc $(CHAPTERS) -o dist/linux_cursus_nl.html --self-contained -s --toc --toc-depth=5  -c ./Style/github-pandoc.css
+	pandoc $(CHAPTERS) -o dist/basis_linux.html --self-contained -s --toc --toc-depth=5  -c ./Style/github-pandoc.css
 
-	wkhtmltopdf dist/linux_cursus_nl.html dist/linux_cursus_nl.pdf
+	wkhtmltopdf dist/basis_linux.html dist/basis_linux.pdf
 
-	zip dist/linux_cursus_nl.zip dist/linux_cursus_nl.epub dist/linux_cursus_nl.html dist/linux_cursus_nl.pdf
+	zip dist/basis_linux.zip dist/basis_linux.epub dist/basis_linux.html dist/basis_linux.pdf
