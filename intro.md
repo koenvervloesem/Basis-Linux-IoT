@@ -1,10 +1,43 @@
-# Basis Linux
+# Deel 1 - Basis Linux
 
 ## Doel van de cursus
 
 Met deze cursus willen we bereiken dat je als "IoT'er" je weg kan vinden binnen een GNU/Linux-systeem.  
 Het is geen cursus over besturingssystemen of een *deep dive* in Linux-distributies.  
 De cursus heeft als doel om wat handigheid op te bouwen in het werken met Linux.
+
+### Cursusmateriaal
+
+De cursus wordt deel per deel op Toledo beschikbaar gesteld in html-, pdf- en epub-formaat.
+
+Let op: dit is een 'levend document'. De cursus wordt elke les bijgewerkt en in zijn nieuwste versie op Toledo geüpload.
+
+Wie aanvullende verdieping wil, mag altijd vragen om verwijzingen naar goede boeken of online bronnen.
+
+### Stijl van lesgeven
+
+Dit is een **praktische cursus**, dus we vliegen er direct in met praktijk.
+
+### Opdrachten op Toledo
+
+Alle **oefeningen** uit de cursus die je **moet maken** worden aangeduid in Toledo **onder opdrachten**.   
+### Evaluatie
+
+De ECTS-fiche van het vak beschrijft hoe je geëvalueerd wordt: https://onderwijsaanbod.leuven.ucll.be/2023/syllabi/n/MGI32BN.htm
+
+De verdeling van de punten is:
+
+Eerste zit:
+
+* 50% permanente evaluatie tijdens de les
+* 50% praktische eindopdracht
+
+Tweede zit:
+
+* 50% permanente evaluatie tijdens de les (overgedragen van eerste zit)
+* 50% praktische opdracht met verdediging tijdens de examenperiode
+
+In eerste zit is er dus geen examen.
 
 ## Waarom Linux binnen IoT?
 

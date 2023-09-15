@@ -1,4 +1,4 @@
-# Systeem-beheer in Linux
+# Deel 2 - Systeembeheer in Linux
 
 ## Doel deel 2
 

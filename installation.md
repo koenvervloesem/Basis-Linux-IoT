@@ -17,6 +17,8 @@ VirtualBox is vrij beschikbaar voor Windows, macOS en Linux.
 
 Meer informatie en downloads vind je op https://www.virtualbox.org/wiki/Downloads.
 
+Voor Macs met een M1- of M2-chip download je de macOS/ARM64 BETA van de 7.0.x testbuilds (https://www.virtualbox.org/wiki/Testbuilds).
+
 Installeer VirtualBox voordat je verdergaat. 
 
 #### VirtualBox Manager verkennen
@@ -122,6 +124,8 @@ We maken gebruik van Debian 12 (bookworm). Ga hiervoor naar de website https://w
 ![](Pictures/100000000000076E0000039DD32F1EF032331888.png)
 
 De download neemt +- 360 MB in beslag. Het betreft hier een ISO-image die een minimale installatie voorziet van een Debian-installatie. Hou er dus rekening mee dat je tijdens de installatie nog een internetverbinding zal nodig hebben omdat er dan extra software gedownload wordt.
+
+Opmerking: heb je een Mac met M1- of M2-chip, download dan de ARM64-versie van Debian.
 
 ##### Debian ISO-image aankoppelen
 
