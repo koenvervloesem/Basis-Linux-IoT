@@ -1,26 +1,26 @@
 ## Werken met een shell (Bash)
 
-### Command-Line in Linux
+### De command line in Linux
 
-Een **"command line"** is een **tekst-georienteerde interface** die kan worden gebruikt om **diverse taken** binnen een **besturingssysteem uit te voeren**.  
+Een **command line** of opdrachtregel is een **tekstgeoriënteerde interface** die kan worden gebruikt om **diverse taken** binnen een **besturingssysteem uit te voeren**.  
 
-De **command-line voor Linux** wordt geleverd door een **toepassing** die we de **shell** wordt genoemd.  
+De **command line voor Linux** wordt geleverd door een **toepassing** die we de **shell** noemen.
 
-Op je Linux-systeem zal het je toelaten alle soorten administratie-**taken** uit te voeren op je computer:
+Op je Linux-systeem zal de shell je toelaten om alle soorten beheertaken uit te voeren:
 
-* **Files** en **folders** te bewerken
-* Je besturingssysteem te **configureren**
-* **Programma**'s op te **starten**
-* Met een **netwerk** te interageren
-* Taken te **automatiseren**
+* **Bestanden** en **mappen** bewerken
+* Je besturingssysteem **configureren**
+* **Programma's opstarten**
+* Met een **netwerk** interageren
+* Taken **automatiseren**
 * ...
 
 > *Nota*  
-> In Windows heb je als command-line-toepassing Bash of Powershell.  
+> In Windows heb je als command-line-toepassing CMD of PowerShell.  
 
-Een groot deel van de activiteiten die we gaan uitvoeren in Linux vereisen een goede kennis van de bash-terminal.  
+Een groot deel van de activiteiten die we gaan uitvoeren in Linux vereisen een goede kennis van de shell.  
 
-Het is dus zeer belangrijk deze goed onder de knie te krijgen en dat is wat in dit hoofdstuk zullen starten...
+Het is dus belangrijk om deze goed onder de knie te krijgen. En dat is waarmee we in dit hoofdstuk zullen starten...
 
 ### Bash
 
@@ -31,26 +31,26 @@ Bash is een **verbeterde versie** van een van de meest succesvolle shells die wo
 #### Bash-shell openen
 
 Laten we **van start gaan**...
-Om een shell te openen vanuit een GUI bestaat er binnen Linux diverse **terminal-programma's** of **emulators**.  
+Om een shell te openen vanuit een GUI bestaan er binnen Linux diverse **terminalprogramma's** of **terminalemulators**.  
 
-Om deze te openen binnen onze Linux-distro (Debian met Xfce) **selecteer** je binnen het menu **"Terminal Emulator"**:
+Om deze te openen binnen onze Linux-distributie (Debian met Xfce) kies je binnen het menu **Applications** het onderdeel **Terminal Emulator**:
 
 ![](Pictures/debian_open_terminal.png)
 
-Vervolgens krijg je een **terminal-console** waar in je **commando's kan ingeven/uitvoeren**.
+Vervolgens krijg je een terminalvenster (ook console genoemd) waarin je **opdrachten kan uitvoeren**.
 
 ![](Pictures/bash_terminal.png)
 
 #### Shell-sessie
 
-Via zo'n **emulator/console** gaan we de **shell** als user **interactief** gaan gebruiken (later gaan we deze ook gebruiken via scripting).
+Via de console gaan we de **shell** als gebruiker **interactief** gebruiken (later gaan we deze ook niet-interactief gebruiken via een script).
 
-Nu deze console is geopend we van een **shell-sessie** (of bash-sessie om precies te zijn).  
-Dit is een programma dat **wacht** op **commando's** die je ingeeft en deze uitvoert als je op **enter** typt.
+Nu deze console is geopend, spreken we van een **shell-sessie** (of in dit geval een Bash-sessie om precies te zijn).  
+In deze sessie wacht de shell op opdrachten die je intypt. De shell voert een ingetypte opdracht uit zodra je op **Enter** drukt.
 
-De shell zal vervolgens wachter tot dit commando (of job) is uitgevoerd (tenzij dat je het als background-taak uitvoert) en de output van deze job uitvoeren.
+De shell zal vervolgens wachten tot de opdracht (of job) voltooid is (tenzij je de opdracht als achtergrondtaak uitvoert). Je krijgt de uitvoer van de job te zien.
 
-Volgende taak zal bijvoorbeeld de inhoud van je huidige work-directory afprinten:
+De volgende taak zal bijvoorbeeld de inhoud van je huidige werkdirectory tonen:
 
 ~~~
 student@studentdeb:~$ ls
@@ -60,32 +60,30 @@ student@studentdeb:~$
 
 #### Shell-prompt
 
-Als je de **console** start verschijnt er een een stuk **tekst**, dat er ongeveer zo moeten uit zien:  
+Als je de **console** start, verschijnt er een een stuk **tekst** dat er ongeveer zo moet uitzien:  
 
 ~~~bash
 student@studentdeb:~ $
 ~~~
 
 > *Nota:*  
-> Deze console kan verschillen tussen verschillende linux distributies.  
-> Over het algemeen zullen deze echter dicht bij komen.
+> Deze console kan verschillen tussen verschillende Linux-distributies.  
 
 
-Dit is wat we noemen de **prompt** (of shell- of user-prompt), deze :
+Dit is wat we noemen de **prompt** (shell prompt of gebruikersprompt). Deze:
 
-* geeft mee welke **user** ingelogd is (bart)
-* geeft aan wat het huidige **path** - of **working directory** - momenteel is gereferenceerd (~)
-  (in dit geval komt ~ overeen met de home-directory van de user)
-* geeft je mogelijkheid om een **commando** in te typen
+* geeft aan welke **gebruiker** ingelogd is (bart)
+* geeft aan wat het huidige **pad** - of **werkdirectory** - is (`~` komt overeen met de home-directory van de gebruiker)
+* geeft je de mogelijkheid om een **opdracht** in te typen
 
-Het dollar-teken ($) aan het einde is het einde van de prompt en geeft aan dat je commando's kan ingeven.  
+Het dollarteken (`$`) aan het einde geeft aan waar de prompt eindigt. Het is ook het signaal dat je opdrachten kan invoeren.
 
 > *Nota:*  
-> Naast deze **default-prompt** gaan we verderop in de cusus nog zien dat ook nog een **superuser-prompt**, deze eindigt met een \# ipv een $, deze wordt gebruikt wanneer je wijzigingen aan het systeem wil aanbrengen met root-access (we komen hier weldra nog op terug)
+> Naast deze **gebruikersprompt** gaan we verderop in de cursus nog zien dat er ook nog een **superuser-prompt** is. Deze eindigt met een `#` in plaats van een `$`. Ze wordt gebruikt wanneer je wijzigingen aan het systeem wil aanbrengen met root-toegang (we komen hier weldra nog op terug).
 
-### Commando's in de shell
+### Opdrachten in de shell
 
-Deze prompt geeft aan dat je dus een aantal commando's kan ingeven, laten we starten een aantal keren op de **return- of enter-toets** te duwen.
+Deze prompt geeft aan dat je opdrachten kan invoeren. Laten we starten met een aantal keren op de **Enter-toets** te duwen:
 
 ~~~
 student@studentdeb:~$ 
@@ -93,9 +91,9 @@ student@studentdeb:~$
 student@studentdeb:~$ 
 ~~~
 
-Als je **niets typt** na de prompt en op enter drukt, dan gebeurt er niets en krijg je een **nieuwe prompt** onder de oude prompt.
+Als je **niets typt** na de prompt en op Enter drukt, dan gebeurt er niets. Je krijgt gewoon een **nieuwe prompt** onder de oude prompt.
 
-Als je terug **1 prompt wil zien** dan kan je het **commando** **clear** typen (gevolgd door een enter):
+Als je terug **één prompt wil zien**, typ dan de opdracht `clear` in (gevolgd door een Enter):
 
 ~~~
 student@studentdeb:~$ 
@@ -103,20 +101,20 @@ student@studentdeb:~$
 student@studentdeb:~$ clear
 ~~~
 
-Vervolgens zie je dat je terug 1 user-prompt ziet...
+Vervolgens zie je weer één gebruikersprompt...
 
 ~~~
 student@studentdeb:~$ 
 ~~~
 
-Hetzelfde kan je bereiken via de key-combo "Ctrl+L"
+Hetzelfde kan je bereiken via de toetsencombinatie **Ctrl+L**.
 
-#### Commando-Argumenten
+#### Argumenten
 
-Zo'n **commando** is telkens een **programma** dat wordt **uitgevoerd**, zelfs het éénvoudige programma clear dat we zo net hebben gebruikt.
+Zo'n opdracht is telkens een **programma** dat wordt **uitgevoerd**, zelfs het eenvoudige programma `clear` dat we zonet hebben gebruikt.
 
 Veel van deze programma's hebben echter een **argument** nodig.  
-Laten we direct illustreren via een **2de commando** gebruiken, **echo**
+Laten we dit direct illustreren via een tweede opdracht, `echo`:
 
 ~~~
 student@studentdeb:~$ echo hello
@@ -124,35 +122,34 @@ hello
 student@studentdeb:~$ 
 ~~~
 
-Dit **commando** heeft als **functie** een stuk **tekst** **af te drukken** naar de **console**.  
+Deze opdracht heeft als functie om een stuk **tekst** te tonen op de **console**.  
 
-Het stuk tekst dat je wil afdrukken kan je dan 
+Het stuk tekst dat je wil tonen kan je dan 
 gewoon aan dit programma meegeven als **argument**.
 
-Een **argument** volgt direct op het commando met dus volgende **vormfactor**:
+Een **argument** volgt direct op de opdracht, dus in de volgende vorm:
 
 ~~~
 [command] [arguments]
 ~~~
 
-Zoals hierboven aangegeven kan het zijn dat je meer dan 1 argument meegeeft aan een commando.  
-Dat zullen we later nog zien bij andere commando's...
+Zoals hierboven aangegeven, kan het zijn dat je meer dan één argument meegeeft aan een opdracht.  
+Dat zullen we later nog zien bij andere opdrachten...
 
-#### Commando-opties
+#### Opties
 
 Naast argumenten kan je ook nog extra **opties** meegeven.  
-Dit zijn **extra** opties (meestal niet verplicht) die je kan meegeven aan zo'n **commando** om het gedrag een te **beïnvloeden**.  
-Deze opties zijn meestal **voorafgegaan** door een **streepje** (- of ook hyphen genoemd).  
+Dit zijn extra opties (meestal niet verplicht) om het gedrag van een opdracht te **beïnvloeden**.  
+Deze opties zijn meestal **voorafgegaan** door een **streepje** (`-` of ook *hyphen* genoemd).  
 
-Bijvoorbeeld, het echo-commando zal de tekst afdrukken maar daarna ook onmiddellijk een nieuwe lijn afdrukken.  
-Je kan dit gedrag wijzigen (geen nieuwe lijn afdrukken) door de **optie "-n"** mee te geven:
+Bijvoorbeeld: de opdracht `echo` zal de meegegeven tekst tonen, maar daarna ook onmiddellijk naar een nieuwe regel gaan. Je kan dit gedrag wijzigen (geen nieuwe regel tonen) door de optie `-n` toe te voegen:
 
 ~~~
 student@studentdeb:~$ echo -n hello
 hellostudent@studentdeb:~$ 
 ~~~
 
-Deze drukt dus nog altijd de tekst af, maar in **tegenstelling** tot hieronder (zonder optie) zal deze **geen nieuwe lijn** afdrukken.
+Deze toont dus nog altijd de tekst, maar in tegenstelling tot hieronder (zonder optie) zal deze **geen nieuwe regel** tonen:
 
 ~~~
 student@studentdeb:~$ echo hello
@@ -160,28 +157,27 @@ hello
 student@studentdeb:~$ 
 ~~~
 
-#### Linux commando's => vormfactor
+#### Vorm van Linux-opdrachten
 
-De meeste Linux (en Unix-programma's) gebruiken dan ook de volgende vormfactor:
-
-Na de commando-naam volgen dan 1 of meerder opties (telkens voorafgegaan door en een streepje) en dan pas op het einde gevolgd door argumenten.  
+De meeste Linux-programma's gebruiken dan ook de volgende vorm:
 
 ~~~
 [command] [options] [arguments]
 ~~~
 
-Deze opties zijn meestal afkortingen en bestaan uit (meestal) 1 karakter na het streepje.  
-Zo'n korte optie noemen we een **"SHORT-OPTION"**.
+Na de naam van de opdracht volgen dan één of meerder opties (telkens voorafgegaan door een streepje) en dan pas op het einde gevolgd door argumenten.  
 
-#### SHORT en LONG-options
+Deze opties zijn meestal afkortingen en bestaan uit (meestal) één na het streepje, zoals in het voorbeeld van `-n`.  
+Zo'n korte optie noemen we een **short option**.
 
-Soms heb je echter zowel een **SHORT**- als een **LONG**-option.  
-Zo'n **LONG-option** wordt voorafgegaan door 2 streepjes (-- double hyphen)
+#### Short en long options
 
-Soms heb je echter ook nog een langere versie of "long-option" zo'n optie.  
-Bij voorbeeld bij het commando ls dat je gebruikt om de inhoud van een directory te bekijken (zie ook eerder) heb je een optie "--all" waarmee je ook verborgen bestanden kan kijken.
+Soms heb je zowel een short option als een **long option**.  
+Zo'n long option wordt voorafgegaan door twee streepjes (`--` of double hyphen)
 
-"--all" is hier een leesbaardere "LONG-option"
+Bijvoorbeeld bij de opdracht `ls` waarmee je de inhoud van een directory bekijkt (zie ook eerder) heb je een optie `--all` waarmee je ook verborgen bestanden te zien krijgt.
+
+De `--all` is hier een leesbaardere long option.
 
 ~~~
 student@studentdeb:~$ ls --all
@@ -202,7 +198,7 @@ Downloads      Videos
 .local
 ~~~
 
-Je kan echter daarnaast met een kortere "SHORT-options" trouwens net hetzelfde doen...
+De bijbehorende short option `-a` doet overigens exact hetzelfde...
 
 ~~~
 student@studentdeb:~$ ls -a
@@ -224,22 +220,22 @@ Downloads      Videos
 
 ~~~
 
-### Shortcuts en shell-acties
+### Sneller werken in de shell 
 
-Binnen een bash-shell heb je een aantal features en shortcuts die je het leven gemakkelijk kunnen maken.
+Binnen de Bash-shell heb je een aantal hulpmiddelen die je leven gemakkelijker maken.
 
-#### Teruggaan in de historiek
+#### Terugkeren in de geschiedenis
 
-Zo'n eerste feature is dat een shell de **historiek** van je commando's onthoudt.  
+Een eerste hulpmiddel is dat een shell de geschiedenis van je opdrachten onthoudt.  
 
-Om commando's te hergebruiken - die je eerder had ingegeven - kan je de **pijltjes-toetsen** gebruiken om eerder gebruikte commando's opnieuw op de console te tonen.
+Om opdrachten te hergebruiken - die je eerder had ingevoerd - kan je de **pijltjestoetsen** intypen om eerder ingevoerde opdrachten opnieuw op te vragen.
 
-Stel dat je 2 commando's na elkaar uitvoert:
+Stel dat je twee opdrachten na elkaar uitvoert:
 
-* "ls" => Oplijsten van de inhoud van de HOME-directory
-* "cd Desktop" => Navigeren naar de Desktop-directory
+* `ls` => Tonen van de inhoud van de home-directory
+* `cd Desktop` => Navigeren naar de Desktop-directory
 
-Krijg je volgend resultaat:
+Dan krijg je volgend resultaat:
 
 ~~~
 student@studentdeb:~$ ls
@@ -248,7 +244,7 @@ student@studentdeb:~$ cd Desktop/
 student@studentdeb:~/Destop$
 ~~~
 
-Als je vervolgens het up-pijltje van je keyboard indrukt kan je terug het meest recente commando naar boven brengen.
+Als je vervolgens het pijltje omhoog van je toetsenbord indrukt, toont de shell de meest recente opdracht opnieuw na de prompt.
 
 ~~~
 student@studentdeb:~$ ls
@@ -257,7 +253,7 @@ student@studentdeb:~$ cd Desktop/
 student@studentdeb:~/Desktop$ cd Desktop/
 ~~~
 
-Als je dit een 2de maal indrukt krijg je het commando ls.  
+Als je een tweede keer op het pijltje omhoog drukt, krijg je de opdracht `ls`.  
 
 ~~~
 student@studentdeb:~$ ls
@@ -266,7 +262,7 @@ student@studentdeb:~$ cd Desktop/
 student@studentdeb:~/Desktop$ ls
 ~~~
 
-Als je dan vervolgens op de enter-toets drukt wordt dat commando uitgevoerd.
+Als je dan vervolgens op de Enter-toets drukt, wordt die opdracht `ls` uitgevoerd.
 
 ~~~
 student@studentdeb:~$ ls
@@ -276,7 +272,9 @@ student@studentdeb:~/Desktop$ ls
 student@studentdeb:~/Desktop$ 
 ~~~
 
-#### Tab-completion
+#### Tab completion
+
+Als je een letter intypt en dan twee keer op de Tab-toets drukt, krijg je een lijst van opdrachten die met die letter beginnen:
 
 ~~~
 student@studentdeb:~/Desktop$ e
@@ -293,25 +291,27 @@ enc2xs                 exec
 student@studentdeb:~/Desktop$ ec 
 ~~~
 
-Als je dan vervolgens er een c (na de e) typt
+Als je dan vervolgens een c (na de e) typt:
 
 ~~~
 ...                 
 student@studentdeb:~/Desktop$ ec
 ~~~
 
-En opnieuw de tab tikt dan zal de bash-shell het commando geven (gezien dat dit not het enige is)
+En opnieuw op Tab tikt, dan zal de Bash-shell dit aanvullen tot:
 
 ~~~
 ...                 
 student@studentdeb:~/Desktop$ echo
 ~~~
 
+`echo` is immers de enige herkende opdracht die met `ec` begint. Op deze manier hoef je niet volledige opdrachten in te typen.
+
 #### Programma beëindigen met Ctrl+C
 
-Soms kan het zijn dat je een commando intikt dat niet van zich zelf zal stoppen (bedoeld of onbedoeld).
+Soms kan het zijn dat je een opdracht intypt die niet uit zichzelf zal stoppen (bedoeld of onbedoeld).
 
-Stel bijvoorbeeld dat je het volgende commando type
+Stel bijvoorbeeld dat je de volgende opdracht typt:
 
 ~~~
 $ cat /dev/random
@@ -319,49 +319,46 @@ $ cat /dev/random
 $
 ~~~
 
-Dit zal heel wat rommel op je console afdrukken (en zal niet van zichzelf stoppen).
+Dit zal heel wat rommel op je console afdrukken (en zal niet uit zichzelf stoppen).
 
-Als je echter **Ctrl+C** typt kan je dit programma beëindigen en terug beschikking hebben over de shell.
+Als je echter **Ctrl+C** typt, beëindig je dit programma en krijg je weer de beschikking over de shell.
 
-Dit key-combinatie zal een **interrupt-signaal** doorsturen naar de applicatie en er voor zorgen dat deze wordt afgesloten.
+Deze toetsencombinatie zal een **interrupt-signaal** doorsturen naar de applicatie en er voor zorgen dat deze wordt afgesloten.
 
 > *Nota*:  
-> Hoewel dit zal werken voor de meeste programma's
+> Hoewel dit zal werken voor de meeste programma's,
 > kan een programma dit interrupt-signaal opvangen
 > (en dus negeren).  
 > In dat geval zijn er nog andere manieren om een 
 > job af te sluiten.  
 > We komen hier in het gedeelte rond jobs en processen nog 
-> op terug (waar we ook wat meer diepgang zullen meegeven over
-> deze signalen).  
-> Voorlopig is het voldoende te weten dat Ctrl+C een
-> programma kan onderbreken
+> op terug.
 
-#### Afluiten met Ctrl+D (of het exit-commando)
+#### Shell afsluiten met Ctrl+D (of exit)
 
-Als je de shell **sessie** wil **afsluiten** kan je dit doen met het **exit** commando of de key-combinatie **Ctrl-D** 
+Als je de shellsessie wil afsluiten, kan je dit doen met de opdracht `exit` of de toetsencombinatie **Ctrl+D**. 
 
-### Files en directories
+### Bestanden en directory's
 
-Net zoals de meeste besturingssystemen heeft Linux 2 belangrijke elementen om informatie bij te houden en te structureren:
+Net zoals de meeste besturingssystemen heeft Linux twee belangrijke elementen om informatie bij te houden en te structureren:
 
-* Files (bestanden)
-* Directories (folders/mapjes)
+* Bestanden (*files*)
+* Mappen (*directories*)
 
 #### Geen C-schijf...
 
-De structuur van een Linux-filesystem (bestandssysteem) verschilt wel enigszins van wat de meesten gewoon zijn onder Windows.  
+De structuur van een Linux-bestandssysteem (*file system*) verschilt wel enigszins van wat de meesten gewoon zijn onder Windows.  
 
-Linux heeft geen **fysieke schijf** (zoals de C: schijf) aan de basis van het filesysteem.  
-In plaats daarvan wordt er een **logisch bestandssysteem** gebrukt.  
+Linux heeft geen **fysieke schijf** (zoals de C-schijf) aan de basis van het bestandssysteem.  
+In plaats daarvan wordt er een **logisch bestandssysteem** gebruikt.  
 
 ![](Pictures/roothierachy.png)
 
-Helemaal bovenaan het filesystem-structuur is **/**, men noemt dit meestal ook **root** van het **bestandssysteem** (niet te verwarren met de root-user).  
+Helemaal bovenaan de structuur staat **/**. Men noemt dit meestal de **root van het bestandssysteem** (niet te verwarren met de root-gebruiker).  
 
 #### Linux File Hierarchy
 
-Onder deze root bevinden zich een hele hoop directories en bestanden hiërarchisch geordend (een beetje zoals een wortel-systeem)
+Onder deze root bevinden zich een hele hoop directory's en bestanden, hiërarchisch geordend (een beetje zoals een boomstructuur):
 
 ~~~
 / ──+
@@ -391,34 +388,36 @@ Onder deze root bevinden zich een hele hoop directories en bestanden hiërarchis
     └── var
 ~~~
 
-Direct onder deze root-directory bevinden zich een aan systeem-directories.  
-Deze bevatten software, libraries, scripts, configuratie-bestanden, ...
+Direct onder deze root-directory bevinden zich een aantal systeemdirectory's.  
+Deze bevatten software, bibliotheken, scripts, configuratiebestanden, ...
 
 * **/etc/** => **configuraties** van het systeem
-* **/boot/** => **kernel** en andere **boot-files**
-* **/run/** => **data** ivm **processen**, geopende files, ...
-* **/usr/** => geinstalleerde **software**, applicaties, libraries
+* **/boot/** => **kernel** en andere **opstartbestanden**
+* **/run/** => **data** in verband met **processen**, geopende bestanden, ...
+* **/usr/** => geïnstalleerde **software**, toepassingen, bibliotheken
 * **/root/** => **home**-directory voor de **superuser** (niet binnen /home/)
-* **/tmp/** => **tijdelijke files** (wordt regelmatig opgekuist)
-* **/var/** => variabele data die wel moet worden opgeslagen tussen boots
-* **/bin/** en /sbin => shortcuts naar gelijnamige directories binnen /usr
-* **/dev/** => bevat speciale **"device"-files** gebruikt om met hardware te connecteren
+* **/tmp/** => **tijdelijke bestanden** (wordt regelmatig opgekuist)
+* **/var/** => variabele data die wel opgeslagen moeten blijven
+* **/bin/** en **/sbin** => verwijzingen naar gelijknamige directory's binnen /usr
+* **/dev/** => bevat speciale **apparaatbestanden** gebruikt om met hardware te communiceren
 * ...
 
-Als je in detail wil weten waar elke van deze directories voor wordt gebruikt kan je gebruik maken van het command "man hier"
+Als je in detail wil weten waar elke van deze directory's voor wordt gebruikt, kan je gebruikmaken van de opdracht `man hier`.
 
-#### Filepath
+#### Paden
 
-Zoals eerder vermeld, de directory **/** of **root** is de **hoofd-directory** bovenaan de **hiërarchie** van het bestandssysteem.  
+Zoals eerder vermeld is de directory **/** of **root** de **hoofddirectory** bovenaan de **hiërarchie** van het bestandssysteem.  
 
-Dit **/-karakter** wordt ook gebruikt als scheidingsteken in een **path** (pad).  
-Dit **path** gebruik je zoals een address binnen een command-line of script om een bestand of filename te lokaliseren.  
+Dit teken **/** wordt ook gebruikt als scheidingsteken in een pad (*file path*).  
+Dit pad gebruik je om naar een bestand in de hiërarchie te verwijzen.  
 
-Bijvoorbeeld het filepath naar de directory /home/student/Desktop geeft aan dat:
+Bijvoorbeeld het pad naar de directory /home/student/Desktop geeft aan dat:
 
 * **Desktop** een **subdirectory** is van **student**
-* **student** van **home** (op zijn beurt)
+* **student** van **home**
 * **home** van de **root**-directory
+
+Dit ziet er in een boomstructuur als volgt uit:
 
 ~~~
   / 
@@ -428,10 +427,10 @@ Bijvoorbeeld het filepath naar de directory /home/student/Desktop geeft aan dat:
               └── Desktop
 ~~~
 
-Onder deze verschillende **directories** kan je dan bestanden plaatsen.  
-Deze bestanden kan je dan gemakkelijk terugvinden en **adresseren** via een path, we noemen dit ook soms wel een **filepath**.
+Onder deze verschillende **directory's** kan je dan bestanden plaatsen.  
+Deze bestanden kan je dan gemakkelijk terugvinden en **adresseren** via een pad.
 
-We **breiden** bovenstaand **voorbeeld** uit door files te **plaatsen** onder deze **directories**.
+We breiden bovenstaand voorbeeld uit door bestanden te plaatsen onder deze directoriy's.
 Als je bijvoorbeeld het bestand sensors.json wil gebruiken...
 
 ~~~
@@ -445,18 +444,18 @@ Als je bijvoorbeeld het bestand sensors.json wil gebruiken...
                     └── sensors.json
 ~~~
 
-... kan dit via het **path** **/home/student/data/sensors.json**
+... kan dat via het pad **/home/student/data/sensors.json**
 
-Dit is wat we noemen een **absoluut path**, een adressering vanaf de root-directory.  
-Naast een absoluut path bestaat er ook nog een **relatief** path, daar komen we zo dadelijk nog op terug. 
+Dit is wat we noemen een **absoluut pad**, een adressering vanaf de root-directory.  
+Naast een absoluut pad bestaat er ook nog een relatief pad, daar komen we zo dadelijk nog op terug. 
 
-#### Working-directory
+#### Werkdirectory
 
-We starten met het aanmaken van een **directory** waarin we onze C-code gaan plaatsen.  
+We starten met het aanmaken van een **directory** waarin we bestanden kunnen plaatsen.  
 We starten vanuit de volgende hiërarchie die automatisch zou moeten zijn aangemaakt na de installatie:
 
 > *Nota:*  
-> Er vanuitgaande dat je student als user-name hebt gekozen zoals gevraagd...
+> We gaan er hier vanuit dat je **student** als gebruikersnaam hebt gekozen zoals gevraagd...
 
 ~~~
   / 
@@ -466,12 +465,12 @@ We starten vanuit de volgende hiërarchie die automatisch zou moeten zijn aangem
               └── Documents
 ~~~
 
-Als je de command-line opent krijg je volgende shell:
+Als je een terminalvenster opent, krijg je volgende shell:
 
 ![](Pictures/cmd_homedir.png)
 
-Als je een interactieve shell of command-line start deze zich in een specifiek directory.  
-Je kan weten waar je exact aan het werken bent via het commando **pwd** ofwel "**pr**int **w**orking **d**irectory" welk aangeeft welke je actieve of **working**-directory is
+Als je een interactieve shell of command line opent, start deze in een specifieke directory.  
+Je kan opvragen in welke directory je exact aan het werken bent via de opdracht `pwd` ofwel "**pr**int **w**orking **d**irectory".
 
 ~~~
 student@studentdeb:~$ pwd
@@ -481,7 +480,7 @@ student@studentdeb:~$
 
 #### Inhoud tonen met ls
 
-Onder GNU/Linux (en andere unix-varianten) is **ls** ofwel "**l**i**s**t) een commando om de inhoud van een directory weer te geven.  
+Onder GNU/Linux is `ls` (ofwel "**l**i**s**t) een opdracht om de inhoud van een directory weer te geven. 
 
 ~~~
 student@studentdeb:~$ ls
@@ -489,15 +488,17 @@ Desktop  Documents  Downloads  Music  Pictures  Public  Templates  Videos
 student@studentdeb:~$ 
 ~~~
 
-Zonder argumenten wordt de inhoud van de werkdirectory (= huidige directory) getoond.  
-Als je de inhoud wil tonen van een subdirectory kan je deze als argument gebruiken:
+Zonder argumenten wordt de inhoud van de werkdirectory (huidige directory) getoond.  
+Als je de inhoud wil tonen van een subdirectory, geef deze dan als argument op:
 
 ~~~
 student@studentdeb:~$ ls Documents/
 hello  myhistory  tweedehistory
 ~~~
 
-Als je meer details te weten wil komen kan je ls met de **optie -l** combineren:
+Merk op: ook voor namen van bestanden en directory's werkt tab completion, wat heel wat typen (en typefouten) uitspaart.
+
+Als je meer details te weten wil komen, gebruik dan de optie `-l`:
 
 ~~~
 student@studentdeb:~$ ls -l Documents/
@@ -511,25 +512,25 @@ Dit toont meer volledige info zoals:
 
 * type van item
   * **d** staat voor directory
-  * **\-** voor een gewone file
-* permissies (zie hoofdstuk rond users en permissies)
-* user en group (zie hoofdstuk rond users en permissies)
+  * **\-** voor een gewoon bestand
+* permissies (zie hoofdstuk rond gebruikers en permissies)
+* gebruiker en groep (zie hoofdstuk rond gebruikers en permissies)
 * tijd van laatste aanpassing
-* size
+* grootte
 * ...
 
-Een aantal andere opties die handig kunnen zijn:
+Een aantal andere opties van `ls` die handig kunnen zijn:
 
-* \-S: sorteer op bestandsgrootte
-* \-t: sorteer op tijd
-* \-r: draai de volgorde om (van het sorteren)
-* \-R: recursief, geef ook de inhoud van de subdirectory('s) weer
-* \-a: geef ook verborgen bestanden weer (die beginnen met een punt)
-* \-d: geef bij directory-items niet de inhoud ervan weer, maar slechts de directorynaam zelf
+* `-S`: sorteer op bestandsgrootte
+* `-t`: sorteer op tijd
+* `-r`: draai de volgorde om (van het sorteren)
+* `-R`: recursief, geef ook de inhoud van subdirectory's weer
+* `-a`: geef ook verborgen bestanden weer (die beginnen met een punt)
+* `-d`: geef bij directory's niet de inhoud ervan weer, maar slechts de directorynaam zelf
 
 #### Navigeren met cd
 
-Je kan deze **working-directory** ook **wijzigen** met het commando **cd** ofwel "**c**hange **d**irectory
+Je kan deze **werkdirectory** ook **wijzigen** met de opdracht `cd` ofwel "**c**hange **d**irectory.
 
 ~~~
 student@studentdeb:~$ cd Documents/
@@ -544,7 +545,7 @@ drwxr-xr-x 2 student student 4096 Sep 29 20:24 hello
 
 ##### Super-directory
 
-Als je naar een hogere directory (of de **super-directory**) wil navigeren kan je de placeholder **..** hiervoor gebruiken.
+Als je naar een hogere directory (of de **superdirectory**) wil navigeren, gebruik dan `..` als naam.
 
 ~~~
 student@studentdeb:~/Documents$ cd ..
@@ -565,7 +566,7 @@ student
 student@studentdeb:~$
 ~~~
 
-Je kan ook **meerdere niveaus** naar boven verwijzen mits je deze **..** scheidt door een **/**
+Je kan ook **meerdere niveaus** naar boven verwijzen:
 
 ~~~
 student@studentdeb:~$ ls ../..
@@ -578,8 +579,8 @@ student@studentdeb:~$
 
 ##### Vorige directory
 
-Een handige **shortcut** (bij cd) is de **combinatie** van **cd** met een **hyphen** (streepje).  
-Als je volgend commando uitvoert...
+Een handig hulpmiddel bij `cd` is de **combinatie** met een **hyphen** (streepje).  
+Als je de volgende opdracht uitvoert...
 
 ~~~
 student@studentdeb:~$ cd -
@@ -587,14 +588,14 @@ student@studentdeb:~$ cd -
 student@studentdeb:~/Documents$ 
 ~~~
 
-...keer je terug naar de **vorige working-directory** die je gebruikte in je shell-sessie
+...keer je terug naar de **vorige werkdirectory** die je gebruikte in je shell-sessie.
 
 #### HOME-directory
 
-/home/student/ is de **HOME-directory**, net zoals je onder Windows een home-directory "C:\Users\student" zou hebben.  
+/home/student/ is de **home-directory**, net zoals je onder Windows een home-directory `C:\Users\student` zou hebben.  
 
-Als je inlogt in een shell-venster kom je automatisch terecht in deze home directory.  
-Als je van een andere working-directory echter terug naar je HOME-directory wil navigeren kan je cd gebruiken zonder argument.
+Als je inlogt in een shell-venster, kom je automatisch terecht in deze home-directory.  
+Als je van een andere werkdirectory weer naar je home-directory wil terugkeren, gebruik dan `cd` zonder argument.
 
 ~~~
 student@studentdeb:~/Documents$ pwd
@@ -605,12 +606,12 @@ student@studentdeb:~$ pwd
 student@studentdeb:~$ 
 ~~~
 
-Er zijn nog **2 andere shortcuts** om naar de **HOME-directory** te verwijzen
+Er zijn nog twee andere manieren om naar de home-directory te verwijzen:
 
-* De environment-variabele **$HOME**
-* Een tilde of ~ 
+* De omgevingsvariabele `$HOME`
+* Een tilde of `~`
 
-Deze kan je bijvoorbeeld gebruiken om de lijst van files te tonen van je home-directory (vanuit een andere directory)
+Deze kan je bijvoorbeeld gebruiken om de lijst van bestanden te tonen in je home-directory (vanuit een andere directory):
 
 ~~~
 student@studentdeb:~/Documents$ ls
@@ -624,7 +625,7 @@ student@studentdeb:~/Documents$
 
 #### Een directory aanmaken
 
-Na het navigeren volgt het aanmaken van directories en files.  
+Na het navigeren volgt het aanmaken van directory's en bestanden.
 We gaan volgende bestanden aanmaken:
 
 ~~~
@@ -638,7 +639,7 @@ We gaan volgende bestanden aanmaken:
                     └── sensors.json
 ~~~
 
-We starten met de directory data aan te maken:
+We starten met de directory `data` aan te maken:
 
 ~~~
 student@studentdeb:~$ mkdir data
@@ -656,16 +657,16 @@ drwxr-xr-x 2 student student 4096 Sep 26 20:49 Videos
 student@studentdeb:~$ 
 ~~~
 
-**mkdir** gevolg door het path **data** nieuwe directory of folder aan.  
+Dat doen we met de opdracht `mkdir` gevolgd door het pad `data`.
 
-Zonder argumenten kan je enkel **1 niveau van folder** aanmaken, stel dat je bijvoorbeeld een parent en child-folder in 1 maal wil aanmaken gaat dit niet zomaar:
+Zonder argumenten kan je maar één niveau van directory aanmaken. Stel dat je bijvoorbeeld het volgende wil aanmaken, dan gaat dit niet zomaar:
 
 ~~~
 student@studentdeb:~$ mkdir hello/world
 mkdir: cannot create directory ‘hello/world’: No such file or directory
 ~~~
 
-Als je echter de optie -p meegeeft zullen de parent-folders (hello in dit geval) mee worden  aangemaakt als deze nog niet mochten bestaan:
+Als je echter de optie `-p` meegeeft zullen de *parent directories* (`hello` in dit geval) mee worden aangemaakt als deze nog niet bestaan:
 
 ~~~
 student@studentdeb:~$ mkdir -p hello/world
@@ -677,14 +678,15 @@ drwxr-xr-x 2 student student 4096 Oct 13 13:07 world
 student@studentdeb:~$ 
 ~~~
 
-#### Relatieve vs absolute path
+#### Relatieve en absolute paden
 
-*mkdir* en *cd* nemen - net zoals de meeste commando's op de DOS-prompt - als input een **path**.    
-Zo'n path is de verwijzing naar een (target-)directory waarop je dit commando wil op uitvoeren.  
+Aan `mkdir` en `cd` geef je als argument een pad mee.
 
-Er zijn een aantal manieren waarop je een path kan construeren, het grootste onderscheid dat we hier maken is  absoluut of relatief:
+Zo'n pad is de verwijzing naar een (doel)directory waarop je de opdracht wil uitvoeren.  
 
-* **absoluut** is een path dat start vanaf de root-directory, dit path start namelijk vanaf de schijf waar je wil naar verwijzen
+Je kunt een onderscheid maken op basis van de manier waarop je een pad construeert:
+
+* **absoluut** is een pad dat start vanaf de root-directory. Dit pad start namelijk vanaf de schijf waarnaar je wil verwijzen.
 
 ~~~
 student@studentdeb:~$ cd /home/student/hello/world/
@@ -693,9 +695,7 @@ student@studentdeb:~/hello/world$ pwd
 student@studentdeb:~/hello/world$ 
 ~~~
 
-Dit start altijd me een verwijzing naar de root-directory
-
-* **relatief** verwijst naar een locatie relatief naar je huidige directory
+* **relatief** is een pad relatief ten opzichte van je huidige directory.
 
 ~~~
 student@studentdeb:~$ cd hello/world/
@@ -704,7 +704,7 @@ student@studentdeb:~/hello/world$ pwd
 student@studentdeb:~/hello/world$ 
 ~~~
 
-Het symbool **..** (2 dots na elkaar) kan je ook gebruiken in deze relatieve paden:
+Het symbool `..` (twee punten na elkaar) kan je ook gebruiken in deze relatieve paden:
 
 ~~~
 student@studentdeb:~/hello/world$ cd ../../data/
@@ -712,7 +712,7 @@ student@studentdeb:~/data$ pwd
 /home/student/data
 ~~~
 
-Of het voorgaande substitiekarakter ~ 
+Of het teken `~`: 
 
 ~~~
 student@studentdeb:~/data$ cd ~/data/
@@ -720,9 +720,9 @@ student@studentdeb:~/data$ pwd
 /home/student/data
 ~~~
 
-#### Een lege file aanmaken via touch
+#### Een leeg bestand aanmaken via touch
 
-File aanmaken kan je doen met het commando **touch**
+Een bestand aanmaken kan je doen met de opdracht `touch`:
 
 ~~~
 student@studentdeb:~/data$ touch sensors.json
@@ -732,7 +732,7 @@ total 0
 student@studentdeb:~/data$ 
 ~~~
 
-Als het bestand reeds bestaat zal touch echter alleen de update-datum aanpassen:
+Als het bestand reeds bestaat, zal `touch` echter alleen de update-datum aanpassen:
 
 ~~~
 student@studentdeb:~/data$ touch sensors.json 
@@ -741,18 +741,18 @@ total 0
 -rw-r--r-- 1 student student 0 Oct 13 13:29 sensors.json
 ~~~
 
-#### Directories en files verwijderen
+#### Directory's en bestanden verwijderen
 
-Een directory kan verwijderd worden door het commando **rmdir**.  
-Deze directory mag wel geen files bevatten anders zal deze een fout-code opleveren
+Een directory verwijderen doe je met de opdracht `rmdir`.  
+Deze directory mag wel geen bestanden of directory's bevatten. Anders breekt de opdracht af met een foutmelding:
 
 ~~~
 student@studentdeb:~$ rmdir data
 rmdir: failed to remove 'data': Directory not empty
 ~~~
 
-Als je een directory wil deleten dien je eerst de files daarbinnen te deleten.  
-Dit kan je via het commando **rm**
+Als je een niet-lege directory wil verwijderen, dien je dus eerst de bestanden erin te verwijderen.  
+Dat kan met de opdracht `rm`:
 
 ~~~
 student@studentdeb:~$ rm data/sensors.json 
@@ -760,7 +760,7 @@ student@studentdeb:~$ ls data
 student@studentdeb:~$
 ~~~
 
-Eénmaal de directory leeg is kan je deze deleten via het commando rmdir
+Zodra de directory leeg is, kan je deze verwijderen via de opdracht `rmdir`:
 
 ~~~
 student@studentdeb:~$ rmdir data
@@ -777,9 +777,9 @@ drwxr-xr-x 2 student student 4096 Sep 26 20:49 Templates
 drwxr-xr-x 2 student student 4096 Sep 26 20:49 Videos
 ~~~
 
-#### Copieren van een file
+#### Bestanden kopiëren 
 
-Je kan ook een file via de terminal copieren via het commando cp ofwel "**c**o**p**y"
+Je kan ook een bestand via de terminal kopiëren met de opdracht `cp` ofwel "**c**o**p**y":
 
 ~~~bash
 student@studentdeb:~$ touch test.txt
@@ -792,9 +792,9 @@ total 36
 ...
 ~~~
 
-#### Copieren van een directory
+#### Directory kopiëren
 
-Dit comando geldt ook voor directories maar als deze niet leeg zijn moet je hier de optie -r aan toevoegen
+Deze opdracht geldt ook voor directory's. Maar als deze niet leeg zijn, moet je hier de optie `-r` (voor recursief) aan toevoegen:
 
 ~~~bash
 student@studentdeb:~$ cp Documents/ DocumentsCopy/
@@ -816,9 +816,9 @@ drwxr-xr-x 3 student student 4096 Oct 13 13:07 hello
 drwxr-xr-x 3 student student 4096 Oct 13 13:39 DocumentsCopy
 ~~~
 
-#### Verplaatsen van files en directories
+#### Bestanden en directory's verplaatsen
 
-Om een bestand of file te verplaatsen naar een directory kan je het commando **mv** ofwel **m**o**v**e gebruiken:
+Om een bestand of directory te verplaatsen naar een directory, gebruik je de opdracht `mv` ofwel **m**o**v**e:
 
 ~~~
 student@studentdeb:~$ mv hello/ Documents
@@ -829,9 +829,9 @@ drwxr-xr-x 3 student student 4096 Oct 13 13:07 hello
 -rw-r--r-- 1 student student 2794 Sep 29 21:16 tweedehistory
 ~~~
 
-#### Naam wijzigen van een file
+#### Naam van een bestand wijzigen
 
-Hetzelfde commando kan je ook gebruiken als je een file of directory van naam wil wijzigen.
+Dezelfde opdracht `mv` kan je ook gebruiken als je van een bestand of directory de naam wil wijzigen.
 
 ~~~
 student@studentdeb:~$ mv test.txt test
@@ -851,15 +851,15 @@ drwxr-xr-x 3 student student 4096 Oct 13 14:08 Documents
 student@studentdeb:~$ 
 ~~~
 
-### Shell vs environment-variabelen
+### Shell- en omgevingsvariabelen
 
-Een shell laat toe om - zoals in een programmmeer-taal - variabelen aan te maken en te gebruiken.
+Een shell laat toe om - zoals in een programmeertaal - variabelen aan te maken en te gebruiken.
 
-#### Een shell-variabele definieren
+#### Een shellvariabele definiëren
 
-Een shell-variabele is een **variabele** (eigenlijk een stuk tekst) die door de **shell** wordt **bijgehouden** gedurende de terminal-sessie.  
+Een shellvariabele is een **variabele** (eigenlijk een stuk tekst) die door de **shell** wordt **bijgehouden** gedurende de terminalsessie.  
 
-Het volgende **voorbeeld** gebruikt bijvoorbeeld dit mechanisme om een het **path** naar een **folder** bij te houden
+Het volgende voorbeeld gebruikt dit mechanisme om het pad naar een directory bij te houden:
 
 ~~~
 student@studentdeb:~$ MY_DATA_FOLDER=/home/student/Documents
@@ -869,28 +869,25 @@ student@studentdeb:~$ cd $MY_DATA_FOLDER
 student@studentdeb:~/Documents$ 
 ~~~
 
-* Zo'n variabele kan je initialiseren via door de **naam** van deze variabele
-* Te verbinden via een **=**-teken aan een tekst
-* Je kan de inhoud van zo'n **variabele** afdrukken naar de console met het commando **echo**  
-  (gevolgd door de naam voorafgegaan door een $-teken)
-* Je kan de inhoud hergebruiken bij andere commando's door deze naam te laten voorgaan door een **$**-terugkomen   
-  (de shell zal dan de tekst achter deze variabele vervangen)
+* Zo'n variabele kan je initialiseren door de **naam** van deze variabele te verbinden via een `=`-teken aan een tekst.
+* Je kan de inhoud van zo'n **variabele** op de console tonen met de opdracht `echo`, met als argument de naam van de variabele voorafgegaan door `$`. 
+* Je kan de inhoud op dezelfde manier bij andere opdrachten gebruiken. De shell vervangt dan de variabele door de tekst die erachter gedefinieerd is.
 
-> **Let op**, als deze variabele al bestaat dan wordt deze overschreven
+> **Let op**: als deze variabele al bestaat, dan wordt de inhoud ervan overschreven.
 
-#### Environment-variabelen
+#### Omgevingsvariabelen
 
-Een **shell-variabele** zal **enkel** **zichtbaar** zijn binnen de **shell** zelf.  
-Vanaf de moment dat je een nieuwe shell start zal deze niet meer zichtbaar zijn.
+Een **shellvariabele** zal alleen zichtbaar zijn binnen de **shell** zelf.  
+Als je een nieuwe shell start, zal de variabele in die sessie niet zichtbaar zijn.
 
-Je kan echter zo'n shell-variabele "promoten" naar een environment-variabele toe, hiervoor gebruiken we het **commando export**
+Je kan echter zo'n shellvariabele "promoten" naar een omgevingsvariabele (*environment variabele*). Hiervoor gebruiken we de opdracht `export`:
 
 In onderstaand voorbeeld:
 
-* Maken we een variabele some_var aan
-* Printen we deze
+* Maken we een variabele `some_var` aan
+* Tonen we deze
 * Openen een nieuwe bash-sessie
-* Printen we deze opnieuw
+* Tonen we deze opnieuw
 
 ~~~
 student@studentdeb:~$ some_var="hello world"
@@ -904,10 +901,10 @@ student@studentdeb:~$ echo $some_var
 hello world
 ~~~
 
-We zien echter dat deze **variabele** **niet** meer **zichtbaar** is binnen de nieuwe sessie.   
-Dit is normaal gezien een **shell-variabele verbonden** is aan **1** enkele **shell-sessie**.
+We zien dat deze variabele niet meer zichtbaar is binnen de nieuwe sessie.   
+Dat is normaal, aangezien een shellvariabele gebonden is aan één shell-sessie.
 
-Als je daarentegen **export** gebruikt zal deze zichtbaar zijn in alle shells en andere programma's die je start.
+Als je daarentegen `export` gebruikt, zal de variabele zichtbaar zijn in alle shells en andere programma's die je **vanuit deze shell** opstart:
 
 ~~~
 student@studentdeb:~$ export some_var="hello world"
@@ -917,18 +914,18 @@ hello world
 student@studentdeb:~$ 
 ~~~
 
-Hetzelfde kunnen we ook **demonstreren** via een **shellscript**.  
-Gegeven het onderstaande shellscript print_some_var.sh dat de inhoud van een variabele **some_var** zal afprinten.
+Hetzelfde kunnen we ook **demonstreren** via een **shellscript**.
+Gegeven het onderstaande shellscript `print_some_var.sh` dat de inhoud van een variabele `some_var` zal tonen:
 
 ~~~
 student@studentdeb:~$ cat print_some_var.sh 
 echo $some_var
 ~~~
 
-Als je een **bash-script** of een **programma** start vanuit de shell zie je **hetzelfde effect**.
+Als je een **Bash-script** of een **programma** start vanuit de shell, zie je hetzelfde verschil tussen een shellvariabele en omgevingsvariabele.
 
 In onderstaand voorbeeld maken we opnieuw de shell-variabele aan.  
-Zoals je ziet zal deze echter **niet zichtbaar** zijn voor het script (om dezelfde reden als voorgaand voorbeeld).  
+Zoals je ziet, zal deze echter **niet zichtbaar** zijn voor het script (om dezelfde reden als voorgaand voorbeeld).  
 
 ~~~
 student@studentdeb:~$ some_var="hello world"
@@ -938,9 +935,7 @@ student@studentdeb:~$ bash print_some_var.sh
 student@studentdeb:~$
 ~~~
 
-In geval je **some_var** niet **"export"** zal het script (apart proces) de variabele niet terugvinden (en kunnen printen).
-
-Als je vervolgens echter de variabele "**export**" zal deze zichtbaar zijn voor programma's die je start vanuit die shell.
+Als je vervolgens echter de variabele 'exporteert' met de opdracht `export`, zal deze zichtbaar zijn voor programma's die je start vanuit die shell, en dus ook ons shellscript:
 
 ~~~
 student@studentdeb:~$ export some_var
@@ -948,18 +943,18 @@ student@studentdeb:~$ bash print_some_var.sh
 hello world
 ~~~
 
-#### Systeem-variabelen
+#### Systeemvariabelen
 
-We kennen ondertussen het **verschil** tussen **shell-** en **environment-variabelen**.
+We kennen ondertussen het **verschil** tussen **shellvariabelen** en **omgevingsvariabelen**.
 
-Naast je eigen variabelen zorgt je OS- en user-config ook voor een aantal environment-variabelen bij.  
+Naast de variabelen die je zelf definieert, zorgt je besturingssysteem ook voor een aantal omgevingsvariabelen.
 
 ##### PATH
 
-Om een programma uit te voeren binnen linux moet je altijd het **exacte path** voorzien.  
-Je kan bijvoorbeeld niet een **script** uitvoeren dat binnen **dezelfde directory** staat door de **naam** te typen.
+Om een programma uit te voeren binnen Linux, moet je in principe altijd het exacte pad naar het programma opgeven.
+Je kan bijvoorbeeld niet een **script** uitvoeren dat in de werkdirectory staat door de **naam** te typen.
 
-Als je bijvoorbeeld voorgaand script wil uitvoeren als programma (zonder bash voor te zetten) moet je **./** er voorplaatsen om de exacte locatie aan te geven (**./** is je **workdirectory**)
+Als je bijvoorbeeld voorgaand script wil uitvoeren als programma (zonder `bash` er voor te zetten) moet je `./` ervoor plaatsen om de exacte locatie aan te geven (`.` verwijst naar je **werkdirectory**):
 
 ~~~
 student@studentdeb:~$ ls -l print_some_var.sh 
@@ -972,7 +967,7 @@ student@studentdeb:~$
 ~~~
 
 Er is echter een **uitzondering** op deze regel.  
-Je systeem/shell voorziet echter een systeem (environment-)variabele **PATH**, deze bevat een **lijst** van alle **locaties** waar je shell **uitvoerbare programma's** kan gaan **zoeken**.
+Je systeem/shell voorziet een omgevingsvariabele `PATH`. Deze bevat een **lijst** van alle **locaties** waarin je shell naar **uitvoerbare programma's** zoekt.
 
 ~~~
 student@studentdeb:~$ echo $PATH
@@ -980,10 +975,10 @@ student@studentdeb:~$ echo $PATH
 student@studentdeb:~$
 ~~~
 
-Als je in één van deze directories gaat kijken zal je zien
-dat veel executables die je reeds gebruikt te vinden zijn.
+Als je in één van deze directory's gaat kijken, zal je zien
+dat veel programma's die je reeds gebruikt hierin te vinden zijn.
 
-Als we bijvoorbeeld kijken naar waar ls zich bevindt...
+Als we bijvoorbeeld kijken naar waar `ls` zich bevindt...
 
 ~~~
 student@studentdeb:~$ ls /usr/bin/ls*
@@ -993,8 +988,8 @@ student@studentdeb:~$ ls /usr/bin/ls*
 /usr/bin/lsb_release  /usr/bin/lslocks      /usr/bin/lsns      /usr/bin/lsusb
 ~~~
 
-Als je bijvoorbeeld wilt dat een directory aan dat zoek-pad wordt toegevoegd kan je deze **PATH-variabele** wijzigen.  
-In **onderstaand voorbeeld** **vindt** de shell **geen** print_some_var.sh-**script terug** ondanks het feit dat deze in dezelfde directory staat.
+Als je nu wilt dat een directory aan dat zoekpad wordt toegevoegd, kan je deze variabele `PATH` wijzigen.  
+In onderstaand voorbeeld vindt de shell geen `print_some_var.sh`-script terug ondanks het feit dat deze in dezelfde directory staat.
 
 ~~~
 student@studentdeb:~$ ls print_some_var.sh
@@ -1005,7 +1000,7 @@ student@studentdeb:~$ echo $PATH
 /usr/local/bin:/usr/bin:/bin:/usr/local/games:/usr/games
 ~~~
 
-Als je echter je huidge workdirectory toevoegt aan het PATH...
+Als je echter je huidge workdirectory toevoegt aan `PATH`...
 
 ~~~
 student@studentdeb:~$ export PATH=/home/student/:$PATH
@@ -1013,7 +1008,7 @@ student@studentdeb:~$ echo $PATH
 /home/student/:/usr/local/bin:/usr/bin:/bin:/usr/local/games:/usr/games
 ~~~
 
-...ga je zien dat het script wordt herkend door de tab-completion...
+...ga je zien dat het script wordt herkend door de tab completion...
 
 ~~~
 student@studentdeb:~$ pr
@@ -1031,9 +1026,11 @@ test
 student@studentdeb:~$ 
 ~~~
 
-#### Alle environment-variabelen zien
+Merk op: de huidige directory aan `PATH` toevoegen is geen goed idee. Want wat als malware zich in die directory plaatst met de naam van een veel gebruikte opdracht zoals `ls`? Dan wordt de malware uitgevoerd als je in die directory `ls` intypt...
 
-Als je alle variabelen willen zien moet je gewoon het commando printenv typen
+#### Alle omgevingsvariabelen zien
+
+Als je alle omgevingsvariabelen wil zien, typ dan de opdracht `printenv` in:
 
 ~~~
 student@studentdeb:~/mijn_eerste_programma$ printenv
@@ -1051,12 +1048,12 @@ TERM=xterm-256color
 ...
 ~~~
 
-### String-demarcatie
+### Strings en spaties
 
-Als je aan een commando **tekst** meegeeft gescheiden door **whitespace** zullen deze aan de applicaties worden meegeven als aparte argumenten.
+Als je achter een opdracht **tekst** typt gescheiden door spaties, dan zal elk woord aan de opdracht worden meegeven als afzonderlijk argument.
 
-Stel het onderstaande **commando/voorbeeld** worden er **3 verschillende** (mogelijke) **filenames** meegegeven.  
-Het ls-commando zal als gevolg antwoord geven voor 3 verschillende filenames (die in dit geval niet bestaan).
+In het onderstaande voorbeeld worden er drie verschillende (mogelijke) bestandsnamen meegegeven.  
+De `ls`-opdracht zal als gevolg antwoord geven voor drie verschillende bestandsnamen (die in dit geval niet bestaan).
 
 ~~~~
 student@studentdeb:~$  ls niet bestaande file
@@ -1066,14 +1063,14 @@ ls: cannot access 'file': No such file or directory
 $student@studentdeb:~$  
 ~~~~
 
-Stel dat je een **filename/text** wil meegeven die **whitespace** bevat kan je de string **demarkeren** met **quotes** (```"tekst"```)zoals hieronder geillustreerd.
+Stel dat je een bestandsnaam (of tekst) wil meegeven die spaties bevat, dan kan je de string **demarkeren** met aanhalingstekens (*quotes*) zoals hieronder:
 
 ~~~~
 student@studentdeb:~$  ls "niet bestaande file"
 ls: cannot access 'niet bestaande file': No such file or directory
 ~~~~
 
-Naast een dubbele quote (```"tekst"```) kan je ook een single quote (```'tekst'```) gebruiken.
+Naast dubbele aanhalingstekens (```"tekst"```) kan je ook enkele aanhalingstekens (```'tekst'```) gebruiken.
 
 ~~~~
 student@studentdeb:~$  ls 'niet bestaande file'
@@ -1081,12 +1078,11 @@ ls: cannot access 'niet bestaande file': No such file or directory
 student@studentdeb:~$  
 ~~~~
 
-**Single** en **double** quotes hebben echter wel een **verschil** in **gedrag**...
+#### Variable substitution binnen strings
 
-#### Variable-substitution binnen strings
+Enkele en dubbele aanhalingstekens hebben echter wel een **verschil** in **gedrag**. Dit verschil komt naar voren bij het gebruik van **variable substitution**  
 
-Dit **verschil** komt naar voren bij het gebruik van **variable-substitution**  
-Als je een shell-variabele declareert kan je deze integreren binnen een string als hieronder geillustreerd.
+Als je een shellvariabele declareert, kan je deze integreren binnen een string, zoals hieronder geïllustreerd:
 
 ~~~
 test=hello
@@ -1094,7 +1090,7 @@ student@studentdeb:~$  echo "$test world"
 hello world
 ~~~
 
-Als je echter **single quotes** gebruikt zal deze variabelen **niet** **gesubstitueerd** worden
+Als je daarentegen enkele aanhalingstekens gebruikt, zal de shell deze variabele niet vervangen door zijn waarde:
 
 ~~~
 student@studentdeb:~$  echo '$test world'
@@ -1103,26 +1099,25 @@ $test world
 
 ### Bash-scripting (deel 1)
 
-Tot nog toe hebben we altijd **interactief** gewerkt met Bash.  
-Je
+Tot nu toe hebben we altijd **interactief** gewerkt met Bash:
 
-* typt een **commando** na de prompt
-* Bash **voert** dit commando **uit** (als je enter hebt gedrukt)
-* En **print** de **output** van dit **commando** uit
+* Je typt een **opdracht** na de prompt.
+* Bash **voert** deze opdracht **uit** (nadat je Enter hebt gedrukt).
+* Bash toont de **uitvoer** van deze opdracht.
 
-Een **2de modus** waar je met een shell kan werken is **scripting**.  
-Binnen een script kan je 1 of meerdere commando's bundelen en deze kan je dan in 1 maal uitvoeren.
+Een tweede modus waaronder je met een shell kan werken is **scripting**.  
+Een script is een bestand waarin je één of meerdere opdrachten bundelt. Deze bundel kun je dan uitvoeren door dit script aan te roepen.
 
 #### shebang
 
-Als je een **Bash-script** wil schrijven dient dit altijd te **starten** met de **volgende lijn**.
+Als je een **Bash-script** wil schrijven, dient dit altijd te **starten** met de volgende regel:
 
 ~~~
 #!/bin/bash
 ~~~
 
-We noemen het symbool **```#!```** ook wel een **shebang**, deze bepaalt **welke script-interpreter** gebruikt wordt.  
-Vervolgens kan je daaronder dan commando's plaatsen, deze zullen dan **sequentieel** worden **uitgevoerd**
+We noemen het symbool `#!` ook wel een **shebang**. Deze bepaalt **welke script-interpreter** gebruikt wordt.  
+Vervolgens kan je daaronder dan opdrachten plaatsen. Deze zullen dan **sequentieel** (één voor één) worden **uitgevoerd**:
 
 ~~~bash
 #!/bin/bash
@@ -1132,34 +1127,35 @@ echo "Het is vandaag $(date)"
 
 #### Commentaar
 
-Naast het shebang-karakter kan je ook het hash-karakter of **```#```** gebruiken als een comment-teken (zoals in Python).  
-Alles wat je dan schrijft achter dit karakter (op dezelfde lijn) zal dan niet geinterpreteerd worden door de bash-interpreter.
+Op elke andere regel dan de eerste kan je ook het hash-teken of `#` gebruiken als een commentaarteken (zoals in Python).  
+Alles wat achter dit teken komt op dezelfde regel, zal dan niet geïnterpreteerd worden door de Bash-interpreter.
 
 ~~~bash
 #!/bin/bash
-#1ste commando...
+# Eerste opdracht
 echo "Hello World"
-#2de commando
+# Tweede opdracht
 echo "Het is vandaag $(date)"
 ~~~
 
 #### Uitvoeren met de bash-interpreter
 
-**Bewaar** dit als **hello.sh** en voer deze uit als **volgt**:
+**Bewaar** dit bestand onder de naam `hello.sh` en voer het als volgt uit:
 
 ~~~
-student@studentdeb:~$ bash ./hello.sh 
+student@studentdeb:~$ bash hello.sh 
 Hello World
 Het is vandaag Wed 15 Dec 2021 03:24:45 PM CET
 student@studentdeb:~$ 
 ~~~
 
-Beide lijnen worden 1 na 1 uitgevoerd???
+Zoals je ziet, worden beide opdrachten van in het script één na één uitgevoerd.
 
 #### Uitvoeren als programma (en permissies)
 
-Je kan het **script** ook **uitvoeren** net zoals je een gewoon **programma/commando** uitvoert.  
-Om dat te kunnen doen dien je echter nog een extra stap te doen want...
+Je kan het **script** ook **uitvoeren** net zoals je een gewoon **programma/opdracht** uitvoert, zonder er `bash` voor te moeten typen.  
+
+Dit werkt niet vanzelf:
 
 ~~~
 student@studentdeb:~$ ./hello.sh
@@ -1167,30 +1163,32 @@ bash: ./hello.sh: No such file or directory
 student@studentdeb:~$ bash ./hello.sh 
 ~~~
 
-...een **script** wordt **by default niet uitvoerbaar** gemaakt zoals je hieronder ziet.  
+Als je naar de bestandspermissies (zie later) kijkt, zie je dat een script **standaard niet uitvoerbaar** gemaakt wordt:
 
 ~~~
 student@studentdeb:~$ ls -l ./hello.sh
 -rw-r--r-- 1 student student 61 Dec 15 15:24 ./hello.sh
 ~~~
 
-Om het het script zo uit te voeren dien je echter de **permissies** te **wijzigen** dit doe je met het **chmod-commando**:
+Om het script toch uitvoerbaar te maken, dien je de **permissies** te **wijzigen**. Dit doe je met de opdracht `chmod`:
 
 ~~~
 student@studentdeb:~$ chmod u+x hello.sh
-student@studentdeb:~$ ls -l ./hello.sh
--rwxr--r-- 1 student student 61 Dec 15 15:24 ./hello.sh
-student@studentdeb:~$
 ~~~
 
-ls -l toont dat je het script nu kan uitvoeren door de x (in rwx) en dus **kan** je het En kan je het script uitvoeren. uitvoeren.
+Met `ls -l` zie je daarna dat je het script kan uitvoeren, want je ziet een x waar er voorheen geen stond:
+
+~~~
+student@studentdeb:~$ ls -l ./hello.sh
+-rwxr--r-- 1 student student 61 Dec 15 15:24 ./hello.sh
+~~~
 
 > *Geduld:*
-> De **uitleg** rond **permissies** **volgt** in het hoofdstuk rond permissies...
+> De **uitleg** rond **permissies** **volgt** in een verder hoofdstuk.
+
+En ja hoor, nu kan je het script gewoon uitvoeren:
 
 ~~~
-student@studentdeb:~$ ls -l ./hello.sh
--rwxr--r-- 1 student student 61 Dec 15 15:24 ./hello.sh
 student@studentdeb:~$ ./hello.sh 
 Hello World
 Het is vandaag Wed 15 Dec 2021 03:28:37 PM CET
@@ -1199,12 +1197,13 @@ student@studentdeb:~$
 
 #### Argumenten
 
-Je kan aan zo'n **script** ook **argumenten** meegeven van buitenaf (net zoals we dit eerder bij programma's hebben gezien).  
-Binnen dat script kan je naar deze argumenten verwijzen via een **$** gevolgd door het postitionele nummer van het argument
+Je kan aan zo'n **script** ook **argumenten** meegeven, net zoals we dit eerder bij programma's hebben gezien.
 
-* Het **1ste** argument kan je via **$1** bereiken
-* Het 2de via **$2**
-* Het 3de via **$3**
+Binnen dat script kan je naar deze argumenten verwijzen via een `$` gevolgd door de positie van het argument:
+
+* Het eerste argument kan je via `$1` bereiken
+* Het tweede via `$2`
+* Het derde via `$3`
 * ...
 
 Als je bijvoorbeeld een script maakt als volgt:
@@ -1215,7 +1214,7 @@ Als je bijvoorbeeld een script maakt als volgt:
 echo "Hello $1 $2"
 ~~~
 
-Dit script zal dan de 1ste en 2de parameter afdrukken met het echo-commando (adhv string-substitutie).
+Dan zal dit script het eerste en tweede argument tonen met de `echo`-opdracht (en met behulp van string-substitutie).
 
 ~~~
 student@studentdeb:~$ chmod u+x a.sh 
@@ -1232,12 +1231,12 @@ student@studentdeb:~$
 
 #### Speciale argumenten
 
-Naast deze argumenten heb je nog een aantal andere speciale variabelen tot je beschikking:
+Naast deze argumenten heb je nog een aantal andere speciale variabelen tot je beschikking in een Bash-script:
 
-* **$0** => de naam van het script
-* **$#** => aantal argumenten
-* **$```@```** => alle argumenten op een rij
-* **$```*```** => alle argumenten op een rij als 1 string
+* `$0` => de naam van het script
+* `$#` => aantal argumenten
+* `$@` => alle argumenten op een rij
+* `$*` => alle argumenten op een rij als één string
 
 Als we deze toevoegen aan voorgaand script...
 
@@ -1251,7 +1250,7 @@ echo $@
 echo $*
 ~~~
 
-... en uitvoert als hieronder
+... en je dit uitvoert als hieronder:
 
 ~~~
 student@studentdeb:~$ $ bash ./hello.sh 1 2 3 4
@@ -1263,34 +1262,34 @@ Hello 1 2
 student@studentdeb:~$ 
 ~~~
 
-... zien we (na de output van het vorige voorbeeld):
+... zien we:
 
-* $0 => ./hello.sh:  
-  De naam van het script (./hello.sh) zelf word als argument 0 meegegeven
-* $```#``` => 1:  
-  Gevolgd door het aantal elementen (4)
-* $```@``` => 1 2 3 4:  
+* `$0` => ./hello.sh  
+  De naam van het script (`./hello.sh`) zelf wordt als argument 0 beschouwd.
+* `$#` => 4  
+  Het aantal argumenten.
+* `$@` => 1 2 3 4  
   Alle argumenten die aan het script zijn meegegeven (als array)
-* $```*``` => 1:  
+* `$*` => 1 2 3 4  
   Alle argumenten die aan het script zijn meegegeven (als string)
 
-#### Verschil tussen $```@``` en $```*```
+#### Verschil tussen `$@` en `$*`
 
-Beide $@ en $```*``` zullen alle argumenten opleveren die worden meegegeven aan het script (startende van $1).
+Zowel `$@`  als `$*` zullen alle argumenten opleveren die worden meegegeven aan het script (startende van `$1`).
 
 Het verschil ligt echter in de details:
 
-* **$```*```** zal deze argumenten voorzien als **1 string**
-* **$```@```** daarentegen zal deze argumenten als **array** voorzien
+* `$*` zal deze argumenten voorzien als **één string**
+* `$@` daarentegen zal deze argumenten als **array** (rij) voorzien
 
-De laatste zal dus gebruikt worden binnen scripten om bijvoorbeeld door de verschillende argumenten te loopen.  
+De laatste is nuttig om binnen een script bijvoorbeeld in een lus alle argumenten af te gaan.
 Hier komen we later nog op terug.
 
-Bij ander (niet-script) gebruik zie je verschil enkel als je aan **variable-substitution** doet.  
-Als voorbeeld het onderstaande script dat een ls toepast op alle argumenten:
+Je ziet het verschil ook als je aan **variable substitution** doet.  
+Als voorbeeld het onderstaande script dat `ls` toepast op alle argumenten:
 
-* Bij de 1ste ls gebruken we de array af
-* Bij de 2de ls de string-notatie
+* De eerste keer passen we `ls` toe op de rij.
+* De tweede keer passen we `ls` toe op de string.
 
 ~~~bash
 #!/bin/bash
@@ -1301,10 +1300,7 @@ echo "test 2:"
 ls "$*"
 ~~~
 
-Als je dan de output bestudeert:
-
-* **$```@```** zal **substitueren** naar **3** aparte **argumenten**
-* **$```*```** zal substitueren naar **1 string**
+Voer dit script nu uit met enkele argumenten:
 
 ~~~
 $ bash ls_test.sh a b c
@@ -1316,38 +1312,43 @@ test 2:
 ls: cannot access 'a b c': No such file or directory
 ~~~
 
-### In- en output van programma's
+Als je dan de uitvoer bestudeert, zie je:
 
-Programma's en scripts hebben meestal in- en output nodig op te kunnen werken.  
-Op de command-line zijn er 3 belangrijke elementen
+* `$@` zal **substitueren** naar **drie afzonderlijke argumenten**
+* `$*` zal substitueren naar **één string**
 
-* Input bij de **start** van het **programma**: **argumenten**
-* In- en output tijdens de **uitvoering** van het programma: **STDIN, STDOUT en STDERR**
-* Output bij het einde van het programma
+### In- en uitvoer van programma's
+
+Programma's en scripts hebben meestal in- en uitvoer nodig om te kunnen werken.  
+Op de command line zijn er drie belangrijke elementen:
+
+* Invoer bij de **start** van het **programma**: **argumenten**
+* In- en uitvoer tijdens de **uitvoering** van het programma: **stdin, stdout en stderr**
+* Uitvoer bij het einde van het programma
 
 ~~~
 START PROGRAMMA:       argumenten   
                            |
                            V                        (1)
 (0)                 +------+-----+----> standard output
-standard input ---->|  processs  |  
+standard input ---->|   process  |  
                     +------+-----+---->  standard error
                            |                        (2)
                            V
 EINDE PROGRAMMA:       exit-code    
 ~~~
 
-#### Input bij de start: argumenten (en opties)
+#### Invoer bij de start: argumenten (en opties)
 
-Het eerste element hebben we al een aantal maal toegepast bij het gebruiken van diverse commando's.  
-Als je en programma aanroept kan je daar namelijk een aantal extra argumenten aan toevoegen.
+Het eerste element hebben we al een aantal maal toegepast bij het gebruiken van diverse opdrachten.  
+Als je een programma aanroept, kan je daar namelijk een aantal extra argumenten aan doorgeven.
 
 ~~~
 START PROGRAMMA:       argumenten   
                            |
                            V      
                     +------+-----+
-                    |  processs  |  
+                    |   process  |  
                     +------+-----+
 ~~~
 
@@ -1359,32 +1360,31 @@ student@studentdeb:~$ ls -l hello.sh
 student@studentdeb:~$
 ~~~
 
-In dit geval is "-l" en "hello.sh" beide argumenten.  
+In dit geval zijn `-l` en `hello.sh` beide argumenten.  
 
-* "-l" in dit geval is optie (een speciaal soort argument voorafgegaan door een koppelteken)
-* "hello.sh" als 2de (en eigenlijk) argument
+* `-l` is in dit geval een optie (een speciaal soort argument voorafgegaan door een koppelteken)
+* `hello.sh` is het tweede argument
 
-#### Output bij het einde van het programma: Exit-code
+#### Uitvoer bij het einde van het programma: Exit-code
 
-Voorgaande was bij de **start** van het programma om eventuele parameter of argumenten door te geven.  
+Elk programma binnen Linux zal bij het beëindigen een code teruggeven.  
 
 ~~~
 START PROGRAMMA:       argumenten   
                            |
                            V      
                     +------+-----+
-                    |  processs  |  
+                    |   process  |  
                     +------+-----+
                            |
                            V
 EINDE PROGRAMMA:       exit-code    
 ~~~
 
-Elke applicatie (binnen linux) zal bij het beeindigen van het programma een code teruggeven.  
-Deze code noemen we ook exit-code en heeft als bedoeling informatie mee te geven over het al dan niet successvol uitvoeren van het commando.
+Deze code noemen we ook exit-code en heeft als bedoeling informatie mee te geven over het al dan niet succesvol uitvoeren van de opdracht.
 
-Deze commando kan je vanuit de shell opvragen via een speciale variable **$?**.  
-Bij normale uitvoering  - **zonder error** of **warnings** - zal deze waarde (bij conventie) **0** zijn.
+Deze exit-code kan je vanuit de shell opvragen via een speciale variabele: `$?`.  
+Bij normale uitvoering  - **zonder fout of waarschuwing** - zal deze waarde (dat is een afspraak) **0** zijn.
 
 ~~~
 student@studentdeb:~$ ls -l hello.sh 
@@ -1393,8 +1393,8 @@ student@studentdeb:~$ echo $?
 0
 ~~~
 
-Als we echter een **foutje** maken bij de uitvoering zal de applicatie (bij conventie) een code opwerpen **verschillend** van **0**  
-In onderstaand voorbeeld geven we de naam van een nieu bestaand bestand door aan ls waarop dat deze een exit-code 2 opwerpt.
+Als we echter een **foutje** maken bij de uitvoering zal de opdracht een exit-code **verschillend van 0** teruggeven.  
+In onderstaand voorbeeld geven we de naam van een niet bestaand bestand door aan `ls`, waarop deze een exit-code 2 teruggeeft:
 
 ~~~
 student@studentdeb:~$ ls -l hello.sh.not 
@@ -1404,8 +1404,8 @@ student@studentdeb:~$ echo $?
 student@studentdeb:~$
 ~~~
 
-Deze code is niet voor elke commando (of zelfs fout binnen een commando) identiek.  
-Het 2de voorbeeld - cd naar een niet bestaande directory - bevestigd dit...
+Deze code is niet voor elke opdracht identiek.  
+Het tweede voorbeeld - `cd` naar een niet bestaande directory - bevestigt dit...
 
 ~~~
 student@studentdeb:~$ cd bestaatniet
@@ -1417,15 +1417,15 @@ student@studentdeb:~$ echo $?
 student@studentdeb:~$ 
 ~~~
 
-Laatste belangrijke bemerking is dat deze code altijd wordt overschreven, het bevat enkel de exit-code van het laatste commando (ongeacth of deze 0 of verschillend is).  
-Bij het volgende commando zal deze terug worden overschreven, in bovenstaand voorbeeld zal de echo zelf de exit-code terug op 0 zetten.
+Een laatste belangrijke bemerking is dat deze variabele `$?` altijd wordt overschreven. Ze bevat altijd de exit-code van de laatst uitgevoerde opdracht (ongeacht of deze 0 is of niet).  
+In bovenstaand voorbeeld zie je dan ook dat de `echo`-opdracht zelf de variabele weer op 0 zet. De `echo`-opdracht is immers succesvol uitgevoerd...
 
-> Nota: als je gewoon een enter drukt zal deze exit-code niet worden overschreven omdat er geen applicatie of commando is uitgevoerd
+> Nota: Als je gewoon op Enter drukt na de prompt, zal deze exit-code niet worden overschreven. Er wordt dan immers geen opdracht uitgevoerd.
 
-##### exit-code bij scripts
+##### Exit-code bij scripts
 
-Vanuit een script kan je trouwens ook de exit-code bepalen.  
-Dat kan je via het commando exit gevolgd door een integer (geheel getal)
+In je eigen script kan je ook de exit-code instellen.  
+Dat kan je via de opdracht `exit` gevolgd door een geheel getal (*integer*):
 
 ~~~bash
 #!/bin/bash
@@ -1434,7 +1434,7 @@ echo "Hello exit-demo"
 exit 25
 ~~~
 
-Als je dit uitprobeert zie ja dat er inderdaad 25 door het script wordt doorgegeven.
+Als je dit uitprobeert, zie je dat er inderdaad 25 door het script wordt teruggegeven.
 
 ~~~
 student@studentdeb:~$ ./exit_code_demo.sh
@@ -1446,33 +1446,32 @@ student@studentdeb:~$
 
 #### Tijdens de uitvoering: stdin, stdout en stderr
 
-Een proces binnen een Linux-distro (maar ook UNIX- en ander POSIX-compliant OS)
-heeft altijd automatich **3 files** of **streams** ter beschikking
+Een proces binnen een Linux-distributie heeft altijd automatisch **drie bestanden** of **streams** ter beschikking:
 
-* **STDIN**: standard input
-* **STDOUT**: standard output
-* **STDERR**: standard error
+* **stdin**: standard input
+* **stdout**: standard output
+* **stderr**: standard error
 
-Dit zijn datastromen die je een applicatie **"standaard"** zal **doorgeven** (STDOUT en STDERR) aan de **shell**.  
-Vanuit de shell echter kan je deze **datastromen** doorgeven aan **andere** **applicaties** via een aantal operatoren (>, >>, <, |)
+Dit zijn datastromen die een toepassing standaard met de in- en uitvoer van de shell verbindt. 
+Vanuit de shell echter kan je deze **datastromen** doorgeven aan **andere toepassingen** via een aantal operatoren (`>`, `>>`, `<`, `|`).
 
-##### STDOUT
+##### Stdout
 
-De eerste is STDOUT, dit is de tekst/output dat je applicatie produceert
+De eerste is stdout. Dit is de tekst/uitvoer die je toepassing produceert.
 
 ~~~
 START PROGRAMMA:       argumenten   
                            |
                            V                        (1)
                     +------+-----+----> standard output
-                    |  processs  |  
+                    |   process  |  
                     +------+-----+
                            |
                            V
 EINDE PROGRAMMA:       exit-code    
 ~~~
 
-In onderstaand voorbeeld zal de standard-output van het commando "ls" naar de shell doorsturen
+In onderstaand voorbeeld zal de standard output van de opdracht `ls` in de shell te zien zijn:
 
 ~~~
 student@studentdeb:~$ ls -l hello.sh 
@@ -1482,8 +1481,8 @@ student@studentdeb:~$
 
 ##### Redirection operator > (overwrite)
 
-Deze output kan je echter "redirect"-en naar een een file.  
-Dit doe je door na het commando een **```>```** teken te plaatsen gevolgd naar welk file je wil schrijven zoals hieronder geillustreerd.
+Deze uitvoer kan je echter omleiden (*redirect*) naar een een bestand.
+Dat doe je door na de opdracht een `>`-teken te plaatsen gevolgd door de naam van het bestand waarnaar je wil schrijven:
 
 ~~~
 student@studentdeb:~$ ls -l hello.sh > lsout
@@ -1492,7 +1491,7 @@ student@studentdeb:~$ cat lsout
 student@studentdeb:~$
 ~~~
 
-Een 2de voorbeeld is als je een file wil aanmaken met reeds wat tekst in:
+In een tweede voorbeeld maken we gebruik van redirection om een bestand aan te maken met reeds wat tekst in:
 
 ~~~
 student@studentdeb:~$ echo "Hello World" > helloworld 
@@ -1503,7 +1502,7 @@ student@studentdeb:~$
 
 ##### Redirection operator >> (append)
 
-De >-operator zal een file overschrijven, al er reeds een file bestaat zal deze worden overschreven met de volledige output van het commando.
+De `>`-operator zal een bestand altijd overschrijven. Als het bestand al bestaat, wordt de inhoud ervan dus overschreven met de volledige uitvoer van de opdracht:
 
 ~~~
 student@studentdeb:~$ ls -l hello.sh > lsout
@@ -1512,8 +1511,7 @@ student@studentdeb:~$ cat lsout
 student@studentdeb:~$ 
 ~~~
 
-Als je echter het bestand niet wil overschrijven gebruik je de **>>-redirection-operator**.  
-Om te vermijden dat we voorgaande input niet overschrijven gebruiken we deze operator.
+Als je het bestand niet wil overschrijven, gebruik je de `>>`-operator.  
 
 ~~~
 tudent@studentdeb:~$ ls -l hello.sh >> lsout
@@ -1525,26 +1523,26 @@ student@studentdeb:~$ cat lsout
 student@studentdeb:~$ 
 ~~~
 
-Als gevolg hiervan zien we dat de file is aangevuld...
+Dit voegt de uitvoer van de opdracht aan het bestaande bestand toe.
 
-##### STDERR
+##### Stderr
 
-Naast **STDOUT** is er echter nog een **2de** output-stream, namelijk **STDERR**.  
+Naast stdout is er ook nog een tweede output-stream, namelijk **stderr**.  
 
 ~~~
 START PROGRAMMA:       argumenten   
                            |
                            V                        (1)
                     +------+-----+----> standard output
-                    |  processs  |  
+                    |   process  |  
                     +------+-----+---->  standard error 
                            |                        (2)
                            V
 EINDE PROGRAMMA:       exit-code    
 ~~~
 
-Een **applicatie** zal **foutboodschappen** doorsturen naar de **STDERR**, niet naar **STDOUT**.
-Bij volgende voorbeeld proberen we express een nietbestaande file op te lijsten en de outputweg te schrijven naar een file.
+Een **applicatie** zal **foutboodschappen** doorsturen naar **stderr**, niet naar stdout.
+In het volgende voorbeeld proberen we met opzet een niet-bestaand bestand op te vragen en de uitvoer weg te schrijven naar een bestand:
 
 ~~~
 student@studentdeb:~$ ls -l hello.sh.not > lsout
@@ -1553,11 +1551,11 @@ student@studentdeb:~$ cat lsout
 student@studentdeb:~$ 
 ~~~
 
-Hier zien we dat de **file leeg** is, dit is omdat de enige output van het ls-commando de foutboodschap was die je op de console zag verschijnen.  
+Hier zien we dat het bestand leeg is. Waarom? Omdat de enige uitvoer van de `ls`-opdracht hier de foutboodschap was die je op de console zag verschijnen.  
 
-##### Redirect van STDERR via 2>
+##### Redirect van stderr via 2>
 
-Als je er echter wil voor zorgen dat de **error-output** naar een file wordt weggeschreven kan je dit door een nummer toe te voegen aan het redirect-symbool, voor de **error-stream** is dit altijd **2**
+Als je ervoor wil zorgen dat de foutboodschap naar een bestand wordt weggeschreven, kan je dit door een cijfer toe te voegen vóór het redirect-symbool. Voor de **stderr-stream** is dit altijd **2**:
 
 ~~~
 student@studentdeb:~$ ls -l hello.sh.not 2> lserr
@@ -1569,9 +1567,9 @@ student@studentdeb:~$
 Je kan ook zorgen dat **beide** streams **tegelijkertijd** worden weggeschreven.  
 In onderstaand voorbeeld:
 
-* lijsten zowel een bestaande als niet bestaande file op
-* de error-output gaat naar lserr
-* de gewone output gaat naar lsout 
+* vragen we zowel een bestaand als niet-bestaand bestand op
+* de foutboodschap gaat naar lserr
+* de gewone uitvoer gaat naar lsout 
 
 ~~~
 student@studentdeb:~$ ls -l hello.sh hello.sh.not >lsout 2> lserr
@@ -1582,10 +1580,10 @@ student@studentdeb:~$ cat lsout
 student@studentdeb:~$ 
 ~~~
 
-##### Redirect van beide STDOUT en STDERR via &>
+##### Redirect van zowel stdout als stderr via &>
 
-Als je beide tegelijkertijd will redirecten en je **&>** gebruiken in de plaats hiervan.  
-In het **voorbeeld** hieronder zullen **beide streams** naar **lsall** worden weggeschreven.
+Als je zowel stdout als stderr tegelijkertijd wil omleiden, kan je `&>` gebruiken.  
+In het **voorbeeld** hieronder zullen **beide streams** naar één bestand worden weggeschreven.
 
 ~~~
 student@studentdeb:~$ ls -l hello.sh hello.sh.not &> lsall
@@ -1595,32 +1593,31 @@ ls: cannot access 'hello.sh.not': No such file or directory
 student@studentdeb:~$ 
 ~~~
 
-##### STDIN
+##### Stdin
 
-Een 3de stream is STDIN, dit is de standaard input die een applicatie meekrijgt vanaf de shell.
+Een derde stream is stdin. Dit is de standaard invoer die een toepassing meekrijgt vanaf de shell.
 
 ~~~
 START PROGRAMMA:       argumenten   
                            |
                            V                        (1)
 (0)                 +------+-----+----> standard output
-standard input ---->|  processs  |  
+standard input ---->|   process  |  
                     +------+-----+---->  standard error
                            |                        (2)
                            V
 EINDE PROGRAMMA:       exit-code    
 ~~~
 
-Om dit de demonstreren gebruiken we het **commando wc**.  
-wc is de afkorting voor **wordcount** en geeft (standaard zonder argumenten) 3 outputs:
+Om dit de demonstreren, gebruiken we de opdracht `wc`. Dit is de afkorting voor **word count**. Het programma geeft (standaard zonder argumenten) drie zaken weer:
 
-* Aantal lijnen
+* Aantal regels
 * Aantal woorden
-* Aantal karakters
+* Aantal tekens
 
-Als je dit commando uitvoert zonder argumenten zal dit commando wachten op input van de console,
-namelijk STDIN.  
-In onderstaand voorbeeld typen we wat tekst gevolgd, om deze tekst (STDIN) te beeindigen gebruiken we "Ctrl + D"
+Als je deze opdracht uitvoert zonder argumenten, zal ze wachten op invoer van de console,
+namelijk stdin.  
+In onderstaand voorbeeld typen we wat tekst. Om stdin te beëindigen gebruiken we **Ctrl+D**.
 
 ~~~
 student@studentdeb:~$ wc
@@ -1631,12 +1628,12 @@ greetings from the shell
 student@studentdeb:~$ 
 ~~~
 
-##### Redirection vanuit een file naar STDIN via <
+##### Redirection vanuit een bestand naar stdin via <
 
-Net als we met > naar een file kunnen afleiden, kunnen we inhoud van een file afleiden naar STDIN.  
-Dit kunnen we via de operator **<**.
+Net als we met `>` uitvoer naar een bestand kunnen omleiden, kunnen we de inhoud van een bestand omleiden naar stdin.  
+Daarvoor gebruiken we de operator `<`.
 
-We komen terug op ons voorgaand voorbeeld waar we een file aanmaken met 2 lijnen.
+We komen terug op ons voorgaand voorbeeld waar we een bestand aanmaken met twee regels.
 
 ~~~
 student@studentdeb:~$ ls -l hello.sh hello.sh.not &> lsall
@@ -1645,7 +1642,7 @@ ls: cannot access 'hello.sh.not': No such file or directory
 -rwxr--r-- 1 student student 60 Mar 13 20:04 hello.sh
 ~~~
 
-Als we nu de inhoud van deze file willen afleiden naar het wc-commando kunnen we dit doen als hieronder.
+Als we nu de inhoud van dit bestand als invoer naar de opdracht `wc` willen omleiden, kan dit als hieronder.
 
 ~~~
 student@studentdeb:~$ wc < lsall
@@ -1653,13 +1650,13 @@ student@studentdeb:~$ wc < lsall
 student@studentdeb:~$ 
 ~~~
 
-##### Redirection van STDIN/STDOUT vanuit een ander process/commando naar STDIN via |
+##### Redirection van stdin/stdout vanuit een ander proces/opdracht naar stdin via |
 
-In bovenstaand voorbeeld werkten we nog altijd met een tussenfile - lsall - om de output
-van het ls-commando te verbinden aan het wc-commando.
+In bovenstaand voorbeeld werkten we nog altijd met een tussenbestand - lsall - om de uitvoer
+van de `ls`-opdracht te verbinden met de invoer van de `wc`-opdracht.
 
-Er is echter een operator die de output-stream van het ene commando (ls) men de inputstream van het andere commando (wc).  
-Om dit te doen moet een pipe-opetor of | tussen beide commando's plaatsen zoals hieronder geillustreerd.
+Er is echter een operator die de uitvoerstream van de ene opdracht (`ls`) met de invoerstream van de andere opdracht (`wc`) verbindt.  
+Om dit te doen, plaatsen we een `|`-operator (*pipe*) tussen beide opdrachten:
 
 ~~~
 bart@studentdeb:~$ ls -l hello.sh hello.sh.not | wc
@@ -1668,7 +1665,7 @@ ls: cannot access 'hello.sh.not': No such file or directory
 bart@studentdeb:~$
 ~~~
 
-Bemerk hier wel dat deze pipe-operator enkel de stderror verbindt met de stdin.
+Bemerk hier wel dat deze pipe-operator alleen stdout van de ene opdracht verbindt met stdin van de andere.
 
 ~~~
             STDOUT    |    STDIN   STDOUT     CONSOLE:
@@ -1678,9 +1675,9 @@ Bemerk hier wel dat deze pipe-operator enkel de stderror verbindt met de stdin.
 ~~~
 
 
-##### Redirection vanuit een ander process/commando naar STDIN via |&
+##### Redirection vanuit een ander proces/opdracht naar stdin via |&
 
-Wil je toch beide proberen dan dien je dit te doen met een variant van de pike-operator die beide **STDERR en STDIN cobmineert**, namelijk **|&**
+Wil je toch zowel stdout als stderr omleiden naar stdin van een ander programma, dan dien je dit te doen met een variant van de pipe-operator, namelijk `|&`.
 
 ~~~
 bart@studentdeb:~$ ls -l hello.sh hello.sh.not |& wc
@@ -1688,8 +1685,7 @@ bart@studentdeb:~$ ls -l hello.sh hello.sh.not |& wc
 bart@studentdeb:~$ 
 ~~~
 
-Met deze operator worden zowel de STDOUT als de STDERR bij elkaar gevoegd
-en doorgegeven aan de STDIN van WC.
+Met deze operator worden stdout en stderr dus bij elkaar gevoegd en daarna doorgegeven aan stdin van `wc`.
 
 ~~~
             STDOUT  |&      STDIN   STDOUT     CONSOLE:

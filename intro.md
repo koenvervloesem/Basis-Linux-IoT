@@ -20,10 +20,12 @@ Dit is een **praktische cursus**, dus we vliegen er direct in met praktijk.
 
 ### Opdrachten op Toledo
 
-Alle **oefeningen** uit de cursus die je **moet maken** worden aangeduid in Toledo **onder opdrachten**.   
+Alle **oefeningen** uit de cursus die je **moet maken** worden aangeduid in Toledo **onder opdrachten**.
+
+
 ### Evaluatie
 
-De ECTS-fiche van het vak beschrijft hoe je geëvalueerd wordt: https://onderwijsaanbod.leuven.ucll.be/2023/syllabi/n/MGI32BN.htm
+De ECTS-fiche van het vak beschrijft hoe je geëvalueerd wordt: <https://onderwijsaanbod.leuven.ucll.be/2023/syllabi/n/MGI32BN.htm>
 
 De verdeling van de punten is:
 
