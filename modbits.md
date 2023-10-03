@@ -1,26 +1,25 @@
-## Controlebeheer voor files
+## Toegang tot bestanden controleren
 
-### Linux File Permissions
+### Bestandspermissies
 
-Binnen **Linux** (en andere Unix-like-systemen) is het mogelijk de **toegang** tot **files** en **directories** te **controleren** en **beheren**.  
-Dit doen we aan de hand van "**Linux Filesystem Permissions**"
+Binnen **Linux** is het mogelijk om de **toegang** tot **bestanden** en **directory's** te **controleren** en **beheren**.
+Dit doen we aan de hand van **bestandspermissies**.
 
-Dit is een **éénvoudig** maar **flexibel** **mechanisme** (niet het enige) en stelt je toch in staat zijn om de meeste standaard permissie-use cases af the handelen.
+Dit is een **eenvoudig** maar **flexibel** **mechanisme**, waarmee je de meest voorkomende scenario's voor toegangscontrole kunt afhandelen.
 
 > Nota:  
-> Dit is niet het enige mechanisme dat bestaat in Linux maar je als
-> standaard gebruiker eerst wordt met geconfronteerd.  
-> In meer advanced use cases zou het ook kunnen dat
-> je - als system administrator bijvoorbeeld - **SELinux-permissies**
+> Dit is niet het enige mechanisme dat bestaat in Linux.
+> In meer geavanceerde scenario's zou het ook kunnen dat
+> je - als systeembeheerder bijvoorbeeld - **SELinux-permissies**
 > dient aan te passen.  
 > Dit val echter niet onder het korte bestek van deze (relatief korte) cursus.
 
-#### Permissies bekijken met ls -l
+#### Permissies bekijken met `ls -l`
 
-We hebben al eerder gezien dat je via het commando **ls** - meerbepaald met de optie **-l** - de details van een file kunnen opvragen.  
-Met dit commando kan ook de nodig info opvragen met betrekking tot de toegangsregels naar die files en directories.
+We hebben al eerder gezien dat je via de opdracht `ls` - meer bepaald met de optie `-l` - de details van een bestand kunt opvragen.  
+Deze opdracht toont ook informatie met betrekking tot de toegang tot bestanden en directory's.
 
-In de snippet **hieronder** zie je de details van een aantal files:
+Bijvoorbeeld:
 
 ~~~
 student@studentdeb:~$ ls -l
@@ -36,11 +35,11 @@ drwxr-xr-x 2 student student   4096 Oct 27 19:06  hello
 student@studentdeb:~$ 
 ~~~
 
-De **gegevens** die we hier zien en betrekking hebben op **toegang/authoristatie** zijn:
+De gegevens die we hier zien en betrekking hebben op **toegang/autorisatie** zijn:
 
-* **Welke permissies** zijn geconfigureerd voor deze file (of directory)?
-* **Welke user** is **eigenaar** van deze file/directory?
-* Tot **welke group** behoort deze **file** (niet noodzakelijk een groep van de user)
+* **Welke permissies** zijn geconfigureerd voor dit bestand (of directory)?
+* **Welke gebruiker** is **eigenaar** van dit bestand/directory?
+* Tot **welke groep** behoort dit bestand (niet noodzakelijk een groep van de gebruiker)
 
 ~~~
           permissies    user   group
@@ -51,63 +50,60 @@ De **gegevens** die we hier zien en betrekking hebben op **toegang/authoristatie
   type --+
 ~~~
 
-##### Type van file
+##### Type van bestand
 
-Het **eerste karakter** geeft het **type** van de **file** aan:
+Het **eerste teken** geeft het **type** van het **bestand** aan:
 
-* Het symbool **-** voor **normale files**
-* **d** voor **directories**
-* **l** voor softlinks (shortcuts) naar andere fles
-* Het is ook mogelijk dat we nog andere types
-  * **c** voor **"character device"**
-  * **b** voor **"block device"**
-  * **s** voor **"Local Domain Sockets"**
-  * **p** voor **"named pipes"**
-  * **l** voor **symbolic links**
+* Het symbool **-** voor een **normaal bestand**
+* **d** voor een **directory**
+* **l** voor een *soft link* of **symbolic link** (verwijzing) naar een ander bestand
+* Minder voorkomende types zijn:
+  * **c** voor een **character device**
+  * **b** voor een **block device**
+  * **s** voor een **local domain socket**
+  * **p** voor een **named pipes**
 
 ##### Permissies
 
-De **volgende 9 karakters** duiden de permissies aan.  
-We zien daarin de volgende soorten karakters:
+De **volgende negen tekens** duiden de permissies aan.  
+We zien daarin de volgende soorten tekens:
 
 * **r,w,x** stellen respectievelijk **read, write en execute** voor
-* Het teken **-** houdt het ontbreken van permissie (geen permissie)
+* Het teken **-** houdt het ontbreken van een permissie in
 
-
-Deze **9 karakters** (rwxr-xr--) moet je eigenlijk **zien/splitsen** in **3 groepen** (user, group en others):
+Deze **negen tekens** (rwxr-xr--) zijn onderverdeeld in **drie categorieën**: **user**, **group** en **other**:
 
 ~~~
-   user --+  group --+  others --+
-          |          |           |
-         rwx        r-x         r--
+   user --+  group --+  other --+
+          |          |          |
+         rwx        r-x        r--
 ~~~
 
-#### Permissies voor wie?  => 3 permissie-niveaus!!!
+#### Permissies voor wie?
 
-We weten nu dat er **3 soorten niveaus van users/gebruikers**: *user, group of others*  
-Er wordt maw op 3 niveaus **bepaald** **wie** dat er het **recht** heeft om met een **file** te kunnen **werken**:
+Er zijn dus drie categorieën van gebruikers voor de permissies. Op deze drie niveaus wordt er bepaald wie er recht heeft om met een bestand te kunnen werken: 
 
 * **user** of **u**:
-  De **user** is de **owner**/eigenaar van de **file**
-  Elk bestand is eigendom van een gebruiker, meestal is dit degene die het bestand heeft gemaakt.
+  De **user** is de eigenaar van het bestand.
+  Elk bestand is eigendom van een gebruiker. Meestal is dit degene die het bestand heeft gemaakt.
 * **group** of **g**:
-  Iedereen die **niet tot de group** behoort waar de file toe behoort.  
+  Iedereen die tot de groep behoort waartoe het bestand toegekend is.  
   Het bestand behoort dus ook tot een groep.  
-  Meestal is dit de primaire groep van de user
+  Meestal is dit de primaire groep van de gebruiker 
   die het bestand heeft aangemaakt 
-  (maar dat kan worden gewijzigd)
-* **others**  of **o**:
-  Iedereen die **niet** tot de **2 bovenvermelde niveaus** behoort, 
-  maw niet de user of de group waar de file toe behoort.
+  (maar dat kan worden gewijzigd).
+* **other**  of **o**:
+  Iedereen die **niet** tot de **twee bovenvermelde niveaus** behoort, 
+  met andere woorden niet de gebruiker of de groep waartoe het bestand behoort.
 
-##### Welke permissie-niveau wordt er gebruikt/toegepast?
+##### Hoe worden de permissies toegepast?
 
-We weten nu dat er 3 permissie-niveaus bestaan, wanneer en hoe worden deze nu toegepast
+We weten nu dat er drie permissieniveaus bestaan. Wanneer en hoe worden deze nu toegepast?
 
-Zoals we weten wordt **file/directory** binnen **Linux** gelinkt aan **user** en **group**
-Beiden worden gebruikt om permissies te vergelijken (zoals we dadelijk gaan zien).  
+Elk bestand en enkele directory binnen Linux heeft een gebruiker en een groep.
+Beide worden gebruikt om permissies te vergelijken.  
 
-Als **voorbeeld**, hieronder zie je dat **file1** **gelinkt** aan de **user student** en de **group student**
+In dit voorbeeld zie je dat **file1** de gebruiker **student** en de groep **student** heeft:
 
 ~~~
           permissies    user   group
@@ -118,55 +114,52 @@ Als **voorbeeld**, hieronder zie je dat **file1** **gelinkt** aan de **user stud
   type --+
 ~~~
 
-We weten ook dat er 3 niveaus waren (user, group en others)
+De permissies zijn in drie niveaus onder te verdelen (user, group en other):
 
 ~~~
-   user --+  group --+  others --+
-          |          |           |
-         rwx        r-x         r--
+   user --+  group --+  other --+
+          |          |          |
+         rwx        r-x        r--
 ~~~
 
-**Wanneer** gaan we nu **welk** vna deze 3 **permessie-niveaus** toepassen (rwx, r-x of r--).  
-Dit wordt bepaald door **3 elementen**:
+**Wanneer** gaan we nu **welk** van deze drie **permissieniveaus** toepassen (`rwx`, `r-x` of `r--`)?  
+Dit wordt bepaald door **drie elementen**:
 
-* De **user** en **group** van de **file**, in dit geval student en student
-* De **user** die **ingelogd** is en een bewerking met de file doen
+* De **user** en **group** van het bestand, in dit geval `student` en `student`
+* De **user** die **ingelogd** is en een bewerking met het bestand wil doen
 * De **groepen** - primair of secundair - waartoe de gebruiker behoort
 
-Als een **user** een file wil gebruiken zal Linux de volgende **regel** toepassen:
+Als een **user** een bestand wil gebruiken, zal Linux de volgende **regel** toepassen:
 
-* Komt de **user** die **ingelogd** is overeen met de **user** van de **file**:
-  * Wordt het **user-niveau** toegepast 
-  * Dan wordt de **eerste blok** toegepast
-  * In dit geval is dit dus **rwx**
-* **Anders** (als deze niet overeenkomt) lijkt het systeem (Linux) na:
-  * Of de **groep** van de **file** (student)  
-  * Een **groep** is waar de **user tot behoort**
-  * Dan wordt de **tweede blok** toegepast
-  * In dit geval dus **r-x**
-* Als dit ook niet voldaan is 
-  * **Noch** **user** of **group** komt **overeen**
-  * Passen we het **derde niveau** toe
-  * In dit geval dus **r--**
+* Komt de **user** die **ingelogd** is overeen met de **user** van het bestand:
+  * Dan wordt het niveau **user** (het eerste blok) toegepast 
+  * In dit geval is dit dus `rwx`
+* **Anders** (als de gebruikers niet overeenkomen) kijkt het systeem na:
+  * Of de **groep** van het bestand (student) een groep is waartoe de gebruiker behoort
+  * Dan wordt het niveau **group** (het tweede blok) toegepast
+  * In dit geval dus `r-x`
+* Als dit ook niet voldaan is (noch gebruiker noch groep komen overeen): 
+  * Dan wordt het niveau **other** (derde blok) toegepast
+  * In dit geval dus `r--`
 
 
-#### Wat betekenen deze permissies? => 3 soorten rechten!!!
+#### Wat betekenen deze permissies?
 
-Elk van de 3 **niveaus** van permissies bestaat dan zijn er dus **3 niveaus van rechten**  (r,w,x)
-Deze hebben de volgende betekenis voor files of directories (let wel, lichtelijk verschillend file vs directories)
+Elk van de drie **niveaus** van permissies bestaat uit **drie soorten rechten**  (r,w,x).
+Deze hebben de volgende betekenis voor bestanden of directory's:
 
 * **r** of **read**  
-  * De **file** inhoud kan **gelezen** worden,  
-  * In geval van een **directory** kan men de **inhoud** van een **directory** **oplijsten**  
-    (met bijvoorbeeld ls)
+  * Een bestand kan **gelezen** worden.  
+  * Van een **directory** kan men de **inhoud bekijken**.  
+    (met bijvoorbeeld `ls`)
 * **w** of **write**  
-  * De **file**-inhoud (of content) kan **gewijzigd** worden.  
-  * Voor **directories** kan men **files** toevoegen of deleten binnen een directory.
+  * Een bestand kan **gewijzigd** worden.  
+  * In een **directory** kan men bestanden toevoegen of verwijderen.
 * **x** of **execute**  
-  * Een **file** kan men **uitvoeren** als commmando.  
-  * In geval van een **directory** kan je deze als **work-directory** gebruiken 
-    mav je kan **cd** naar deze directory doen.  
-    Let wel dat je ook **read-permissions** nodig hebt.
+  * Een bestand kan **uitgevoerd** worden als opdracht.  
+  * Een **directory** kan je als **werkdirectory** gebruiken. 
+    Met andere woorden: je kunt `cd` naar deze directory uitvoeren.  
+    Let wel dat je ook **read permissions** nodig hebt.
 
 #### Interpreteren van een permissieniveau
 
@@ -183,9 +176,9 @@ Per permissieniveau wordt er voor elk recht aangeduid of het van toepassing of n
 
 Dus bijvoorbeeld:
 
-* rwx betekent 
+* `rwx` betekent: 
   * dat je het bestand kan lezen, schrijven en uitvoeren
-* rw- betekent 
+* `rw-` betekent: 
   * dat je het bestand kan lezen, schrijven 
   * maar niet kan uitvoeren
 
@@ -199,45 +192,45 @@ Dus bijvoorbeeld:
 
 ### Permissies in actie
 
-Als we voorgaande regels bij elkaar plaatsen kunnen we gaan bekijken:
+Als we voorgaande regels bij elkaar plaatsen, kunnen we gaan bekijken:
 
-* Wie oftewel welke ingelogde user?
-* Wat kan uitvoeren?
-* Op welke file?
+* wie oftewel welke ingelogde gebruiker
+* wat kan uitvoeren
+* op welk bestand
 
-#### Permissies en Ownership van files
+#### Permissies en eigenaars van bestanden
 
-Het commando **"ls -l"** (zoals eerder gezien) geeft ons meer **gedetailleerde** informatie over een file:
+Zoals eerder gezien geeft de opdracht `ls -l` ons meer **gedetailleerde** informatie over een bestand:
 
 ~~~
 student@studentdeb:~$ ls -l test.txt 
 -rwxr--r-- 1 student students 192 Oct 27 14:33 test.txt
 ~~~
 
-De **informatie** kunnen we als volgt interpreteren:
+De informatie kunnen we als volgt interpreteren:
 
-* Daarna volgen 3 blokken waar permissies zijn toegekend per soort gebruiker
-  * **rwx** dat aangeeft welke rechten de user heeft op deze file  
+* Drie blokken tonen welke permissies zijn toegekend per soort gebruiker:
+  * `rwx` dat aangeeft welke rechten de gebruiker heeft op dit bestand  
     (**r**ead - **w**rite - e**x**ecute)
-  * **r-x** die aangeeft welke rechten **members** van de **groep** (gelinkt aan deze file) hebben  
+  * `r-x` die aangeeft welke rechten leden van de **groep** gelinkt aan dit bestand hebben  
     (**r**ead - e**x**ecute)
-  * **r--** die aangeeft welke rechten **members** van de **groep** (gelinkt aan deze file) hebben  
+  * `r--` die aangeeft welke rechten anderen (niet gelinkt aan dit bestand) hebben  
     (**r**ead)
-  * (**-** betekent dat het recht niet toegekend is)
-* Daar volgend de user en groep waar deze file toe behoort
-  * User student
-  * Group students
+  * (`-` betekent dat het recht niet toegekend is)
+* Daarop volgen de gebruiker en groep waartoe dit bestand behoort:
+  * Gebruiker `student`
+  * Groep `students`
 
-Samengevat betekent dit dat deze file (test.txt) **eigendom** is van de user **student** en de group **students**.  
+Samengevat betekent dit dat dit bestand (test.txt) **eigendom** is van de gebruiker **student** en de groep **students**.  
 
-* **Iedereen** heeft het recht deze **file** te **lezen**
-* Enkel de **user** **student** zelf of **users** die tot de groep **students** behoren hebben het **recht** deze **uit te voeren**
-* Enkel de **gebruiker** student kan deze file bewerken
+* **Iedereen** heeft het recht om dit bestand te **lezen**.
+* Alleen de gebruiker **student** zelf leden van de groep **students** hebben het **recht** deze **uit te voeren**.
+* Alleen de gebruiker **student** kan dit bestand bewerken.
 
-#### Permissies en Ownership bekijken met "ls -ld" (voor directories)
+#### Permissies en eigenaars van directory's
 
-**Ook** voor **directories** kan je dit **nakijken**, maar als je die met "ls -l" doet zie je enkel
-de rechten op de subfolders of files:
+**Ook** voor **directory's** kan je dit **nakijken**. Maar als je dit met `ls -l` doet, zie je alleen
+de rechten op de subdirectory's of bestanden:
 
 ~~~
 student@studentdeb:~$ ls -l /home
@@ -248,22 +241,22 @@ drwxr-xr-x  2 joske2  test    4096 Oct 27 19:35 joske2
 drwxr-xr-x 21 student student 4096 Nov 24 10:35 student
 ~~~
 
-Als je dit echter wilt nakijken op de directory zelf gebruik je de d-optie met **ls -ld**
+Als je de informatie wilt zien voor de directory zelf, gebruik je de optie `-d` met `ls -ld`:
 
 ~~~
 student@studentdeb:~$ ls -ld /home
 drwxr-xr-x 5 root root 4096 Oct 27 12:21 /home
 ~~~
 
-Hier zie je dan de **rechten** en andere info op de **directory zelf**.
+Hier zie je dan de **rechten** en andere informatie op de **directory zelf**.
 
 ### Wijzigen van permissies met chmod
 
-Met het commando **chmod** kan je deze rechten toevoegen of afnemen...  
-Je kan dit commando op 2 manieren toepassen:
+Met de opdracht `chmod` kan je deze rechten toevoegen of afnemen...  
+Je kan deze opdracht op twee manieren toepassen:
 
-* Met symbolen
-* Met getallen
+* met symbolen
+* met getallen
 
 #### Met symbolen
 
@@ -272,24 +265,24 @@ chmod {Wie}{Wat}{Welk} {file|directory}
 ~~~
 
 * **Wie**? Target...
-  * **u** => user/owner van deze file
-  * **g** => group waar deze file toe behoort
-  * **o** => others, iedereen verschillend van
-  * **a** of **ugo** => all, iedereen
+  * **u** => gebruiker/eigenaar van het bestand
+  * **g** => groep waartoe het bestand behoort
+  * **o** => other, iedereen verschillend van hierboven
+  * **a** of **ugo** => "all", iedereen
 * **Wat**?  Toegepast op wie/target
   * **+** => add => Voeg een permissie toe (voor het target hierboven)
   * **-** => remove => Neem een permissie af
   * **=** => set exactly => Zet deze permissie exact (andere permissies worden afgenomen)
 * **Welke** permissies?
-  * **r** => read of leesrecht
-  * **w** => write of schrijfrecht
-  * **x** => execute oftewel recht om uit te voeren als een programma
+  * **r** => read of leesrechten
+  * **w** => write of schrijfrechten
+  * **x** => execute oftewel het recht om het bestand uit te voeren als een programma
 
-In onderstaand **voorbeeld** maken we **2 files** aan:
+In onderstaand **voorbeeld** maken we twee bestanden aan:
 
 * Bij **file1** nemen we **rw**-rechten **af** voor de **groep** en **andere** gebruikers
-* Bij **file2** kennen we **recht** van **uitvoering** aan **iedereen**  
-  (je kan **ook** **ugo** gebruiken ipv **a** in dit geval)
+* Bij **file2** kennen we **recht** van **uitvoering** aan **iedereen** toe 
+  (je kan ook **ugo** gebruiken in plaats van **a** in dit geval)
 
 ~~~
 student@studentdeb:~$ rm file*
@@ -305,7 +298,7 @@ student@studentdeb:~$ ls -l file*
 -rwxr-xr-x 1 student student 0 Nov 24 12:14 file2
 ~~~
 
-* Bij file2 zetten we vervolgens een exacte permissie  
+* Bij file2 stellen we vervolgens een exacte permissie in.  
   Je ziet dat de (vorige) toegekende rechten zijn overschreven...
 
 ~~~
@@ -316,40 +309,39 @@ student@studentdeb:~$ ls -l file2
 
 #### Met getallen
 
-Een 2de manier is het werken met getallen om deze rechten toe te kennen of af te nemen.  
+Een tweede manier is het werken met getallen om deze rechten toe te kennen of af te nemen.  
 
-Hou er wel rekening dat deze manier gelimiteerd is tot het exact toekennen, equivalent tot de =-optie 
-in de symbool-notatie.  
-Het is echter wel belangrijk deze manier te kennen omdat je binnen sommige (embedded) omgevingen misschien enkel deze getallen-methode beschikbaar is.
+Op deze manier kun je rechten alleen exact toekennen (equivalent tot de =-optie bij `chmod` met symbolen). 
+Het is wel belangrijk om deze manier te kennen. Binnen sommige (minimale embedded Linux-)omgevingen is immers misschien alleen deze methode beschikbaar.
 
-Het **basis-principe** is dat elke permissie een getalwaarde wordt toegekend:
+Het **basisprincipe** is dat aan elke permissie een getalwaarde wordt toegekend:
 
 * **r** = **4**
 * **w** = **2**
 * **x** = **1**
 
-Per userlevel (zie **u**ser-**g**roup-**o**thers) ga je telkens de som maken van deze 3 permissies:
+Per permissieniveau (**u**ser-**g**roup-**o**ther) ga je telkens de som maken van deze drie permissies:
 
 1. Je start met 0.
-2. Heb je read-rechten nodig tel je 4 hier aan toe.
-3. Heb je schrijfrechten nodig, tel je er 2 bij.
-4. Heb je execute-nodig, dan tel er 1 bij.
+2. Heb je leesrechten nodig, dan tel je 4 hierbij op.
+3. Heb je schrijfrechten nodig, dan tel je 2 op.
+4. Heb je uitvoerrechten nodig, dan tel je 1 op.
 
 Bijvoorbeeld:
 
-* 7 (4 + 2 + 1) zal overéén komen met rwx
-* 6 (4 + 2) met lees en schrijfrechten
-* 5 (4 + 1) met lees en uitvoerrechten
-* 4 (4) met enkel lees rechten
+* 7 (4 + 2 + 1) zal overéén komen met rwx (alle rechten)
+* 6 (4 + 2) met lees- en schrijfrechten
+* 5 (4 + 1) met lees- en uitvoerrechten
+* 4 (4) met alleen leesrechten
 * ...
 
-In totaal combineer je 3 cijfers met elkaar tot 1 getal (in volgorde van links naar rechts):
+Daarna combineer je dan drie cijfers met elkaar tot één getal (in volgorde van links naar rechts):
 
-* 1ste getal voor de user-rechten
-* 2de getal voor de group-rechten
-* 3de getal voor de rechten toegekend aan others/others
+* Eerste cijfer voor de gebruikersrechten
+* Tweede cijfer voor de groepsrechten
+* Derde cijfer voor de rechten toegekend aan other
 
-Bijvoorbeeld het equivalent van "rwxr-xr--" is "754"
+Bijvoorbeeld het equivalent van `rwxr-xr--` is "754".
 
 ~~~
 rwx = 4 + 2 + 1 = 7
@@ -365,39 +357,13 @@ student@studentdeb:~$ ls -l file1
 -rwxr-xr-- 1 student student 0 Nov 24 12:14 file1
 ~~~
 
-... en zien dat deze permissies worden aangepast als beschreven
+... en zien dat deze permissies worden aangepast als beschreven.
 
-##### Mode bits (extra info)
+### Eigenaar wijzigen met `chown` en `chgrp`
 
-Men verwijst dit soms ook ald de "mode bits".  
-In de achter grond wordt dit in een getal bijgehouden met 3 octets volgens onderstaande mapping:
+We kunnen ondertussen de permissies van bestanden aanpassen. Nu moeten we nog leren om de eigenaar aan te passen...
 
-~~~
-  r    w    x 
-  4    2    1
-2^2  2^1  2^0  
-~~~
-
-754 is bij deze eigenlijk een octale getal dat decimaal 492 is.  
-Stel bijvoorbeeld "rwxr-xr--" of "754" naar een binair getal omgerekend wordt dit 111 101 100
-
-~~~
-  222 222 222
-  ^^^ ^^^ ^^^
-  210 210 210
-  =
-  421 421 421 
-* 111 101 100 = 492 (decimaal)
-  -----------
-  421 401 400
-  7   5   4   = 754 (octaal)     
-~~~
-
-### Wijzigen van "ownership" met chown (en chgrp)
-
-We kunnen ondertussen de permissies aanpassen, nu moeten we nog leren van de owners te wijzigen van files en directories...
-
-Om te starten maken - met de user student - 1 directory en 2 files als volgt:
+Om te starten maken we - met de gebruiker `student` - een directory en twee bestanden aan:
 
 ~~~
 student@studentdeb:~$ rm -rf test*
@@ -406,7 +372,7 @@ student@studentdeb:~$ mkdir test_dir
 student@studentdeb:~$ touch ./test_dir/test_file
 ~~~
 
-De files en directories die worden aangemaakt krijgen automatisch de user student en de bijhorende primaire group student toegekend:
+De bestanden en directory's die worden aangemaakt, krijgen automatisch de gebruiker student en de bijhorende primaire groep student toegekend:
 
 ~~~
 student@studentdeb:~$ ls -ld test_*
@@ -418,17 +384,17 @@ total 0
 student@studentdeb:~$ 
 ~~~
 
-#### Owner file en directory wijzigen
+#### Gebruiker wijzigen
 
-Om de **eigenaar** van een **file** te **wijzigen** gebruiken we het commando chown.  
-Je kan met dit commando zowel de user ald de group waartoe een file/directory behoort wijzigen
+Om de **eigenaar** van een bestand te **wijzigen**, gebruiken we de opdracht `chown`.  
+Dit kan zowel de gebruiker als de groep waartoe een bestand/directory behoort wijzigen:
 
 ~~~
 student@studentdeb:~$ chown bart test_file 
 chown: changing ownership of 'test_file': Operation not permitted
 ~~~
 
-...moet je jezelf als super-user inloggen want je kan niet zomaar een file toekennen aan een andere gebruiker
+Zoals je ziet, moet je als superuser inloggen. Je kan immers niet zomaar een bestand toekennen aan een andere gebruiker:
 
 ~~~
 student@studentdeb:~$ su -
@@ -436,7 +402,7 @@ Password:
 root@studentdeb:~# cd /home/student/
 ~~~
 
-Vervolgens **passen** de **gebruiker** **aan** van testfile met het commando **chmod**, gevolgd door de **nieuwe owner** en de file die je wil wijzigen:
+Vervolgens **passen** we de **gebruiker** **aan** van het bestand `test_file` met de opdracht `chmod`, gevolgd door de **nieuwe eigenaar** en het bestand waarvan je de eigenaar wilt wijzigen:
 
 ~~~
 root@studentdeb:/home/student# chown bart test_file
@@ -445,7 +411,7 @@ drwxr-xr-x 2 student student 4096 Nov 24 13:59 test_dir
 -rw-r--r-- 1 bart    student    0 Nov 24 13:59 test_file
 ~~~
 
-#### Owner directory
+#### Eigenaar van een directory
 
 Hetzelfde mechanisme geldt voor een directory...
 
@@ -453,7 +419,7 @@ Hetzelfde mechanisme geldt voor een directory...
 root@studentdeb:/home/student# chown bart test_dir
 ~~~
 
-...Wel  zie je dat enkel de directory zelf is gewijzigd
+Wel zie je dat alleen de directory zelf is gewijzigd:
 
 ~~~
 root@studentdeb:/home/student# ls -ld test_dir
@@ -464,9 +430,9 @@ total 0
 root@studentdeb:/home/student# 
 ~~~
 
-#### Owner directory recursief wijzigen
+#### Eigenaar van een directory recursief wijzigen
 
-Als je wilt dat alle onderliggende files gewijzigd worden gebruik je de optie **-R**
+Als je wilt dat ook alle onderliggende bestanden en directory's gewijzigd worden, gebruik je de optie `-R`:
 
 ~~~
 root@studentdeb:/home/student# chown -R bart test_dir
@@ -477,8 +443,10 @@ total 0
 -rw-r--r-- 1 bart student 0 Nov 24 14:05 test_file
 ~~~
 
-Als je de groep (ipv de user) van een file of directory wil wijzigen gebruik je
-dezelfde vorm maar plaats je een dubbel punt voor de groepsnaam.
+#### Groep wijzigen
+
+Als je de groep (in plaats van de gebruiker) van een bestand of directory wilt wijzigen, gebruik je
+dezelfde vorm maar plaats je een dubbele punt voor de groepsnaam:
 
 ~~~
 root@studentdeb:/home/student# chown :bart test_dir
@@ -489,21 +457,18 @@ total 0
 -rw-r--r-- 1 bart student 0 Nov 24 14:05 test_file
 ~~~
 
-
-#### Commando chgrp
-
-Je kan wel hetzelfde doen met het **chgrp**-command
+Je kan hetzelfde doen met de opdracht `chgrp`. Dan heb je geen dubbele punt nodig:
 
 ~~~
 root@studentdeb:/home/student# chgrp bart test_dir
 ...
 ~~~
 
-#### Tegelijk user en group wijzigen
+#### Tegelijk gebruiker en groep wijzigen
 
-Tenslotte zetten we test_dir terug naar de oorspronkelijke user en group.  
-Je kan dit in éénmaal doen door de user en group te combineren met een dubbel punt 
-(user:group)
+Tenslotte zetten we `test_dir` terug naar de oorspronkelijke gebruiker en groep.  
+Je kan dit in één keer doen door de gebruiker en groep te combineren met een dubbele punt 
+(user:group):
 
 ~~~
 root@studentdeb:/home/student# chown -R student:student test_dir
@@ -515,45 +480,44 @@ total 0
 root@studentdeb:/home/student# 
 ~~~
 
-### Special permissies (u+s, g+s, o+t)
+### Speciale permissies (u+s, g+s, o+t)
 
-We hadden eerder al 3 types van permissies gezien:
+We hadden eerder al drie types van permissies gezien:
 
-* **r** => read of leesrecht
-* **w** => write of schrijfrecht
-* **x** => execute oftewel recht om uit te voeren als een programma
+* **r** => read of leesrechten
+* **w** => write of schrijfrechten
+* **x** => execute oftewel het recht om een bestand uit te voeren als programma
 
-Naast deze hebben we 3 andere mogelijkheden: suid, sgid, sticky bit
+Naast deze hebben we drie andere mogelijkheden: suid, sgid en sticky bit.
 
-#### suid
+#### SUID 
 
-Afkorting van  **"Set owner User ID up on execution"**.  
-Dit houdt in dat als je een file uitvoert, alle acties (zoals bijvoorbeeld files creeren) worden uitgevoerd als de owner (niet de gebruiker die het script uitvoert op dat moment)
+Dit is de afkorting van  **"Set owner User ID up on execution"**.  
+Dit houdt in dat als je een bestand uitvoert, alle acties (zoals bijvoorbeeld bestanden creëren) worden uitgevoerd met de rechten van de eigenaar (in plaats van die van de gebruiker die het script uitvoert op dat moment).
 
-Dit is enkel van toepassing op **files**, **niet** op **directories**...  
-Om dit toe te kennen aan een file pas je "chmod u+s" toe op een file:
+Dit is alleen van toepassing op **bestanden**, niet op directory's...  
+Om dit toe te kennen aan een bestand, geef je de gebruiker de permissie s op een bestand:
 
 ~~~
-TODO: example
+root@studentdeb:/home/student# chmod u+s /usr/bin/passwd
 ~~~
 
-Een voorbeeld van gebruik is passwd dat als user root en wordt uitgevoerd als root (ondanks dat je het als je eigen user uitvoert)
+Een voorbeeld waar Linux dit gebruikt, is de opdracht `passwd`. Dit wordt als gebruiker root uitgevoerd, ondanks dat je het als je eigen gebruiker start:
 
 ~~~
 student@studentdeb:~$ ls -l /usr/bin/passwd
 -rwsr-xr-x. 1 root root 35504 Nov 16 2021 /usr/bin/passwd
 ~~~
 
-#### sgid
+#### SGID
 
-Afkorting van **"Set Group ID up on execution"**.  
-Dit is van toepassing op zowel files en directories met een licht andere betekenis:
+Dit is de afkorting van **"Set Group ID up on execution"**.  
+Dit is van toepassing op zowel bestanden als directory's met een licht andere betekenis:
 
-* Voor een **file** dat je het bestand uitvoert met de group die toegekend is aan de file
-* Voor een **directory** dat files die binnen deze directory automatisch de groep van deze directory toegekend krijgen (en niet deze van de gebruiker die een file toevoegt)
+* Voor een **bestand** betekent dit dat je het bestand uitvoert met de groep die toegekend is aan het bestand.
+* Voor een **directory** betekent dit dat bestanden binnen deze directory automatisch de groep van deze directory toegekend krijgen (en niet deze van de gebruiker die een bestand toevoegt).
 
-
-Om dit toe te kennen aan een file pas je **"chmod g+s"** toe op een file of directory:
+Om dit toe te kennen, gebruik je `chmod g+s`:
 
 ~~~
 student@studentdeb:~$ ls -ld testa
@@ -586,28 +550,47 @@ bart@studentdeb:/home/student/testa$
 
 #### sticky bit
 
-Houdt in dat je enkel files kan verwijderen uit een **directory**, niet van toepassing op een file.
+De sticky bit is alleen van toepassing op directory's. Als je dit voor een directory instelt, kunnen bestanden in die directory alleen verwijderd worden door de eigenaar van het bestand, de eigenaar van de directory, of de rootgebruiker. Anderen kunnen dit niet, ook al hebben ze schrijf- en uitvoerrechten op de directory.
 
-Om dit toe te kennen aan een file pas je "chmod o+t" toe op een directory:
+Je stelt het sticky bit in met `chmod o+t`:
 
-~~~
-TODO: example
-~~~
+```
+student@studentdeb:~$ mkdir sticky_dir
+student@studentdeb:~$ chmod +t sticky_dir
+student@studentdeb:~$ ls -ld sticky_dir
+drwxrwxr-t 2 student student 4096 okt  3 15:50 sticky_dir
+```
 
-#### Numeriek representatie
+Creëer nu in deze directory een bestand:
 
-Deze **speciale permissies** hebben net zoals de andere permissies een numerieke 
+```
+student@studentdeb:~$ cd sticky_dir
+student@studentdeb:~$ touch test.txt
+```
+
+Schakel nu met `su` over naar een andere gebruiker (niet root), die tot dezelfde groep als de eerste gebruiker behoort, en probeer het bestand te verwijderen:
+
+```
+student@studentdeb:~$ su bart
+bart@studentdeb:~$ rm test.txt
+```
+
+Dit lukt nu niet. Het sticky bit in de directory voorkomt immers het verwijderen of wijzigen van bestanden van andere gebruikers. Dit wordt typisch gebruikt in de gedeelde directory `/tmp` voor tijdelijke bestanden.
+
+#### Numerieke voorstelling
+
+Deze **speciale permissies** hebben net zoals de andere permissies een numerieke voorstelling:
 
 * **1** voor **sticky bit**
-* **2** voor de **sgid**-bit
-* **4** voor de **suid**-bit
+* **2** voor **SGID**
+* **4** voor **SUID**
 
-Bijvoorbeeld 6775 zal zowel de sgid en suid-bit zetten (6 = 4 + 2) naast de bijhorende standaard permissies
+Bijvoorbeeld 6775 zal zowel de SGID- en SUID-bits zetten (6 = 4 + 2), naast de bijhorende standaard permissies rwx, rwx en r-x.
 
 #### s vs S
 
-Er als je **suid** (op user) of **sgid** (op groep) configureert zie in de output van ls
-een **s** verschijnen zoals hieronder
+Als je **SUID** (bij de gebruiker) of **SGID** (bij de groep) configureert, zie je in de uitvoer van `ls`
+een **s** verschijnen zoals hieronder:
 
 ~~~
 student@studentdeb:~$ ls -ld derde/
@@ -617,11 +600,11 @@ student@studentdeb:~$ ls -ld derde
 drwxrwsrwx 2 student student 4096 Nov 24 19:48 derde
 ~~~
 
-Een kleine **s** duidt aan dat zowel deze speciale bit (suid of guid) is gezet maar ook dat de 
-**x**-permissie is aangeduid.  
+Een kleine **s** duidt aan dat zowel deze speciale bit (SUID of SGID) is gezet maar ook dat de 
+**x**-permissie is ingesteld.  
 
-Als je echter de directory configureert **zonder execute** dan maar wel met de **suid** of **guid** zie
-je een grote **S** ipv een kleine **s** verschijnen.
+Als je echter de directory configureert **zonder execute** maar wel met **SUID** of **SGID**, zie
+je een grote **S** in plaats van een kleine **s** verschijnen:
 
 ~~~
 student@studentdeb:~$ chmod g-s derde/
@@ -637,21 +620,23 @@ student@studentdeb:~$ ls -ld derde
 drwxrwsrwx 2 student student 4096 Nov 24 19:48 derde
 ~~~
 
-### Default permissies en het umask
+### Standaardpermissies en het umask
 
-#### Default permissies
+#### Standaardpermissies
 
-Op de linux-systemen worden **"by default"** zijn de volgende **permissies** toegekend:
+Op een Linux-systeem worden standaard de volgende **permissies** toegekend:
 
-* Voor files **0666** of **rw-rw-rw**
-* Voor directries **0777** of **rwxrwxrwx**
+* Voor bestanden **0666** of **rw-rw-rw**
+* Voor directory's **0777** of **rwxrwxrwx**
 
-#### Default persmissies in praktijk echter...
+#### Standaardpermissies in de praktijk
 
-Als voorbeeld maken we met onze user een lege file en directory aan...  
-We bekijken de permissies van deze nieuwe file en directory...
+Als voorbeeld maken we met onze gebruiker een leeg bestand en een nieuwe directory aan...  
+We bekijken de permissies van dit bestand en deze directory:
 
 ~~~
+student@studentdeb:~$ touch hello.txt 
+student@studentdeb:~$ mkdir hello_dir
 student@studentdeb:~$ ls -ld hello*
 drwxr-xr-x 2 student student 4096 Nov 24 15:57 hello_dir
 -rw-r--r-- 1 student student    0 Nov 24 15:57 hello.txt
@@ -659,16 +644,14 @@ drwxr-xr-x 2 student student 4096 Nov 24 15:57 hello_dir
 
 ...en zien:
 
-* **rwxr-xr-x** of **0755** voor een **directory**
-* **rw-r--r--** of **0644** voor een **file**
+* `rwxr-xr-x` of **0755** voor een **directory**
+* `rw-r--r--` of **0644** voor een **bestand**
 
-Hoe komt dat deze permissies niet 666 en 777 zijn?
+Hoe komt het dat deze permissies niet 666 en 777 zijn?
 
 #### umask
 
-Dit komt door de **umask** dit is, een waarde die wordt ingeladen **per shell-sessie** en er voor zorgt dat deze waarde wordt aangepast...
-
-Deze waarde kan je opvragen via het **commando umask**:
+Dit komt door de **umask**. Dit is een waarde die wordt ingeladen **per shell-sessie**. Je kan deze opvragen met de opdracht `umask`:
 
 ~~~
 student@studentdeb:~$ umask
@@ -676,14 +659,14 @@ student@studentdeb:~$ umask
 student@studentdeb:~$ 
 ~~~
 
-Deze waarde is **0022** en stelt een **octale** **waarde** voor en wordt **toegepast** op de **permissies**.  
+Deze waarde is hier **0022** en de cijfers worden **afgetrokken** (niet helemaal, we nuanceren later) van die van de **permissies**.  
 
 In eerder voorbeeld zien we dat:
 
-* **0777** en **0022** gecombineerd wortd **0755** voor de **directory**
-* **0666** en **0022** gecombineerd wordt **0644** voor een **file**
+* **0777** min **0022** wordt **0755** voor de **directory**
+* **0666** min **0022** wordt **0644** voor een **bestand**
 
-De feitelijke permissies worden meebepaald door deze umask-waarde
+De feitelijke permissies die standaard worden toegepast, worden dus mee bepaald door deze umask-waarde.
 
 ~~~
 student@studentdeb:~$ umask
@@ -693,17 +676,13 @@ drwxr-xr-x 2 student student 4096 Nov 24 15:57 hello_dir
 -rw-r--r-- 1 student student    0 Nov 24 15:57 hello.txt
 ~~~
 
-#### umask-mechanisme (modbit-niveau)
+#### Het umask-mechanisme op modbit-niveau
 
-Je zou - adhv het vorige voorbeeld - kunnen denken dat het toepassen dat
-deze **umask** gewoon gebeurt door deze **umask-waarde** **af te trekken** van de 
-**default permissies**.  
+In het vorige voorbeeld legden we uit dat de umask-waarde gewoon afgetrokken wordt van de standaardpermissies om de in realiteit toegepaste standaardpermissies te verkrijgen.
 
-Is dit zo?  
-Als we van de **assumptie** zouden uitgaan dan je **023** van **666** zou aftrekken dan kom je op **643** moeten uitkomen.  
+Dat klopt niet helemaal.
 
-Laten we de **proef op de som** nemen, je **kan** namelijk via het **umask**-commando deze **waarde wijzigen**, dit geldt wel enkel voor je bash-sessie... (als je een nieuwe sessie start wordt deze terug naar de geconfigureerde systeem-waarde gezet).  
-Stel nu we wijzigen **022** naar **023**
+Laten we dit eens illustreren met een ander voorbeeld. Met de opdracht `umask` kunnen we de umask-waarde wijzigen voor de huidige Bash-sessie. Stel dat we die wijzigen van 022 naar 023:
 
 ~~~
 student@studentdeb:~$ umask
@@ -713,7 +692,9 @@ student@studentdeb:~$ umask
 0023
 ~~~
 
-Vervolgens maken we een **nieuwe file** aan (via touch) en **bekijken** we de **permissies**.
+We verwachten dus als permissies 0666 - 0023 = 0643.
+
+Vervolgens maken we een **nieuw bestand** aan en **bekijken** we de **permissies**:
 
 ~~~
 student@studentdeb:~$ touch umasktest
@@ -722,17 +703,16 @@ student@studentdeb:~$ ls -l umasktest
 student@studentdeb:~$ 
 ~~~
 
-Wat maken we hier uit op?  
-We zien dat de modbits **niet 623** (rw-r---wx) zijn maar **644** (rw-r--r--) zijn.  
+We zien dat de modbits **niet 643** (`rw-r---wx`) maar **644** (`rw-r--r--`) zijn.  
 
-Hebben we hier **verkeerd** **geteld**?  
+Hebben we hier **verkeerd geteld**?  
 **Neen**, de eigenlijke bewerking is **geen verschil** van de **permissies** en de **umask**-waarde.
 
-Je moet dit het **umask** **eerder** bekijken als een **soort van masker** bekijken met de volgende regels:
+Je moet het umask eerder bekijken als een **soort van masker**, met de volgende regels:
 
-* Elke **modbit** (rwx) van de **originale** **permissie** wordt **vergeleken** met dezelfde **modbit** (po(rwx) binnen de **umask**
-* Is de **overeenkomstige** **modbit** binnen de **umask** **0** **behouden** we de originele **modbit** in de **permissie**
-* Staat deze echter modbit op **1** wordt deze bitmask automatisch **geforceerd** op **0** geplaatst
+* Elke **modbit** (rwx) van de **originele** **permissie** wordt **vergeleken** met dezelfde **modbit** (rwx) binnen de **umask**.
+* Is de **overeenkomstige** **modbit** binnen de **umask** **0**, dan **behouden** we de originele **modbit** in de **permissie**.
+* Staat deze modbit echter op **1**, dan wordt het overeenkomstige bit automatisch **geforceerd** op **0** gezet.
 
 Zie voor de toepassing naar onderstaande vergelijking:
 
@@ -745,8 +725,8 @@ Zie voor de toepassing naar onderstaande vergelijking:
 644 <= 420 400 400
 ~~~
 
-De waarde is nu 644 ipv 643 omdat modbits die echter al op 0 stonden (zoals de x-modbit voor others) 0 blijven.  
-Als gevolg zal 023 en 022 geen verschil uit maken voor files gezien de x-bit automatisch reeds uit staat.
+De waarde is nu 644 ipv 643 omdat modbits die al op 0 stonden (zoals de x-modbit voor other) 0 blijven.  
+Als gevolg zal een umask van 023 of 022 geen verschil uitmaken voor bestanden, aangezien de x-bit daarvoor automatisch al uit staat.
 
 Op niveau van bit-operaties (boolean algebra) wordt er een &-operatie uitgevoerd gecombineerd met een inversie...
 
@@ -754,12 +734,12 @@ Op niveau van bit-operaties (boolean algebra) wordt er een &-operatie uitgevoerd
        GETALLEN       BITS
        rwx rwx rwx    rwx rwx rwx
 666 => 420 420 420 => 110 110 110
-023 => 000 020 021 => 111 101 100 (~000 000 010)
+023 => 000 020 021 => 111 101 100 (~000 010 011)
        -----x---x-  & -----------
 644 <= 420 400 400 <= 110 100 100
 ~~~
 
-In code (c-code bijvoorbeeld) zou je dit als volgt kunnen uitdrukken:
+In code (C-code bijvoorbeeld, zie het vak "Embedded programmeren") zou je dit als volgt kunnen uitdrukken:
 
 ~~~c
 default_permissie = 666;
@@ -772,24 +752,24 @@ permissie = default_permissie & ~(umask);
 #### Opgave
 
 In deze oefening maak je een map aan die gebruikers binnen dezelfde groep kunnen gebruiken 
-om bestanden te delen een waarop de hele groep toegang toe heeft.  
+om bestanden te delen waartoe de hele groep toegang heeft.  
 
 De **setup**:
 
-* **4 gebruikers**
+* **vier gebruikers**
   * **hilde, marie, jan, joris**
-  * **password** is dezelfde als hun **naam**
-* Een group noem je **operators**
-  * De **4** voorgaande **gebruikers** behoren tot deze **group**
-* Een directory /home/operators
-  * Enkel **root** en **members** van de **operator-group** kunnen **lezen, creëren en verwijderen** van files binnen deze folder
-  * Files die je aanmaakt binnen deze folder worden **automatisch toegekend** aan de **groep operators**
-  * Let wel, elke **gebruiker** mag **enkel files verwijderen** die **zij/hij heeft aangemaakt**
+  * **wachtwoord** is hetzelfde als hun **naam**
+* Een groep noem je **operators**
+  * De vier voorgaande **gebruikers** behoren tot deze **groep**
+* Een directory `/home/operators`
+  * Enkel **root** en leden van de groep **operators** kunnen bestanden binnen deze directory **lezen, creëren en verwijderen** 
+  * Bestanden die je aanmaakt binnen deze map worden **automatisch toegekend** aan de groep **operators**
+  * Let wel, elke **gebruiker** mag **enkel bestanden verwijderen** die **zij/hij heeft aangemaakt**
 
-Gebruik in je commando's de numerieke variant.
+Gebruik in je opdrachten de numerieke permissies.
 
-* **Bewaar** al de commando's die je hiervoor gebruikte (in volgorde) in een in een **script** (**make_operators.sh**)
-* **Demonstreer** deze permissies in de **shell** en copy-paste deze bash-sessie in een aparte text-file (permissions.txt)
+* **Bewaar** al de opdrachten die je hiervoor gebruikte (in volgorde) in een **script** (`make_operators.sh`)
+* **Demonstreer** deze permissies in de **shell** en copy-paste deze bash-sessie in een apart tekstbestand (permissions.txt)
 
 Bonus-vraag:
 
@@ -797,9 +777,9 @@ Bonus-vraag:
 
 #### Oplossing
 
-Voor het **alleereerste** **deel** kon je bijna alle **commando's** in een **script** plaatsen.  
-Met **uitzondering** van het initialiseren van het **password**, hier moet je dit interactief doen
-(er bestaan manieren om dit ook binnen het script te doen maar dat is buiten het bestek van deze cursus)
+Voor het **eerste deel** kon je bijna alle opdrachten in een **script** plaatsen.  
+Met **uitzondering** van het initialiseren van het wachtwoord, dit moet je interactief doen.
+(Er bestaan manieren om dit ook binnen het script te doen, maar dat valt buiten het bestek van deze cursus.)
 
 ##### Script
 

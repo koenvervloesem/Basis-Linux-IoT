@@ -1,62 +1,55 @@
-## Users en groups
+## Gebruikers en groepen
 
-### Users
+### Gebruikers 
 
-Linux gebruikers gebruiken (net als bij andere systemen) een username en passwoord om op een Linux-machine in te loggen.
+Linux-gebruikers hebben - net als op andere systemen - een gebruikersnaam en wachtwoord om in te loggen.
 
-Elke username is binnen Linux verbonden aan een **uniek** **identificatienummer** de gebruikers-ID of **UID**.
+Elke gebruikersnaam is in Linux verbonden aan een **uniek identificatienummer**: het gebruikers-ID of **UID** (*user ID*).
 
-Deze user (met passwoord) wordt gebruikt om in te loggen en zich te authenticeren op een Linux-systeem?
+Deze gebruiker (met bijbehorend wachtwoord) heeft twee functies:
 
-Naast de **authenticatie** wordt deze login gebruikt om toegang of **authorisatie** te krijgen op verschillende systeem-elementen (folders, files, processen, services, ...).
+* **Authenticatie**: is de gebruiker wie hij/zij beweert te zijn?
+* **Autorisatie**: mag de gebruiker toegang krijgen tot het gevraagde bestand, proces, dienst, ...?
 
-#### Soorten van users
+#### Soorten gebruikers
 
-We onderscheiden 3 soorten user:
+We onderscheiden drie soorten gebruikers:
 
 * De **superuser** of **root**:  
-  Wordt gebruikt voor **systeem-administratie** en/of **configuratie**.  
-  De naam van deze user is **root** en heeft een **UID** van **0**.  
-  Deze superuser heeft in principe **access tot het gehele systeem** (files, processen, ...)
-* **Gewone user-accounts**:  
+  Wordt gebruikt voor **systeembeheer** en/of **-configuratie**.  
+  Deze superuser heeft in principe **toegang tot het hele systeem** (bestanden, processen, ...)
+  De naam van deze gebruiker is **root**, met een **UID** van **0**.  
+* **Gewone gebruikersaccounts**:  
   **Gewone gebruikers** die **inloggen** op het systeem.  
-  Binnen de setup van Debian hebben we reeds zo een user aangemaakt (student)
-* **Systeem-accounts**:  
-  Sommige users zijn niet gemaakt om in te loggen maar worden gebruikt om specifieke processen en/of services te beheren.  
-  Deze services (in background) - of daemons - hoeven meestal niet als superuser te worden uitgevoerd.  
-  Deze gebruikers loggen niet interactief in (en zijn ook meestal geen gebruikers)
+  In het Debian-systeem in onze virtuele machine hebben we zo'n gebruiker aangemaakt: student  
+  Hebben een UID van **1000+**.
+* **Systeemaccounts**:  
+  Sommige gebruikers zijn niet bedoeld om in te loggen, maar hebben als functie om specifieke processen en/of services te beheren.  
+  Deze services (ook wel **daemons** genoemd) draaien in de achtergrond. Ze hoeven meestal niet als superuser te worden uitgevoerd.  
+  Hebben een UID van **1-999**.
 
-#### Ranges voor UID's
+#### Informatie over je eigen gebruiker
 
-Voor UID's zijn ook specifieke ranges voorzien:
-
-* UID **0** wordt altijd toegewezen aan de **superuser**-account, root.
-* UID **1-999** voor **systemusers**
-* UID **1000+** is het bereik dat beschikbaar is voor toewijzing aan **normale users**.
-
-#### Informatie over je eigen user
-
-Een aantal handige **commando's** om **informatie** te verkrijgen over je user.  
-Als je de username wil printen kan je **logname** gebruiken
+Linux kent een aantal handige opdrachten om **informatie** te verkrijgen over je gebruiker.  
+Als je de gebruikersnaam waarmee je ingelogd bent wil tonen, gebruik je de opdracht `logname`:
 
 ~~~
 student@studentdeb:~$ logname
 student
 ~~~
 
-Als je meer info wil weten kan je het commando **id** gebruiken.  
-Deze geeft je meer informatie:
+Voor meer informatie is de opdracht `id` nuttig. Die geeft:
 
 * Je numeriek **UID**
-* De **GID** van de **primaire group** waartoe je behoort
-* Een **lijst** van alle **groups** en hun GID's
+* De **GID** van de **primaire groep** waartoe je behoort
+* Een **lijst** van alle **groepen** en hun GID's
 
 ~~~
 student@studentdeb:~$ id
 uid=1000(student) gid=1000(student) groups=1000(student),24(cdrom),25(floppy),29(audio),30(dip),44(video),46(plugdev),109(netdev),112(bluetooth),116(lpadmin),119(scanner)
 ~~~
 
-Wil je **enkel** de **lijst** van de **group-namen** waar je toe behoort afdrukken dan kan dit via het commando **groups**
+Wil je alleen de lijst van de groepen waartoe je behoort tonen, gebruik dan de opdracht `groups`:
 
 ~~~
 student@studentdeb:~$ groups
@@ -65,12 +58,12 @@ student cdrom floppy audio dip video plugdev netdev bluetooth lpadmin scanne
 
 #### Inloggen als de superuser
 
-Andere users en groupen beheren kan niet zomaar met een standaard user-account.  Hiervoor moet je inloggen als superuser of **root**.  
+Andere gebruikers en groepen beheren kan niet zomaar met een standaard gebruikersaccount.  Hiervoor moet je inloggen als superuser of **root**.  
 
-Je kan dit doen via de su ofwel "**s**witch **u**ser".  
-Dit commando staat dus niet voor superuser want je kan dit ook gebruiken om met eender welke ander user in te loggen.
+Je kan dit doen via de opdracht `su`, ofwel "**s**witch **u**ser".  
+De naam van deze opdracht staat dus niet voor superuser, want je kan ze ook gebruiken om met gelijk welke ander gebruiker in te loggen.
 
-Als je echter in het root-account wil inloggen gebruik je het commando **su -** als volgt:
+Om als de root-account in te loggen, gebruik je `su -`:
 
 ~~~
 student@studentdeb:~$ su -
@@ -78,54 +71,52 @@ Password:
 root@studentdeb:~#
 ~~~
 
-Let wel dat je hier een hyphen (streepje) plaatst, anders gaan er bepaalde scripts en environment-variabelen gelinkt aan de root-user niet uitgevoerd worden.
+Vergeet je de `-`, dan worden de omgevingsvariabelen niet aangepast aan de root-gebruiker.
 
 > *Waarschuwing*  
-> Met deze **root-user** kan je zowat alles doen op je systeem.  
-> Maar met **"great power"** komen er ook **"big responsabilities"**.  
-> Bij **foutief gebruik** van deze user kan het zijn dat je
-> **onherstelbare schade** toebrengt aan je systeem waardoor
-> dat het systeem niet meer correct werkt (of zelfs niet meer boot).  
-> Gebruik dus deze superuser enkel wanneer het absoluut noodzakelijk is!!!
+> Als **root-gebruiker** kan je zowat alles doen op je systeem.  
+> Maar vergeet niet: **"With great power comes great responsibility"**.  
+> Bij **foutief gebruik** kan het zijn dat je
+> **onherstelbare schade** toebrengt aan je Linux-systeem, waardoor
+> het niet meer correct werkt (of zelfs niet meer opstart).  
+> Log dus alleen als superuser in wanneer het absoluut noodzakelijk is.
 
-#### User toevoegen
+#### Gebruiker toevoegen
 
 Laten we starten met het toevoegen van een gebruiker.  
-Hiervoor gebruiken we het commando **useradd**, let wel dat we dit commando dienen uit te voeren met **root-permissies**.
+Hiervoor gebruiken we de opdracht `useradd`. Let op: we dienen deze opdracht uit te voeren met **root-permissies**.
 
-Hieronder voegen we een gebruiker toe, bemerk dat er een aantal opties aan toegevoegd zijn:
+Hieronder voegen we een gebruiker toe. We hebben daarvoor een aantal opties nodig:
 
 ~~~
 root@studentdeb:~# useradd -c "My personal user" -m -s /bin/bash bart
 ~~~
 
-De opties die we hieronder gebruikte zijn:
+De gebruikte opties zijn:
 
-* -c, --comment COMMENT  
+* `-c`, `--comment COMMENT`  
   Voegt de echte naam (of schermnaam) van de gebruiker toe aan het opmerkingenveld.
-* -m, --create-home  
-  Zorgt ervoor dat de gebruiker een home-directory verkrijgt (als deze nog niet bestaat)
-* -s, --shell SHELL  
-  Geef een bepaalde login-shell voor deze user bij het inloggen
+* `-m`, `--create-home`  
+  Zorgt ervoor dat de gebruiker een home-directory verkrijgt (als deze nog niet bestaat).
+* `-s`, `--shell SHELL`  
+  Geef een specifieke login-shell voor deze gebruiker bij het inloggen.
 
+Daarnaast kan je nog een aantal andere opties toevoegen:
 
-Daarnaast kan je nog een aantal andere opties gaat toevoegen:
-
-* -g, --gid GROUP  
-  Geef de primaire groep voor het gebruikersaccount op.
-* -G, --groups GROUPS  
+* `-g`, `--gid GROUP`  
+  Geef de primaire groep voor de gebruikersaccount op.
+* `-G`, `--groups GROUPS`  
   Geef een door komma's gescheiden lijst op van aanvullende groepen voor
-  het gebruikersaccount.
-* -a, --append  
-  Gebruikt samen met -G om aan te duiden dan je groepen gaat toevoegen
-* -L, --lock  
-  Vergrendel het gebruikersaccount.
+  de gebruikersaccount.
+* `-a`, `--append`  
+  Gebruikt samen met `-G` om aan te duiden dat je groepen gaat toevoegen
+* `-L`, `--lock`  
+  Vergrendel de gebruikersaccount.
 
+#### Wachtwoord aanpassen
 
-#### Passwoord aanpassen
-
-Een 2de stap is de user een password geven (hetgeen nodig is om in te loggen).  
-Dit kan met de het commando **passwd** zoals hieronder geillustreerd:
+Een tweede stap om te kunnen inloggen is de gebruiker een wachtwoord geven.
+Dat kan met de opdracht `passwd`:
 
 ~~~
 root@studentdeb:~# passwd bart
@@ -135,10 +126,10 @@ passwd: password updated successfully
 root@studentdeb:~# 
 ~~~
 
-#### Switch user
+#### Wissel van gebruiker
 
-Zoals we eerder vermelden kan je su gebruiken om vanuit een shell te **wisselen** van **user**.  
-Het volstaat om na su je naam te vermelden (als je niets vermeld zal su proberen in te loggen als de root-user)
+Zoals we eerder vermeldden, kan je met de opdracht `su` vanuit een shell **wisselen** van **gebruiker**.  
+Het volstaat om na `su` je naam te vermelden (zonder naam zal `su` proberen in te loggen als de root-gebruiker):
 
 ~~~
 student@studentdeb:~$ su - bart
@@ -150,10 +141,12 @@ bart@studentdeb:~$ pwd
 bart@studentdeb:~$
 ~~~
 
-#### /etc/passwd
+Merk op dat je ook hier `-` na `su` toevoegt om de omgevingsvariabelen juist te zetten.
 
-De informatie die je meegaf aan adduser en andere date wordt (standaard) bijgehouden in een file /etc/passwd.  
-Als je de laatste 10 lijnen bekijkt (via het commando tail) kan je deze bekijken
+#### Wachtwoordbestand
+
+De informatie die je meegaf aan `useradd` wordt samen met andere gegevens standaard bijgehouden in een bestand `/etc/passwd`.  
+Bekijk bijvoorbeeld de laatste tien regels van dit bestand (via de opdracht `tail`):
 
 ~~~
 root@studentdeb:~# tail -10 /etc/passwd
@@ -169,36 +162,35 @@ vboxadd:x:998:1::/var/run/vboxadd:/bin/false
 bart:x:1001:1001:My personal user:/home/bart:/bin/bash
 ~~~
 
-Als we de user bart bekijken...
+Kijken we nu eens in detail naar de regel voor gebruiker bart...
 
 ~~~
 bart:x:1001:1001:My personal user:/home/bart:/bin/bash
 ~~~
 
-...zien we volgende gegevens
+...dan zien we volgende gegevens:
 
 * **bart** =>  
-  **Gebruikersnaam** voor deze gebruiker (bart).
+  **Gebruikersnaam** voor deze gebruiker.
 * **x** =>  
-  Het **wachtwoord** van de gebruiker werd hier **versleuteld** opgeslagen. Dat is verplaatst naar de
-  /etc/shadow-bestand, dat later wordt behandeld. Dit veld moet altijd x zijn.
+  Het **wachtwoord** van de gebruiker werd hier **versleuteld** opgeslagen. Dat is verplaatst naar het
+  bestand `/etc/shadow`, dat later wordt behandeld. Dit veld moet altijd x zijn.
 * **1001** =>  
-  Het **UID**-nummer voor deze gebruikersaccount.
+  Het **UID** voor deze gebruikersaccount.
 * **1001** =>  
-  Het **GID**-nummer voor de primaire groep van dit gebruikersaccount (zie verder).
-* My personal user =>  
+  Het **GID** voor de primaire groep van deze gebruikersaccount (zie verder).
+* **My personal user** =>  
   **De echte naam** of **commentaar** voor deze gebruiker.
 * **/home/bart** =>  
-  De **homedirectory** voor deze gebruiker.  
+  De **home-directory** voor deze gebruiker.  
   Dit is de initiële werkdirectory wanneer de shell start.
 * **/bin/bash/** =>  
-  Het **standaard** **shell**-programma voor deze gebruiker, dat draait bij inloggen (/bin/bash).  
-  Voor een gewone gebruiker, dit is normaal gesproken het programma dat de opdrachtregelprompt van de gebruiker geeft.  Een systeemgebruiker zou /sbin/nologin kunnen gebruiken als interactieve logins niet zijn toegestaan ​​voor die gebruiker.
+  Het **standaard** **shell**-programma voor deze gebruiker.  
+  Voor een gewone gebruiker is dit is normaal gesproken het programma dat bij inloggen de opdrachtregelprompt toont. Voor een systeemgebruiker zou hier `/sbin/nologin` kunnen staan als interactieve logins niet zijn toegestaan.
 
-#### /etc/shadow
+#### Schaduwbestand 
 
-De passwoorden zelf worden in **versleutelde vorm** in een **aparte file** bijgehouden.  
-Deze file noemt **/etc/shadow**
+De wachtwoorden zelf worden in **versleutelde vorm** in een **afzonderlijk bestand** bijgehouden, `/etc/shadow`.
 
 ~~~
 root@studentdeb:~# tail -10 /etc/shadow
@@ -215,16 +207,16 @@ bart:$y$j9T$XjMYmgIXJKlf5XiUZTWFe0$skqNAAVJg6a1gPETcar/q8FMxzBH5mHuyXazVGWjpm1:1
 root@studentdeb:~# 
 ~~~
 
-### Groups
+### Groepen
 
-Een groep is een groepering gebruikers waarmee.  
-Groepen kunnen bijvoorbeeld worden gebruikt om toegang tot bestanden te verlenen aan een groep gebruikers in plaats van aan slechts één gebruiker.
+Je kunt in Linux meerdere gebruikers aan een groep toekennen.
+Zo kun je bijvoorbeeld eenvoudig in één keer toegang tot bestanden verlenen aan een groep gebruikers in plaats van aan één gebruiker.
 
-Net als gebruikers hebben groepen groepsnamen om het werken met hen te vergemakkelijken.  
-Intern, het systeem zal Linux groepen onderscheiden door de unieke identificatienummer 
-die eraan is toegekend, de groeps-ID of GID.
+Net als gebruikers gebruikersnamen hebben, hebben groepen groepsnamen.
+Intern zal Linux groepen echter onderscheiden door het unieke identificatienummer 
+dat eraan is toegekend, de groeps-ID of GID.
 
-De toewijzing van groepsnamen aan GID's wordt gedefinieerd het bestand /etc/group om informatie over lokale groepen op te slaan.
+De toewijzing van groepsnamen aan GID's wordt gedefinieerd in het bestand `/etc/group`:
 
 ~~~
 root@studentdeb:~# tail -10 /etc/group
@@ -241,35 +233,35 @@ bart:x:1001:
 root@studentdeb:~# 
 ~~~
 
-In bijvoorbeeld de systeem-user scanner:
+Kijk bijvoorbeeld naar de regel voor de groep scanner:
 
 ~~~
 scanner:x:119:saned,student
 ~~~
 
-Vindt je de volgende info:
+Hierin vind je de volgende info:
 
-* scanner =>  
+* **scanner** =>  
   Groepsnaam voor deze groep.
-* x =>  
-  Veld voor groepswachtwoord. Dit veld moet altijd x zijn.
-* 119 =>  
-  Het GID-nummer voor deze groep (10000).
-* saned,student =>  
-  Een lijst met gebruikers die lid zijn van deze groep als aanvullende groep
+* **x** =>  
+  Veld voor het groepswachtwoord. Dit veld moet altijd x zijn.
+* **119** =>  
+  Het GID voor deze groep.
+* **saned,student** =>  
+  Een lijst met gebruikers die deze groep als aanvullende groep hebben.
 
-#### user aan groep toevoegen
+#### Gebruiker aan een groep toevoegen
 
-Met het commando **groups** kan je nakijken tot welke groepen je behoort.  
-Standaard wordt er een groep aangemaakt met dezelfde naam als je user (zoals gedemonstreerd hieronder)
+Met de opdracht `groups` kan je nakijken tot welke groepen je behoort.  
+Standaard wordt er een groep aangemaakt met dezelfde naam als je gebruiker:
 
 ~~~
 root@studentdeb:~# groups bart
 bart : bart
 ~~~
 
-Als je de user bart bijvoorbeeld wil **toevoegen** aan een **bestaande groep** kan dit via het commando **usermod**.  
-usermod bevat **dezelfde** **opties** zoals **useradd**, in dit geval gebruiken we de optie  "usermod -aG" om een een group toe te voegen.
+Als je de gebruiker bart bijvoorbeeld wil **toevoegen** aan een **bestaande groep**, kan dit met de opdracht `usermod`.  
+Deze opdracht herkent **dezelfde opties** als `useradd`. In dit geval gebruiken we `usermod -aG` om een een groep toe te voegen:
 
 ~~~
 root@studentdeb:~# usermod -aG scanner bart
@@ -278,42 +270,41 @@ bart : bart scanner
 root@studentdeb:~# 
 ~~~
 
-#### group aanmaken
+#### Groep aanmaken
 
-In bovenstaand geval voegden we een bestaande groep toe, wat als je een nieuwe groep wil aanmaken?  
+In bovenstaand geval voegden we een bestaande groep toe. Maar wat als je een nieuwe groep wil aanmaken?  
 
-Dit kan via het commando **groupadd**.  
-We maken bijvoorbeeld een groep students aan.
+Dat kan via de opdracht `groupadd`.  
+We maken bijvoorbeeld een groep students aan:
 
 ~~~
 root@studentdeb:~# groupadd students
 ~~~
 
-Je moet hier enkel als argument de naam van de groep toevoegen.  
-Vervolgens voegen de 2 huidige users (bart en student) toe aan deze groep (via usermod).
+Vervolgens voegen we de twee huidige gebruikers (bart en student) toe aan deze groep (via `usermod`):
 
 ~~~
 root@studentdeb:~# usermod -aG students bart
 root@studentdeb:~# usermod -aG students student
 ~~~
 
-#### users van een groep oplijsten
+#### Gebruikers van een groep tonen
 
-Vervolgens kan je het commando **groupmems** gebruiken om de leden van deze groep op te lijsten.
+Vervolgens kan je de opdracht `groupmems` gebruiken om de leden van deze groep te tonen:
 
 ~~~
 root@studentdeb:~# groupmems -g students --list
 bart  student 
 ~~~
 
-#### Primaire en secundaire user-groepen
+#### Primaire en secundaire groepen
 
 Elke gebruiker heeft precies één primaire groep.  
-Voor lokale gebruikers is dit de groep vermeld op GID-nummer in
-het /etc/passwd-bestand.
+Voor lokale gebruikers is dit de groep met het GID vermeld in
+het bestand `/etc/passwd`.
 
 Standaard is dit de groep die eigenaar is van nieuwe bestanden die door de gebruiker zijn gemaakt.  
 Normaal gesproken - wanneer je een nieuwe gewone gebruiker aanmaakt - wordt er een nieuwe groep met dezelfde naam als die gebruiker aangemaakt.
 
-Deze groep wordt gebruikt als de primaire groep voor de nieuwe gebruiker, en die gebruiker is de enige
-lid van deze privé-gebruikersgroep.  Het maakt het beheer van het files en directories (en de permissies ervan eenvoudiger.  (dit komt later in deze cursus nog terug)
+Deze groep wordt gebruikt als de primaire groep voor de nieuwe gebruiker, en die gebruiker is het enige
+lid van deze groep. Het maakt het beheer van de bestanden en directory's (en de permissies ervan) eenvoudiger.
