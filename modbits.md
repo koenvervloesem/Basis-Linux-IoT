@@ -488,7 +488,7 @@ We hadden eerder al drie types van permissies gezien:
 * **w** => write of schrijfrechten
 * **x** => execute oftewel het recht om een bestand uit te voeren als programma
 
-Naast deze hebben we drie andere mogelijkheden: suid, sgid en sticky bit.
+Naast deze hebben we drie andere mogelijkheden: SUID, SGID en sticky bit.
 
 #### SUID 
 
@@ -548,7 +548,7 @@ total 0
 bart@studentdeb:/home/student/testa$ 
 ~~~
 
-#### sticky bit
+#### Sticky bit
 
 De sticky bit is alleen van toepassing op directory's. Als je dit voor een directory instelt, kunnen bestanden in die directory alleen verwijderd worden door de eigenaar van het bestand, de eigenaar van de directory, of de rootgebruiker. Anderen kunnen dit niet, ook al hebben ze schrijf- en uitvoerrechten op de directory.
 

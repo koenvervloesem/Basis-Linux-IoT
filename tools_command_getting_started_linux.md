@@ -1125,6 +1125,8 @@ echo "Hello World"
 echo "Het is vandaag $(date)"
 ~~~
 
+Met `$(date)` voer je de opdracht `date` uit en krijg je de uitvoer als een string. Die kun je dan achter de string "Het is vandaag" opnemen om te tonen met de opdracht `echo`.
+
 #### Commentaar
 
 Op elke andere regel dan de eerste kan je ook het hash-teken of `#` gebruiken als een commentaarteken (zoals in Python).  
@@ -1320,7 +1322,7 @@ Als je dan de uitvoer bestudeert, zie je:
 ### In- en uitvoer van programma's
 
 Programma's en scripts hebben meestal in- en uitvoer nodig om te kunnen werken.  
-Op de command line zijn er drie belangrijke elementen:
+Op de opdrachtregel zijn er drie belangrijke elementen:
 
 * Invoer bij de **start** van het **programma**: **argumenten**
 * In- en uitvoer tijdens de **uitvoering** van het programma: **stdin, stdout en stderr**
@@ -1340,7 +1342,7 @@ EINDE PROGRAMMA:       exit-code
 
 #### Invoer bij de start: argumenten (en opties)
 
-Het eerste element hebben we al een aantal maal toegepast bij het gebruiken van diverse opdrachten.  
+Het eerste element hebben we al een aantal keren toegepast bij het gebruiken van diverse opdrachten.  
 Als je een programma aanroept, kan je daar namelijk een aantal extra argumenten aan doorgeven.
 
 ~~~

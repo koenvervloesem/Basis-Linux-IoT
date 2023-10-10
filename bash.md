@@ -2,18 +2,17 @@
 
 ### Patterns
 
-De Bash shell beschikt over verschillende manieren om het werken met een command-line te vergemakkelijken.  
-Eerder hadden we gezien dat we features gezien zoals:
+Bash beschikt over verschillende manieren om het werken op de opdrachtregel te vergemakkelijken.  
+Eerder hadden we functionaliteit gezien zoals:
 
-* **Tab-completion**: hij het zoeken naar commando's zal de shell een poging doe om deze te vervolledigen (bij het gebruik van tab)
-* **History**
-  * Met de **up** en **down**-**keys** kan je door de meest recente commando's scrollen
-  * **Recall-mode** of **reverse-i-search**  
-    via **Ctrl + r** kan je door alle commando's browsen overeenstemmende die een bepaalde tekst bevatten
-  * Het **history-command**
-  * ...
+* **Tab completion**: Als je op de Tab-toets drukt tijdens het typen van opdrachten of bestandsnamen zal de shell een poging doen om deze te vervolledigen.
+* **Geschiedenis**
+  * Met de pijltjes naar boven en naar beneden kun je door de recentste opdrachten scrollen.
+  * **Recall mode** of **reverse-i-search**  
+    via **Ctrl+R** kun je door alle opdrachten zoeken die een bepaalde tekst bevatten
+  * De opdracht `history`
 
-Een aantal andere **features** die je het leven gemakkelijker maken zijn:
+Een aantal andere functies die je het leven gemakkelijker maken zijn:
 
 * **Wildcards**/pattern matching (of globbing)
 * **Tilde** expansion
@@ -22,10 +21,10 @@ Een aantal andere **features** die je het leven gemakkelijker maken zijn:
 
 #### Globbing/wildcards
 
-Bij het gebruik van **ls** (of andere commando die als input files nodig hebben) kan je 
-via patronen een selectie maken van bestanden die met een bepaald patroon over eenkomen.
+Bij het gebruik van `ls` (of andere opdrachten die als invoer bestanden nodig hebben) kun je 
+via patronen een selectie maken van bestanden.
 
-In onderstaande directory zie je heel veel files
+In onderstaande directory zie je veel bestanden:
 
 ~~~
 student@studentdeb:~$ ls -l
@@ -61,12 +60,7 @@ drwxr-xr-x 2 student student   4096 Nov 24 14:05  test_dir
 ...
 ~~~
 
-Als je echter je zoekactie wil beperken/filteren tot files en directories **startende** met bijvoorbeeld "**hello**" 
-kan je hiervoor gebruikmaken van het ***-meta-karakter**
-
-Dit karakter matcht met **0 tot meerdere karakters**
-
-Onderstaande expressie zal bijvoorbeeld enkel de files en directories oplijsten startende met hello
+Stel dat je nu de uitvoer wilt beperken/filteren tot bestanden en directory's waarvan de naam begint met **hello**, dan gebruik je het teken `*` na **hello**:
 
 ~~~
 student@studentdeb:~$ ls -l hello*
@@ -90,8 +84,9 @@ helloworld:
 total 0
 ~~~
 
-Je kan deze wildcard overal toevoegen als je bijvoorbeeld alle files wil selecteren.  
-Stel dat je **alle shell-files** wil selecteren **startende met hello**:
+Dit teken `*` komt overeen met **0 of meer willekeurige tekens**.
+
+Je kan deze *wildcard* overal in een bestandsnaam toevoegen. Bijvoorbeeld om alle shell-bestanden te bekijken waarvan de naam begint met **hello** en de extensie eindigt met **sh**:
 
 ~~~
 student@studentdeb:~$ ls -l hello*sh
@@ -100,7 +95,7 @@ student@studentdeb:~$ ls -l hello*sh
 student@studentdeb:~$ 
 ~~~
 
-Je bent ook niet beperkt tot 1 metakarakter:
+Je kunt ook meerdere wildcards gebruiken: 
 
 ~~~
 student@studentdeb:~$ ls -l h*w*sh
@@ -109,25 +104,20 @@ student@studentdeb:~$ ls -l h*w*sh
 
 #### Pattern matching
 
-Het karakter **``*``** matcht met eender welke string, maar er zijn er nog meer van deze symbolen die je kan gebruiken.  
-Je kan bijvoorbeeld ook gaan matchen op 1 enkel karakter met het ?-karakter.
+Het teken `*` matcht met gelijk welke reeks tekens, maar er zijn er nog meer van deze symbolen.
+Je kunt bijvoorbeeld ook matchen op één willekeurig teken, namelijk met de wildcard `?`.
 
-
-~~~
-* => Eender welke sequentie van karakters (string), maar ook met niets
-? => een enkel karakter
-~~~
-
-Gegeven het volgende **voorbeeld**:
+Gegeven het volgende voorbeeld:
 
 ~~~
 student@studentdeb:~$ ls file*
 file  file1  file11  file2 filea fileb
 ~~~
 
-In dit geval hebben we **4 files** die **starten** met "**file**": file, file1, file11 en file2.  
-Met het * hebben we alle files geselecteerd die starten met file (ook file zelf)  
-Vervolgens met het ?-karakter selecteer je alle files (startende met file) gevolgd door 1 karakter.
+In dit geval hebben we zes bestanden waarvan de naam begint met **file**: file, file1, file11, file2, filea en fileb.  
+Met de wildcard `*` hebben we alle bestanden geselecteerd die starten met **file**, ook file zelf.  
+
+Vergelijk dit met het volgende:
 
 ~~~
 student@studentdeb:~$ ls file?
@@ -135,7 +125,9 @@ file1  file2 filea fileb
 student@studentdeb:~$ 
 ~~~
 
-Als je bijvoorbeeld wil **testen** op **2 karakter**s gebruik je gewoon **2 vraagtekens**:
+Hiermee selecteren we alle bestanden waarvan de naam begint met **file** en dan nog één teken heeft. De bestanden **file** en **file11** vallen daar dus niet onder: het eerste heeft een teken te weinig en het tweede een teken te veel.
+
+Je kunt ook meerdere keren `?` gebruiken:
 
 ~~~
 student@studentdeb:~$ ls file??
@@ -143,16 +135,16 @@ file11
 student@studentdeb:~$ 
 ~~~
 
-##### Karakter-klassen
+##### Klassen van tekens
 
-Daarnaast kan je ook **testen** op **specifieke karakters**:
+Daarnaast kun je ook testen op **specifieke tekens**:
 
 ~~~
-[abc] => 1 van de karakters (in het voorbeeld a of b of c) 
-[!abc] of [^abc] => negatie van het vorige => eender welk karakter (in het voorbeeld a of b of c) 
+[abc] => één van de tekens a, b of c 
+[!abc] of [^abc] => gelijk welk karakter behalve a, b of c 
 ~~~
 
-Met als volgend **voorbeeld**...
+Bijvoorbeeld
 
 ~~~
 student@studentdeb:~$ ls file?
@@ -163,26 +155,26 @@ student@studentdeb:~$ ls file[!ac]
 file1  file2  fileb
 ~~~
 
-Of specifieke karakter-klassen
+Je hebt ook klassen van tekens:
 
 ~~~
-[[:alpha:]] => Alfabetische karakters (a tem z)
-[[:lower:]] => Zelfde als voorgaande maar lowercase
-[[:upper:]] => Zelfde als voorgaande maar uppercase
-[[:digit:]] => Any single digit from 0 to 9.
-[[:alnum:]] => Alfanumerieke karaketers
-[[:punct:]] => Elke printbaar karakter
-[[:space:]] => Eender welk leeg karakter (spaties, tabs, carriage-returns,...)
+[[:alpha:]] => Alfabetische tekens (a tot en met z)
+[[:lower:]] => Zelfde als voorgaande maar alleen kleine letters
+[[:upper:]] => Zelfde als voorgaande maar alleen hoofdletters
+[[:digit:]] => Cijfers van 0 tot en met 9
+[[:alnum:]] => Alfanumerieke tekens (dus alfabetische en cijfers)
+[[:punct:]] => Leestekens
+[[:space:]] => Witruimte (spaties, tabs, nieuwe regel, ...)
 ~~~
 
-Als we op voorgaand voorbeeld nakijken voor files startende met file maar gevolgd door 1 nummer:
+Zo kunnen we dus in bestandsnamen filteren op het voorkomen van één cijfer:
 
 ~~~
 student@studentdeb:~$ ls file[[:digit:]]
 file1  file2
 ~~~
 
-...of gevolgd door 2 nummers...
+...of twee:
 
 ~~~
 student@studentdeb:~$ ls file[[:digit:]][[:digit:]]
@@ -191,8 +183,8 @@ file11
 
 #### Tilde expansion
 
-We kennen de **tilde** al om te verwijzen de **home-directory**.  
-Je kan dit echter ook om naar de **home-directory** te verwijzen van een **andere user**:
+We kennen de **tilde** (`~`) al om te verwijzen de **home-directory** van de gebruiker.  
+Je kunt er echter ook mee verwijzen naar de home-directory **van een andere gebruiker**:
 
 ~~~
 student@studentdeb:~$ echo ~root
@@ -201,7 +193,6 @@ student@studentdeb:~$ echo ~user
 /home/user
 student@studentdeb:~$ echo ~/glob
 /home/user/glob
-$
 ~~~
 
 #### Brace expansion
