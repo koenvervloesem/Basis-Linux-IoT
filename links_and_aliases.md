@@ -1,23 +1,19 @@
 ## Links en aliassen
 
-2 handige tools binnen een Linux File Systeem die je dient te begrijpen zijn links en aliassen.  
-Deze zijn 2-"shortcut"-achtige mechanismes, hetéén op commando-niveua, de andere op file-niveau.
+Twee handige tools binnen Linux-systeem zijn links en aliassen. Je kunt beide beschouwen als een soort *shortcuts*, één op het niveau van bestanden, het andere op het niveau van opdrachten. 
 
 ### Alias
 
-Linux-gebruikers moeten vaak 1 commando keer op keer gebruiken.  
-Zeker als die lange commando's zijn kan dit je productiviteit aantasten.
+Als Linux-gebruiker moet je vaak een specifieke opdracht keer op keer gebruiken.  
+Zeker als dit opdrachten met lange opties zijn, kan dit je productiviteit aantasten.
 
-Om dit te verhelpen bestaat het concept van een alias.  
-Je kan jezelf heel wat tijd besparen door aliassen te maken voor een aantal van je meest gebruikte opdrachten.  
-
-Aliassen zijn als aangepaste shortcuts die je kan om een bestaand commando te verrijken.  
-
+Om dit te verhelpen, bestaat het concept van een **alias**.  
+Je kunt jezelf heel wat tijd besparen door aliassen te maken voor een aantal van je meest gebruikte opdrachten.  
 
 #### Aliassen bekijken
 
-De kans is groot dat je al aliassen gebruikt op je Linux-systeem.  
-Je kan alle (reeds bestaande) aliassen die in je shell-sessie geladen zijn via het commando **alias**.
+De kans is groot dat je al aliassen gebruikt op je Linux-systeem, omdat die al in een standaardconfiguratie aangemaakt zijn.  
+Je kunt alle (reeds bestaande) aliassen die in je shell-sessie geladen zijn via de opdracht `alias` opvragen:
 
 ~~~
 [student@fedora ~]$ alias
@@ -36,28 +32,30 @@ alias zgrep='zgrep --color=auto'
 [student@fedora ~]$ 
 ~~~
 
-#### Commando's overschrijven
-
-Zoals je ziet zijn er al een deel **aliassen** geladen.  
-Ook bijzonder om te zien is dat een aantal aliassen worden **overschreven**.
-
-Een alias laat namelijk - naast het vormen van nieuwe commando's - ook toe dat bestaande commando's worden overschreven.
-
-Zo wordt in veel systemen het ls-commando (oplijsten files en directories) overschreven om automatisch kleuren te tonen.
+Kijk bijvoorbeeld naar de volgende regel:
 
 ~~~
-...
+alias ll='ls -l --color=auto'
+~~~
+
+Die regel wil zeggen dat het systeem een alias `ll` kent, die gedefinieerd is als `ls -l --color=auto`. Als je dus `ll` intypt in je shell, voert die in de plaats `ls -l --color=auto` uit.
+
+#### Opdrachten herdefiniëren met een alias
+
+Zoals je ziet, zijn er al een deel aliassen geladen.  
+Ook bijzonder om te zien is dat een aantal opdrachten worden geherdefinieerd door middel van een alias omdat die dezelfde naam heeft als de opdracht zelf.
+
+Zo wordt in veel systemen de opdracht `ls` overschreven om automatisch kleuren te tonen:
+
+~~~
 alias ls='ls --color=auto' 
-...
 ~~~
 
-> *Nota:*  
-> Zoals een beetje verder geïllustreerd kan je die overschrijven ontwijken door je commando te prefixen met een backslash
-
+Elke keer dat je dus `ls` intypt in de shell, voert die in feite `ls --color=auto` uit. En als je `ls -l` intypt, voert je shell eigenlijk `ls --color=auto -l` uit.
 
 #### Zelf aliassen aanmaken
 
-Als je zelf een alias wil aanmaken daarentegen kan je dit door het zelfde commando te gebruiken gevolgd door de combo "naam=commando" zoals je hieronder ziet:
+Als je zelf een alias wilt aanmaken, kan dat door de opdracht `alias` te laten volgen door de combinatie "naam=opdracht", zoals je hieronder ziet:
 
 ~~~
 [student@fedora ~]$ alias lll="ls -lrt"
@@ -73,11 +71,10 @@ drwxr-xr-x. 1 student student 0 22 apr 09:01  Bureaublad
 drwxr-xr-x. 1 student student 0 22 apr 09:01  Afbeeldingen
 ~~~
 
-We voegden hierboven het commando lll toe dat er zal voorzorgen dat je ls-output wordt gesorteerd op tijd (in omgekeerde volgorde)
-
-Als we dit dan testen:
+We voegden hierboven dus de alias `lll` toe die `ls` uitvoert met de opties l (long format), r (reverse) en t (sorteren op tijd). Het resultaat is dat de inhoud van de directory wordt gesorteerd op tijd in omgekeerde volgorde. Je kunt dit testen door een nieuw bestand aan te maken, dat dan onderaan de lijst wordt getoond:
 
 ~~~
+[student@fedora ~]$ touch test.txt
 [student@fedora ~]$ lll
 totaal 4
 drwxr-xr-x. 1 student student  0 22 apr 09:01 "Video's"
@@ -88,11 +85,11 @@ drwxr-xr-x. 1 student student  0 22 apr 09:01  Downloads
 drwxr-xr-x. 1 student student  0 22 apr 09:01  Documenten
 drwxr-xr-x. 1 student student  0 22 apr 09:01  Bureaublad
 drwxr-xr-x. 1 student student  0 22 apr 09:01  Afbeeldingen
--rw-r--r--. 1 student student 70 16 mei 18:58  enp0s3.network
+-rw-r--r--. 1 student student  0 16 mei 18:58  test.txt
 [student@fedora ~]$ 
 ~~~
 
-Hieronder zie je dat deze is toegevoegd aan de diverse aliassen
+Je ziet ook dat de alias `lll` toegevoegd is aan de lijst met aliassen:
 
 ~~~
 [student@fedora ~]$ alias
@@ -112,13 +109,11 @@ alias zgrep='zgrep --color=auto'
 [student@fedora ~]$ 
 ~~~
 
-#### Alias ontwijken
+#### Een alias ontwijken
 
-Vele van de aliassen zullen bestaande commando's verrijken (en overschrijven) door dezelfde naam te gebruiken.
+Zoals we zagen, herdefiniëren vele aliassen bestaande opdrachten, vaak door er opties aan toe te voegen. Maat wat als je de originele opdracht wilt uitvoeren, zonder rekening te houden met die alias? Dat kan door er een backslash (`\`) voor te zetten.
 
-Als je echter dat gedrag wil ontwijken (zonder de alias te verwijderen) kan een backslash hiervoor gebruiken.
-
-Stel dat je bijvoorbeeld de volgende alias aanmaakt...
+Stel dat je de volgende alias aanmaakt...
 
 ~~~
 [student@fedora ~]$ echo -n test
@@ -127,8 +122,8 @@ test[student@fedora ~]$ alias echo="echo -n"
 test[student@fedora ~]$
 ~~~
 
-... die er voor zorgt dat je echo commando zonder new-line-karakter eindigt zoals je ziet in het bovenstaande voorbeeld.  
-Als je echter het originele echo-commando wil gebruiken (zonder deze alias te verwijderen) plaats je gewoon een backslash voor echo.
+... die ervoor zorgt dat de uitvoer van de opdracht `echo` niet naar een nieuwe regel gaat.  
+Als je de originele opdracht `echo` wilt gebruiken die wel naar een nieuwe regel gaat, zonder deze alias te verwijderen, plaats je gewoon een backslash voor `echo`:
 
 ~~~
 test[student@fedora ~]$ \echo test
@@ -136,13 +131,11 @@ test
 [student@fedora ~]$ 
 ~~~
 
-Het resultaat hiervan is dat het originele echo commando (met new line) wordt uitgevoerd.
+#### Een alias verwijderen
 
-#### Verwijderen van een alias
+Als je een alias niet meer wilt gebruiken, kun je die verwijderen met de opdracht `unalias`.
 
-Als je een alias niet meer wil gebruiken kan je het ook verwijderen met het commando unalias.
-
-We zien hieronder dat het alias voor echo nog altijd is bepaald
+We zien hieronder de alias voor `echo`:
 
 ~~~
 [student@fedora ~]$ alias
@@ -163,14 +156,14 @@ alias zgrep='zgrep --color=auto'
 [student@fedora ~]$
 ~~~
 
-Als je dit nu wil verwijderen (zodat het oorspronkelijke alias terug verschijnt) kan je dit via het commando echo
+We verwijderen de alias met:
 
 ~~~
 [student@fedora ~]$ unalias echo 
 [student@fedora ~]$
 ~~~
 
-Je ziet vervolgens dat het echo-alias verdwenen is
+Je ziet vervolgens dat de alias voor `echo` verdwenen is:
 
 ~~~
 [student@fedora ~]$ alias
@@ -190,7 +183,7 @@ alias zgrep='zgrep --color=auto'
 [student@fedora ~]$
 ~~~
 
-Je ziet ook dat het commando zich terug standaard gedraagd
+Je ziet ook dat de opdracht `echo` zich weer standaard gedraagt:
 
 ~~~
 [student@fedora ~]$ echo test
@@ -198,24 +191,21 @@ test
 [student@fedora ~]$ 
 ~~~
 
-#### Alias persisteren (.bashrc)
+#### Aliassen behouden tussen sessies (`~/.bashrc`)
 
-Als je een alias aanmaakt binnen een bash-sessie zal deze niet opnieuw verschijnen in een nieuwe bash-sessie (laat staan na een reboot...)  
-Om dit te doen die je deze toe te voegen aan het einde van de file .bashrc (waar je ook andere alias-definities zult vinden)
+Als je een alias aanmaakt binnen een Bash-sessie, zal die verdwenen zijn in een nieuwe Bash-sessie.  
+Om die alias tussen sessies te behouden, dien je ze toe te voegen aan het einde van het bestand `~/.bashrc` (waar je ook andere definities van aliassen zult vinden).
 
-### .bashrc
+Het bestand `~/.bashrc` is een (Bash-)script dat door Bash wordt uitgevoerd wanneer je Bash interactief opstart door een terminalsessie te openen.  
+Het doel van dit script is om je sessie te initialiseren met zaken zoals:
 
-**.bashrc** is een (Bash-) script dat **Bash** zal **uitvoeren** wanneer je Bash **interactief** gestart wordt.  
-Het doel hiervan is je sessie te initialiseren met zaken zoals:
+* omgevingsvariabelen (waaronder `$PATH`)
+* de prompt
+* aliassen
 
-* ENVIRONMENT-variabelen initialiseren
-* PATH-variabele uitbreiden
-* Aliassen toevoegen
-* ...
+De home-directory van elke gebruiker met Bash als shell zal een bestand `.bashrc` bevatten.  
 
-Elke home-directory binnen een Bash-gebaseerd systeem zal een .bashrc bevatten.  
-
-* Bijvoorbeeld in een Debian-systeem
+Op een Debian-systeem zien de eerste twintig regels van dit bestand er als volgt uit:
 
 ~~~bash
 student@studentdeb:~$ head -20 ~/.bashrc 
@@ -242,7 +232,7 @@ HISTFILESIZE=2000
 student@studentdeb:~$ 
 ~~~
 
-* Bijvoorbeeld in een Fedora
+En op een Fedora-systeem, een andere Linux-distributie:
 
 ~~~bash
 [student@fedora ~]$ head -20 ~/.bashrc 
@@ -269,99 +259,73 @@ if [ -d ~/.bashrc.d ]; then
 [student@fedora ~]$ 
 ~~~
 
-Zoals je zie is dit een gewoon bash-script en kan je alle soorten commando's uitvoeren.  
+Zoals je ziet, zijn dit gewoon Bash-scripts die allerlei opdrachten uitvoeren.
 
 ### Links aanmaken
 
-Linux heeft (net zoals Windows) een concept van shortcuts.  
-We noemen deze **links** en je kan het programma **ln** gebruiken om deze aan te maken.
+Linux heeft net zoals Windows een concept van (snel)koppelingen naar bestanden.  
+We noemen dit **links**, en je kunt het programma `ln` gebruiken om deze aan te maken.
 
-In Linux hebben we 2 varianten soft- en hardlinks...
+In Linux hebben we twee varianten: **soft links** en **hard links**.
 
 #### Soft links
 
-Laten we starten bij de soft-links.  
-Een **soft** (of **symbolic**) **link** kan je vergelijken met een **shortcut** zoals je deze kent uit bijvoorbeeld de shortcuts uit Windows.
+Laten we starten bij de soft links.  
+Een **soft link** (of **symbolic link**) kun je beschouwen als een andere naam (eventueel op een andere locatie) voor een bestand of directory.
 
-We demontreren dit via:
+We demonstreren dit via:
 
-* Het aanmaken van een Een file "hello.txt"
-* Een soft-link met de naam "world.txt"
-
-~~~
-(base) bart@bvlegion:~/Tmp$ echo "test" > hello.txt
-(base) bart@bvlegion:~/Tmp$ ln -s hello.txt world.txt
-~~~
-
-We gebruiken hiervoor het commando **ln** met de **optie -s** die er voor zorgt dat dit een soft-link wordt.  
-Als we deze 2 files bekijken...
+* het aanmaken van een bestand "hello.txt"
+* een soft link met de naam "world.txt"
 
 ~~~
-(base) bart@bvlegion:~/Tmp$ ls -l *txt
+bart@bvlegion:~/Tmp$ echo "test" > hello.txt
+bart@bvlegion:~/Tmp$ ln -s hello.txt world.txt
+~~~
+
+We gebruiken hiervoor de opdracht `ln` met de optie `-s` die ervoor zorgt dat dit een soft link wordt.  
+Bekijk nu deze twee bestanden met `ls -l`:
+
+~~~
+bart@bvlegion:~/Tmp$ ls -l *txt
 -rw-rw-r-- 1 bart bart 5 May 16 21:28 hello.txt
 lrwxrwxrwx 1 bart bart 9 May 16 21:28 world.txt -> hello.txt
 ~~~
 
-observeren we 2 kenmerken:
+We observeren hier twee kenmerken van de symbolic link:
 
-* Het type is **l** ipv **-**
-* Via "ls -l" wordt ook aangeduid welke de **file** is **waar naar** wordt **gelinkt**
+* het type is `l` in plaats van `-`
+* na de naam van de link volgt een pijltje (`->`) en dan de naam van het bestand waarnaar wordt gelinkt
 
-Deze symbolic kan dan gebruiken als was het de originele file
+We kunnen nu de symbolic link gebruiken als was dit het originele bestand:
 
 ~~~
-(base) bart@bvlegion:~/Tmp$ cat world.txt 
+bart@bvlegion:~/Tmp$ cat world.txt 
 test
-(base) bart@bvlegion:~/Tmp$ 
-~~~
-
-We zien wel dat het verschillend fysieke files op disk zijn:
-
-* De ene het oorspronkelijke bestand (inode 21367519)
-* De andere is een apart bestand dat metadata bevat naar waar deze file verwijst  
-  (world.txt -> hello.txt)
-
-~~~
-(base) bart@bvlegion:~/Tmp$ ls -li *txt
-21367519 -rw-rw-r-- 1 bart bart 5 May 16 21:28 hello.txt
-21369308 lrwxrwxrwx 1 bart bart 9 May 16 21:28 world.txt -> hello.txt
-(base) bart@bvlegion:~/Tmp$ 
-~~~
-
-Als je de **originele file verwijdert** zal de **soft link** **blijven** **bestaan**.  
-Je krijgt vanzelfsprekend wel een foutboodschap als je deze probeert te gebruiken...
-
-
-~~~
-(base) bart@bvlegion:~/Tmp$ rm hello.txt
-(base) bart@bvlegion:~/Tmp$ ls -li *txt
-21369308 lrwxrwxrwx 1 bart bart 9 May 16 21:28 world.txt -> hello.txt
-(base) bart@bvlegion:~/Tmp$ cat world.txt 
-cat: world.txt: No such file or directory
-(base) bart@bvlegion:~/Tmp$ 
+bart@bvlegion:~/Tmp$ 
 ~~~
 
 #### inodes en links...
 
-Vooraleer we hard links uitleggen moeten we begrijpen wat inodes zijn.  
-Het was je misschien al opgevallen dat we het commando "ls -li" gebruikten ipv "ls -l"
+Vooraleer we het verschil tussen soft links en hard links uitleggen, moeten we een nieuw concept introduceren: **inodes**.
 
-Deze extra optie -i zal de de **inode-nummer** oplijsten van deze file binnen het **filesysteem**
+Een inode is eigenlijk een afkorting voor **index node** en is een gegevensstructuur in een Linux-bestandssysteem. Die gegevensstructuur beschrijft een bestand of een map.  
 
-inode is eigenlijk een afkorting voor index-node en is een gegevensstructuur in een Linux (en Unix) bestandssysteem dat een bestands(object) beschrijft, zoals een bestand of een map.  
-
-Elke inode slaat de attributen en schijfbloklocaties van de gegevens van het object op.
-Naast de verwijzingen waar het bestands staat opgeslagen is dit metadata zoal(tijden van laatste wijziging, owner, group, permissies, ...
+Elke inode slaat de locaties op de schijf op van het bestand of de map, samen met eigenschappen zoals het tijdstip van de laatste wijziging, de eigenaar en groep, de permissies, ... Elke inode heeft ook een unieke index, een getal. Dat kun je opvragen met de optie `-i` bij `ls`. Voor ons voorbeeld geeft dit:
 
 ~~~
-(base) bart@bvlegion:~/Tmp$ ls -li *txt
+bart@bvlegion:~/Tmp$ ls -li *txt
 21367519 -rw-rw-r-- 1 bart bart 5 May 16 21:28 hello.txt
 21369308 lrwxrwxrwx 1 bart bart 9 May 16 21:28 world.txt -> hello.txt
-(base) bart@bvlegion:~/Tmp$ 
+bart@bvlegion:~/Tmp$ 
 ~~~
 
-Zoals je ziet heeft de softlink een andere inode-nummer vergeleken tov de oorspronkelijke file.  
-De link (world.txt -> hello.txt) bevindt zich nameljk in een aparte file.
+Je ziet hier twee verschillende inodes:
+
+* Het oorspronkelijke bestand is inode 21367519
+* De soft link heeft inode 21369308
+
+Zoals je ziet heeft de soft link een andere inode dan het originele bestand. Je zou dit als volgt kunnen voorstellen:
 
 ~~~
 +--------------+--------------+-----+--------------+
@@ -376,33 +340,47 @@ De link (world.txt -> hello.txt) bevindt zich nameljk in een aparte file.
 
 ~~~
 
-Met een soft-link spreken we dus effectief over **2 verschillende files** en **locaties** op je **hard disk** (of flash) waar informatie staat opgeslagen.
+De soft link en het bestand waarnaar de link verwijst, staan dus op twee verschillende locaties.
 
-De link bij een soft/symbolic wordt dan ook gemaakt in het bestand zelf niet in het file-systeem zelf...
+Als je het originele bestand verwijdert, zal de soft link blijven bestaan:
+
+~~~
+bart@bvlegion:~/Tmp$ rm hello.txt
+bart@bvlegion:~/Tmp$ ls -li *txt
+21369308 lrwxrwxrwx 1 bart bart 9 May 16 21:28 world.txt -> hello.txt
+~~~
+
+Maar je krijgt vanzelfsprekend een foutmelding als je deze soft link probeert te gebruiken:
+
+~~~
+bart@bvlegion:~/Tmp$ cat world.txt 
+cat: world.txt: No such file or directory
+bart@bvlegion:~/Tmp$ 
+~~~
 
 #### Hard links
 
-Dit is echter niet het geval voor **hard links**, een andere soort links die we bekijken.  
-Om dit de duiden maken we de oorspronkelijke file hello.txt opnieuw aan
+Een ander type link is de **hard link**.
+
+Verwijder de bestanden en maak het originele bestand opnieuw aan. We maken nu ook een nieuwe link aan, maar zonder de optie `-s` bij `ln`. Zo maken we een hard link aan:
 
 ~~~
-(base) bart@bvlegion:~/Tmp$ rm *txt
-(base) bart@bvlegion:~/Tmp$ echo "test" > hello.txt
-(base) bart@bvlegion:~/Tmp$ ln hello.txt world.txt
-(base) bart@bvlegion:~/Tmp$ cat world.txt 
+bart@bvlegion:~/Tmp$ rm *txt
+bart@bvlegion:~/Tmp$ echo "test" > hello.txt
+bart@bvlegion:~/Tmp$ ln hello.txt world.txt
+bart@bvlegion:~/Tmp$ cat world.txt 
 test
 ~~~
 
-Wat we zien is dat **beide files hetzelfde inode-nummer** hebben.
+Bekijk nu de inodes van beide bestanden:
 
 ~~~
-(base) bart@bvlegion:~/Tmp$ ls -li *txt
+bart@bvlegion:~/Tmp$ ls -li *txt
 21367519 -rw-rw-r-- 2 bart bart 5 May 16 21:32 hello.txt
 21367519 -rw-rw-r-- 2 bart bart 5 May 16 21:32 world.txt
 ~~~
 
-Bij een hardlink maak je eigenlijk 2 gelijke verwijzingen en pointers
-naar éénzelfde bestand/data in heb filesysteem.
+Je ziet dat beide bestanden hetzelfde inode hebben. Je maakt dus twee namen voor hetzelfde bestand, oftewel twee verwijzingen naar dezelfde locatie:
 
 ~~~
 +---------------------------+-------------+
@@ -416,41 +394,34 @@ naar éénzelfde bestand/data in heb filesysteem.
                +--------------------------+
 ~~~
 
-In dit geval zijn zowel world.txt als hello.txt gelijkwaardige referenties naar de zelfde inode
+Eigenlijk is elk bestand dat je op het bestandssysteem aanmaakt een hard link, of je het nu aanmaakt met de opdracht `ln`, via `touch` of `nano`. Maar als je met `ln` een hard link aanmaakt, creëer je gewoon een extra naam die naar de locatie van het bestand verwijst.
 
-> Om dit te verstaan moet je begrijpen dat een file in je bestandssysteem eigenlijk zelf een referentie 
-> is naar het eigenlijke bestand (een beetje zoals een pointer die naar een memory-locatie verwijst).
-
-maw Elke file die jij in het bestandssysteem ziet is eignelijk een hard link, of je hem nu aanmaakt met het commando "ln" of via een tool zoals touch, vim, ...
-
-Als je bijvoorbeeld de oorspronkelijk file (hello.txt) verwijderd gaat de eigenlijke inode (bestand) niet verwijderd zijn, gezien het nog verwezen wordt door world.txt door teministe 1 hard-link
+Als je nu het oorspronkelijk bestand (hello.txt) verwijdert, wordt de eigenlijke inode (bestand) niet verwijderd, aangezien er nog naar verwezen wordt door world.txt:
 
 ~~~
-(base) bart@bvlegion:~/Tmp$ rm hello.txt 
-(base) bart@bvlegion:~/Tmp$ ls -li *txt
+bart@bvlegion:~/Tmp$ rm hello.txt 
+bart@bvlegion:~/Tmp$ ls -li *txt
 21367519 -rw-rw-r-- 1 bart bart 5 May 16 21:32 world.txt
-(base) bart@bvlegion:~/Tmp$ cat world.txt 
+bart@bvlegion:~/Tmp$ cat world.txt 
 test
-(base) bart@bvlegion:~/Tmp$ 
+bart@bvlegion:~/Tmp$ 
 ~~~
 
-#### Hard link vs soft/symbolic
+#### Hard link of soft link gebruiken?
 
-De volgende vraag die je jezelf zou kunnen stellen wanneer je een hard link moet gebruiken en wanneer een soft-link...
+De volgende vraag die je jezelf zou kunnen stellen, is: wanneer moet je een hard link gebruiken en wanneer een soft link?
 
-Over het algemeen zijn soft-links een meer flexibel:
+Over het algemeen zijn soft links flexibeler:
 
-* Een soft-link is niet gebonden aan een filesysteem, je kan bijvoorbeeld geen hard link maken tussen 2 filesystemen (bijvoorbeeld bij een aparte disk) maar wel een soft link.  
-* Een soft-link is ook gemakkelijker (of toch directer) terug te vinden gezien het expliciet fileobject is en de verwijziging uit een soft-link gemakkelij is uit te lezen.
-* Je kan ook aparte metadata plaatsen op de soft-link en de oorspronkelijke file via permissies (en andere metadata) op een soft-link.
+* Een soft link is niet gebonden aan een bestandssysteem, terwijl je geen hard links kunt aanmaken tussen twee verschillende bestandssystemen.
+* Een soft link is gemakkelijker terug te vinden: je hoeft maar te kijken naar de `l` bij het bestandstype in de uitvoer van `ls -l`, en je ziet er onmiddellijk naar welk origineel bestand de link verwijst.
 
-Maar daarentegen zijn er toch wat problemen met soft-links:
+Maar daarentegen zijn er toch wat problemen met soft links:
 
-* Als je de originele file verwijderd blijft er een ongeldige soft-link over  
-  (en moet je deze apert verwijderen)
-* Niet alle software werkt vlog met soft-links (soms ook wegens security-regels)
-* Permissies (hoewel flexibeler) kunnen afwijken tussen de soft-link en de oorspronkelijke
+* Als je het originele bestand verwijdert, blijft er een ongeldige soft link over  
+  (en moet je deze afzonderlijk verwijderen)
+* Niet alle software werkt correct met soft links (soms omwille van beveiligingsregels)
 
-Ook zal een hard-link performanter zijn vergeleken tot een soft-link.  
-De relevantie hangt natuurlijk wel af van de use case, als je 1 file dient uit te lezen zal dit weinig of geen verschil uitmaken, als je daarentegen een paar honderduizend achter elkaar wordt het meer relevanter...
+Ook zal een hard link performanter zijn vergeleken met een soft link.  
+De relevantie hangt natuurlijk af van waarvoor je de links gebruikt. Als je voor één bestand een link moet uitlezen, zal dit weinig of geen verschil maken. Maar als je een paar honderdduizend links achter elkaar uitleest, wordt het wel relevanter hoe snel dit gaat...
 

@@ -197,18 +197,17 @@ student@studentdeb:~$ echo ~/glob
 
 #### Brace expansion
 
-Waar we eerder zagen bij wildcards dat je files kon selecteren je bestaande files kon selecteren, 
-kan je met **brace expansion** nieuwe files (of string genereren)
+Waar we eerder zagen bij wildcards dat je bestaande bestanden kon selecteren, 
+kun je met **brace expansion** nieuwe bestanden (of strings) genereren.
 
-Door een lijst aan strings tussen braces te plaatsen (zie voorbeeld hieronder) kan je
-verschillende filenames aanmaken met als extensie log.
+Door een lijst aan strings tussen accolades (`{` en `}`) te plaatsen, kun je bijvoorbeeld verschillende bestandsnamen met als extensie log genereren:
 
 ~~~
 student@studentdeb:~/Tmp/$  echo {Sunday,Monday,Tuesday,Wednesday,Thursday,Friday,Saturday}.log
 Sunday.log Monday.log Tuesday.log Wednesday.log Thursday.log Friday.log Saturday.log
 ~~~
 
-Deze kan je dan in **combinatie** met **touch** dan gebruiken om **verschillende files te genereren** in een folder
+Deze bestandsnamen kun je dan in combinatie met de opdracht `touch` gebruiken om in één keer **verschillende bestanden te genereren** in een directory:
 
 ~~~
 student@studentdeb:~/Tmp$ touch {Sunday,Monday,Tuesday,Wednesday,Thursday,Friday,Saturday}.log
@@ -216,23 +215,23 @@ student@studentdeb:~/Tmp$ ls
 Sunday.log Monday.log Tuesday.log Wednesday.log Thursday.log Friday.log Saturday.log
 ~~~
 
-ipv een lijst kan kan je ook een **sequentie** gebruiken.  
-Bijvoorbeeld **{1..3}** zal **alle getallen van 1 tem 3** voorstellen
-In onderstaand voorbeeld maak je **files** aan **startende** met **"file"** gevolgd door een getal van **1 tem 3**
+In plaats van een lijst kun je ook een **sequentie** gebruiken.  
+Bijvoorbeeld `{1..3}` zal **alle getallen van 1 tot en met 3** genereren.
+In onderstaand voorbeeld maak je bestanden aan waarvan de bestandsnaam begint met "file", gevolgd door een getal van 1 tot en met 3:
 
 ~~~
 student@studentdeb:~/Tmp$ echo file{1..3}.txt
 file1.txt file2.txt file3.txt
 ~~~
 
-Hetzelfde kan je ook met **karakters**:
+Hetzelfde kun je ook met **tekens**:
 
 ~~~
 student@studentdeb:~/Tmp$ echo file{a..c}.txt
 filea.txt fileb.txt filec.txt
 ~~~
 
-Je kan ook **combineren** van **braces**.  
+Je kan ook accolades **combineren**.  
 In het onderstaand voorbeeld zie je dat alle **combinaties** (2 * 2 = 4) worden gegenereerd:
 
 ~~~
@@ -240,7 +239,7 @@ student@studentdeb:~/Tmp$ echo file{a,b}{1,2}.txt
 filea1.txt filea2.txt fileb1.txt fileb2.txt
 ~~~
 
-Of zelfs **braces** **embedden** binnen andere **braces**
+Je kunt zelfs accolades **binnen andere accolades** opnemen:
 
 ~~~
 student@studentdeb:~/Tmp$ echo file{a{1,2},b,c}.txt
@@ -252,34 +251,34 @@ student@studentdeb:~/Tmp$
 
 ##### Command substitution
 
-Een andere praktische tool is "command substitution".  
-Dit laat toe om de output van het enen commando te gebruiken binnen een ander commando.
+Een andere praktisch hulpmiddel is **command substitution**.  
+Dit laat toe om de uitvoer van de ene opdracht te gebruiken binnen een andere opdracht.
 
-In het onderstaand voorbeeld gebruik ik **2 commando's**:
+In het onderstaand voorbeeld gebruiken we twee opdrachten:
 
-* **hostname** => naam van de host opvragen
-* **uname** => opvragen van systeem-gegevens
+* `hostname` => naam van de host opvragen
+* `uname` => systeeminformatie opvragen
   
-Zie hieronder als **voorbeeld**:
+Zie hieronder als voorbeeld:
 
 ~~~
 student@studentdeb:~$ hostname -s
 studentdeb
-student@studentdeb:~$ uname -a
-Linux studentdeb 5.10.0-8-amd64 #1 SMP Debian 5.10.46-5 (2021-09-23) x86_64 GNU/Linux
+student@studentdeb:~$ uname -r
+5.15.0-86-generic
 ~~~
 
-De output van deze 2 commando's kan je gebruiken binnen het **echo-commando**
+De uitvoer van deze twee opdrachten kun je gebruiken binnen de opdracht `echo`:
 
 ~~~
-student@studentdeb:~$ echo "Deze host is $(hostname -s) met volgende gegevens $(uname -a)"
-Deze host is studentdeb met volgende gegevens Linux studentdeb 5.10.0-8-amd64 #1 SMP Debian 5.10.46-5 (2021-09-23) x86_64 GNU/Linux
+student@studentdeb:~$ echo "Deze host is $(hostname -s) met Linux-kernel $(uname -r)"
+Deze host is studentdeb met Linux-kernel 5.15.0-86-generic
 ~~~
 
 ##### Variable substitution
 
-Je kan - zoals je vrij snel zal zien in scripting - variabele bijhouden binnen.  
-Net zoals bij command substitution kan je deze gebruiken binnen een ander commando (en/string)
+Je kan - zoals we eerder al kort zagen - variabelen bijhouden binnen de shell.  
+Net zoals bij command substitution kun je deze variabelen gebruiken binnen een andere opdracht (of string):
 
 ~~~
 student@studentdeb:~$ export myhost=$(hostname -s)
@@ -289,20 +288,22 @@ student@studentdeb:~$ echo "Ik werk op ${myhost}"
 Ik werk op studentdeb
 ~~~
 
-Let wel, zowel variable als command substitution werken enkel als je met 
-dubbele quotes werkt.
+Let op: zowel variable als command substitution werken alleen als je met 
+dubbele aanhalingstekens werkt.
+
+Dit werkt bijvoorbeeld niet:
 
 ~~~
 student@studentdeb:~$ echo 'Ik werk op ${myhost}'
 Ik werk op ${myhost}
 ~~~
 
-### Bash-scripting (deel 2)
+### Bash-scripting deel 2
 
-#### Condities met if
+#### Voorwaarden met `if`
 
-Bash kan (zoals Python) ook als programmeer- of scripting-taal worden gebruikt.  
-De structuur van een conditie ziet er als volgt uit:
+Bash kan (zoals Python) ook als programmeer- of scriptingtaal gebruikt worden.  
+Een van de belangrijkste structuren in een programmeertaal is een voorwaardelijk blok: opdrachten die alleen worden uitgevoerd als aan een gegeven voorwaarde voldaan is. De structuur van een voorwaarde ziet er in Bash als volgt uit:
 
 ~~~bash
 if [ condition ]
@@ -319,115 +320,129 @@ else
 fi
 ~~~
 
-Bijvoorbeeld onderstaande if gaat vergelijken of er argumenten zijn.
+Dit kan ook geschreven worden met de `then` op dezelfde regel als de `if`, maar dan moet er een `;`  tussen:
 
 ~~~bash
-if [ $# -eq 0 ]; then
-        echo Er zijn geen argumenten.
+if [ condition ]; then
+  command1
+  command2
+  ...
+  commandn
 else
-        echo Er zijn wel argumenten.
+  command1
+  command2
+  ...
+  commandn
 fi
 ~~~
 
-##### Testen op getal-waardes
+Zo zal onderstaande code in een script controleren of de gebruiker op de opdrachtregel argumenten doorgegeven heeft:
 
-Je kan deze variabelen gaan interpreteren als getallen met de volgende mogelijkheiden:
+~~~bash
+#!/bin/bash
+if [ $# -eq 0 ]; then
+        echo "Er zijn geen argumenten."
+else
+        echo "Er zijn $# argumenten."
+fi
+~~~
+
+##### Testen op getalwaardes
+
+Je kunt deze variabelen interpreteren als getallen en hun waarden op de volgende manieren vergelijken:
 
 ~~~
-INTEGER1 -eq INTEGER2 => INTEGER1 is numeriek gelijk to INTEGER2
-INTEGER1 -gt INTEGER2 => INTEGER1 is numeriek groter than INTEGER2
-INTEGER1 -lt INTEGER2 => INTEGER1 is numeriek kleiner than INTEGER2
+INTEGER1 -eq INTEGER2 => INTEGER1 is gelijk aan INTEGER2
+INTEGER1 -ne INTEGER2 => INTEGER1 is niet gelijk aan INTEGER2
+INTEGER1 -gt INTEGER2 => INTEGER1 is groter dan INTEGER2
+INTEGER1 -ge INTEGER2 => INTEGER1 is groter dan of gelijk aan INTEGER2
+INTEGER1 -lt INTEGER2 => INTEGER1 is kleiner dan INTEGER2
+INTEGER1 -le INTEGER2 => INTEGER1 is kleiner dan of gelijk aan INTEGER2
 ~~~
 
-met als voorbeelden:
-
-* Testen of een argument groter is dan een getal:
+Zo kunnen we testen of een argument groter is dan een getal:
 
 ~~~bash
 #!/bin/bash
 if [ $1 -gt 100 ]
 then
-    echo Nummer is groter dan 100.
+    echo Getal is groter dan 100.
 fi
 ~~~
 
-##### else if...
+##### Alternatieven testen
 
-In de meeste programmeertalen kan je ook naast else ook een "else if"-clausule toevoegen.  
-Deze zal andere alternatieven testen indien de if-clausule niet true evalueert.
+Als niet aan de voorwaarde op de regel met `if` voldaan is, kun je alternatieven testen met `elif`:
 
 ~~~bash
 #!/bin/bash
 if [ $1 -gt 100 ]
 then
-    echo Nummer is groter dan 100.
+    echo Getal is groter dan 100.
 elif [ $1 -gt 75 ]
 then
-    echo Nummer is tussen 76 en 100
+    echo Getal ligt tussen 76 en 100.
 elif [ $1 -gt 50 ]
 then
-    echo Nummer is tussen 51 en 75
+    echo Getal ligt tussen 51 en 75.
 else
-    echo Nummer is kleiner of gelijk aan 50
+    echo Getal is kleiner dan of gelijk aan 50.
 fi
 ~~~
 
-Als we deze testen met wat getallen...
+Test dit script met wat getallen:
 
 ~~~
 $ ./hello.sh 101
-Nummer is groter dan 100.
+Getal is groter dan 100.
 $ ./hello.sh 99
-Nummer is tussen 76 en 100
+Getal ligt tussen 76 en 100.
 $ ./hello.sh 65
-Nummer is tussen 51 en 75
+Getal ligt tussen 51 en 75.
 $ ./hello.sh 50
-Nummer is kleiner of gelijk aan 50
+Getal is kleiner dan of gelijk aan 50.
 $ 
 ~~~
 
-##### not/inversie
+##### Voorwaarde omdraaien
 
-Je kan je test ook inverteren, als ik bijvoorbeeld het omgekeerde
-wil van groter dan 100 kan ik de eigenlijke test inverteren met een uitroepteken.
+Je kan je test ook omdraaien. Stel dat je het omgekeerde
+wil van groter dan 100. Dan draai je de voorwaarde om door er een uitroepteken voor te plaatsen:
 
 ~~~bash
 #!/bin/bash
 if [ ! $1 -gt 100 ]
 then
-    echo Nummer is niet groter dan 100.
+    echo Getal is niet groter dan 100.
 else
-    echo Nummber is groter dan 100
+    echo Getal is groter dan 100.
 fi
 ~~~
 
-Deze mag eventueel ook buiten de haakjes staan
+Deze omkering mag ook buiten de rechte haakjes staan, wat duidelijker is:
 
 ~~~bash
 #!/bin/bash
 if ! [ $1 -gt 100 ]
 then
-    echo Nummer is niet groter dan 100.
+    echo Getal is niet groter dan 100.
 else
-    echo Nummber is groter dan 100
+    echo Getal is groter dan 100.
 fi
 ~~~
 
+##### Testen op stringwaardes
 
-##### Testen op string-waardes
-
-* Testen op basis van het aantal argumenten
+Je kunt niet alleen getallen vergelijken, maar ook strings testen:
 
 ~~~
--n STRING => 	De lengte string > 0.
--z STRING =>	Het betref een lege string.
-STRING1 = STRING2 => STRING1 is equal to STRING2
-STRING1 != STRING2 =>	STRING1 is not equal to STRING2
+-n STRING           => STRING is niet leeg (lengte > 0).
+-z STRING           => STRING is leeg (lengte = 0).
+STRING1 = STRING2   => STRING1 is gelijk aan STRING2
+STRING1 != STRING2  => STRING1 is niet gelijk aan STRING2
 ~~~
 
-Voorbeelden:
-
-* Nakijken of de string gelijk is
+Zo test je bijvoorbeeld of het eerste argument van een script gelijk is aan een gegeven string:
 
 ~~~bash
 #!/bin/bash
@@ -437,6 +452,8 @@ then
 fi
 ~~~
 
+En zo test je of het eerste argument geen lege string is:
+
 ~~~bash
 #!/bin/bash
 if [ -n $1 ]
@@ -445,72 +462,73 @@ then
 fi
 ~~~
 
-##### File-verificaties
+##### Bestanden testen
 
-Een 3de manier is deze vergelijkingen te maken als zijn het files
+Op dezelfde manier kun je bestanden testen:
 
 ~~~
 -e FILE => FILE bestaat.
--d FILE => FILE bestaat en is een directory.
--r FILE => FILE bestaat en de read-permissie is toegekend.
 -s FILE => FILE bestaat en is niet leeg.
--w FILE => FILE bestaat en je mag er naar schrijven.
--x FILE => FILE bestaat en heeft execute-permissies.
+-d FILE => FILE bestaat en is een directory.
+-r FILE => FILE bestaat en je kunt het lezen (read). 
+-w FILE => FILE bestaat en je kunt ernaar schrijven (write).
+-x FILE => FILE bestaat en je kunt het uitvoeren (execute).
 ~~~
 
-Het volgende voorbeeld kijkt na of het argument een file is:
+Het volgende voorbeeld kijkt na of het argument een bestaand bestand is:
 
 ~~~bash
 #!/bin/bash
 if [ $# -eq 0 ]
 then
-        echo Er zijn geen argumenten.
+        echo "Er zijn geen argumenten."
 else
-        echo Er zijn $# argumenten.
+        echo "Er zijn $# argumenten."
         if [ -e $1 ]
         then
-                echo Het bestand $1 bestaat.
+                echo "Het bestand $1 bestaat."
         else
-                echo Het bestand $1 bestaat niet.
+                echo "Het bestand $1 bestaat niet."
         fi
 fi
 ~~~
 
-##### Combinaren met && en ||
+##### Voorwaarden combineren met `&&` en `||`
 
-Je kan (net zoals in Python) ook combinaties maken
+Je kunt ook combinaties van voorwaarden maken:
 
 ~~~
-! EXPRESSION =>	EXPRESSION geinverteerd (false => true)
-&& => en
-|| => of
+! EXPRESSION =>	EXPRESSION geïnverteerd
+&&           => en
+||           => of
 ~~~
 
 Volgende script gaat het vergelijk maken of een eerste getal 
 tussen de 2 andere argumenten ligt
 
 ~~~bash
+#!/bin/bash
 if [ $1 -gt $2 ] && [ $1 -lt $3 ]
 then
-        echo "$1 ligt tussen  $a en $b"
+        echo "$1 ligt tussen $2 en $3"
 else
-        echo "$1 ligt niet tussen $a en $b"
+        echo "$1 ligt niet tussen $2 en $3"
 fi
 ~~~
 
 Met als volgende gebruik:
 
 ~~~
-student@studentdeb:~$  ./between.sh 6 5 10
+student@studentdeb:~$ ./between.sh 6 5 10
 6 ligt tussen  5 en 10
-student@studentdeb:~$  ./between.sh 4 5 10
+student@studentdeb:~$ ./between.sh 4 5 10
 4 ligt niet tussen 5 en 10
 student@studentdeb:~$  
 ~~~
 
-#### for loop
+#### Lussen met `for` 
 
-De for-loop kan gebruikt worden om door een lijst te lopen
+Met de `for`-lus loop je door een lijst:
 
 ~~~bash
 #!/bin/bash
@@ -520,7 +538,7 @@ do
 done 
 ~~~
 
-Deze lijst kan je ook genereren met het commando **seq**  
+Deze lijst kun je ook genereren met de opdracht `seq`:  
 
 ~~~
 bart@bvlegion:~$ seq 1 10
@@ -537,7 +555,7 @@ bart@bvlegion:~$ seq 1 10
 bart@bvlegion:~$
 ~~~
 
-en als volgt **toepassen** binnen een **script**
+In een script pas je dit dan zo toe:
 
 ~~~bash
 #!/bin/bash
@@ -547,10 +565,10 @@ do
 done 
 ~~~
 
-#### while loop
+#### Lussen met `while`
 
-Een andere loop die gaat testen op een conditie.  
-Deze heeft het volgende **formaat**:
+Een andere lus test op een voorwaarde.
+Deze heeft de volgende structuur:
 
 ~~~bash
 while [ condition ]
@@ -561,7 +579,7 @@ do
 done
 ~~~
 
-Je kan deze bijvoorbeeld gebruiken in **combinatie** met een **teller** en **conditie**:
+Je kunt deze bijvoorbeeld gebruiken in **combinatie** met een **teller**:
 
 ~~~bash
 #!/bin/bash
@@ -569,11 +587,13 @@ x=1
 while [ $x -le 5 ]
 do
   echo "Welcome $x times"
-  x=$(( $x + 1 ))
+  x=$((x + 1))
 done
 ~~~
 
-Maar ook om een **oneindige loop** aan te maken:
+Let op: rekenkundige bewerkingen moet je in Bash tussen `$((` en `))` plaatsen.
+
+Maar je kunt ook een **oneindige lus** aanmaken:
 
 ~~~bash
 #!/bin/bash
@@ -583,39 +603,44 @@ while true; do
 done
 ~~~
 
-#### Inlezen van een variabele met read
+Wil je deze lus onderbreken, dan dien je Ctrl+C in te typen.
 
-Om binnen een script tekst in te lezen gebruik je het commando **read**:
+#### Inlezen van een variabele met `read`
+
+Om binnen een script tekst op te vragen aan de gebruiker, werk je met de opdracht `read`:
 
 ~~~bash
 #!/bin/bash
-echo; echo "Typ een teken, daarna Return."
+echo "Typ een teken, daarna Return."
 read text
 echo $text
 ~~~
 
-#### case
+Dit slaat het ingetypte teken/woord op in de variabele `text`.
 
-**case** kan je gebruiken als **alternatief** op **if** als je exact wil mappen naar een waarde
-en daar 1 of meerder commando's wil op uitvoeren
+#### Alternatieven met `case`
+
+Als je op specifieke waardes wilt testen, kun je in plaats van `if` gebruikmaken van `case`:
 
 ~~~bash
 #!/bin/bash
-case $var in
+echo "[yes|no|quit]"
+read text
+case $text in
         yes) echo "You entered yes" ;;
         no) echo "You entered no" ;;
         quit) echo "You want to quit" ;;
-        *) echo "You types something else" ;;
+        *) echo "You typed something else" ;;
 esac
 ~~~
 
-een krachtigere variant als je de combinatie maakt met de **patterns** en **karakter-klassen** die we eerder vermeldden
+In een krachtigere variant maak je de combinatie met de **patterns** en **klassen van tekens** die we eerder zagen:
 
 ~~~bash
 #!/bin/bash
-echo; echo "Typ een teken, daarna Return."
-read Keypress
-case "$Keypress" in
+echo "Typ een teken, daarna Return."
+read keypress
+case "$keypress" in
     [[:lower:]] ) echo "Kleine letter";;
     [[:upper:]] ) echo "Hoofdletter";;
     [[:digit:]] ) echo "Cijfer";;
@@ -625,10 +650,10 @@ esac
 
 ### Sourcing
 
-Als je een script uitvoert binnen een linux-shell zal dit script niet de huidige shell aanpassen.  
-De shell zal een script binnen een apart process uitvoeren en dan terugkeren naar de huidige shell.
+Als je een script uitvoert binnen een Linux-shell, zal dit script niet de huidige shell aanpassen.  
+De shell zal een script binnen een apart proces uitvoeren en dan terugkeren naar de huidige shell.
 
-Neem nu volgend script dat als je dat uitvoert naar een directory hoger verhuist:
+Neem nu het volgende script, dat naar een directory hoger verhuist:
 
 ~~~bash
 #!/bin/bash
@@ -637,8 +662,8 @@ cd ..
 echo "Moved from $old_directory to $(pwd)"
 ~~~
 
-Als je dit script uitvoert zou je **verwachten** dat je een **directory** zou **stijgen**...  
-Zeker als je de **output** van dit script *Moved from /home/bart/Tmp to /home/bart* **bekijkt**:
+Als je dit script uitvoert, zou je verwachten dat je een directory zou stijgen...  
+Zeker als je de uitvoer van dit script bekijke, **Moved from /home/bart/Tmp to /home/bart**.
 
 ~~~
 bart@bvlegion:~/Tmp$ chmod u+x up.sh 
@@ -649,7 +674,7 @@ Moved from /home/bart/Tmp to /home/bart
 bart@bvlegion:~/Tmp$ 
 ~~~
 
-Maar als het **pwd**-commando gebruikt zie je dat je je nog altijd op **dezelfde** **locatie** bevindt
+Maar als je de opdracht `pwd` gebruikt, zie je dat je je nog altijd op **dezelfde locatie** bevindt:
 
 ~~~
 bart@bvlegion:~/Tmp$ pwd
@@ -657,7 +682,7 @@ bart@bvlegion:~/Tmp$ pwd
 bart@bvlegion:~/Tmp$
 ~~~
 
-Ook de variabele **old_directory** is **nergens** te **bespeuren** (leeg):
+Ook de variabele `old_directory` is **nergens te bespeuren** (leeg):
 
 ~~~
 bart@bvlegion:~/Tmp$ echo $old_directory
@@ -665,9 +690,8 @@ bart@bvlegion:~/Tmp$ echo $old_directory
 bart@bvlegion:~/Tmp$ 
 ~~~
 
-Er is echter de mogelijk om dit script **binnen de huidige shell uit te voeren**.  
-Dit principe noemt men sourcing en je kan dit simpel gebruiken door de uitvoering van je script
-te prependen met een **.** of alternatief het keyword **source** zoals je ziet in onderstaand voorbeeld:
+Het is echter mogelijk om dit script **binnen de huidige shell uit te voeren**.  
+Dit principe noemt men **sourcing**. Om dit te doen, moet je eenvoudigweg de opdracht om je script uit te voeren laten voorafgaan door `.` of `source`:
 
 ~~~
 bart@bvlegion:~/Tmp$ . ./up.sh 
@@ -675,7 +699,9 @@ Moved from /home/bart/Tmp to /home/bart
 bart@bvlegion:~$ 
 ~~~
 
-of in de 2de variant
+Let op: het is belangrijk dat er na de eerste punt een spatie komt!
+
+De versie met `source` ziet er zo uit:
 
 ~~~
 bart@bvlegion:~/Tmp$ source ./up.sh 
@@ -683,15 +709,15 @@ Moved from /home/bart/Tmp to /home/bart
 bart@bvlegion:~$ 
 ~~~
 
-Je zien al aan de prompt dat de directory is gewijzigd.  
-Het **pwd-commando** hieronder bevestigd dit
+Je ziet al aan de prompt dat de directory deze keer wel gewijzigd is.  
+De uitvoer van de opdracht `pwd` hieronder bevestigt dit:
 
 ~~~
 bart@bvlegion:~$ pwd
 /home/bart
 ~~~
 
-Ook zie je dat de variabele **nog altijd zichtbaar** is binnen de console (wat daarvoor niet het geval was)
+Ook zie je dat de variabele `old_directoty` nog altijd zichtbaar is binnen de shell:
 
 ~~~
 bart@bvlegion:~$ echo $old_directory
