@@ -1,60 +1,42 @@
 ## Processen
 
-Met dit deel van de cursus proberen we een minimum informatie mee te geven rond processen:
+In dit deel van de cursus geven we een introductie in een belangrijk concept in elk besturingssysteem, en dan specifiek in Linux: processen.
 
-* Wat?
-* Hoe ze te **bekijken** of **monitoren**? => **ps** en **top**
-* Hoe deze te **manipuleren**? => **signals** en **jobcontrol**
-* Hoe **recurrente** taken in te plannen? => **cron**
+* Wat zijn processen?
+* Hoe ze te **bekijken** of te **monitoren**? => `ps` en `top`
+* Hoe ze te **manipuleren**? => **signals** en **job control**
+* Hoe **periodieke** taken in te plannen? => `cron`
 
-In een volgend hoofdstuk bekijken we ook nog systemd...
+Met processen kunnen werken, is belangrijk om bijvoorbeeld:
 
-Het kunnen werken met deze tools is belangrijk om bijvoorbeeld:
-
-* Te zien of een background taak nog altijd draait
-* Na te kijken **waarom** een programma blijft **hangen**
-* Het **programma** te **beëindigen**...
-* Zien welke files een applicatie open heeft
+* te controleren of een achtergrondtaak nog altijd draait
+* na te kijken waarom een programma niet meer reageert
+* een programma dat niet meer reageert te beëindigen
+* te bekijken welke bestanden een programma open heeft
 * ...
 
-### Wat is een process?
+### Wat is een proces?
 
-Elke keer als je een **programma start** - vanuit een terminal of een "graphical user interface" - start je **process**.  
-maw een process is een **"runtime" instance** van een programma.
+Elke keer dat je een programma start - of dat nu in een terminalsessie of een grafische interface is - start je een proces.  
 
-Het besturingssysteem houdt echter heel wat data bij rond dit process
+Het besturingssysteem houdt heel wat informatie bij rond dit proces:
 
-* Het **programma** (locatie)
-* Een **identificatie** (pid)
+* Het **programma** (bestandslocatie/pad)
+* Een **identificatie** (pid of **process ID**)
 * Een **status**
-* Een **eigenaar** (het programma wordt uitgevoerd door een **user**)
-* **Files** en andere **resources** dat dit process gebruikt
-* **Lokale** en **globale** **variabelen** (environment variables)
+* Een **eigenaar** (het programma wordt uitgevoerd door een gebruiker)
+* **Bestanden** en andere **resources** die het proces gebruikt
+* **Omgevingsvariabelen**
 * Een virtueel geheugen
 * ...
 
-### Waar start het nu mee (boot-sequentie)
+### Waarmee start alles?
 
-Wat is het allereerste proces binnen een Linux-distribute?  
-Waar start het nu uiteindelijk?
+Wat is het allereerste proces binnen een Linux-distributie?  
+Waarmee start het systeem uiteindelijk?
 
-De allereerste software die op je computer (of embedded device) draait zijn bootloaders.  
-De eerste is de (1ste bootloader) die reeds op je chip staat, die is hardware en microcode die er voor zorgt dat een programma op je persistent geheugen (harde schrijf of flash) wordt gestart.
-
-~~~
-+---------------------+
-|  1ST BOOTLOADER     | (bv. BIOS/UEFI)
-+----------+----------+
-           |
-+----------v----------+
-|  2ND BOOTLOADER     |  (bv. GRUB, UBoot)
-+----------+----------+
-~~~
-
-Het eerste programma dat dan wordt opgestart is dan een secundaire bootloader.  
-Dit programma staat voor klassieke computers meestal in het MBR- (BIOS) of in de GPT-gedeelte (UEFI) van je harde schrijf.
-
-Dit programma dat beperkt in grootte is (meestal **GRUB** op klassieke computer of **UBoot** op embedded devices) doet dan de nodige voorbereidingen (geheugen initialiseren e.a.) om dan vervolgens een kernel op te starten.
+De allereerste software die op je computer (of een embedded device) draait, is een **boot loader**.  
+De eerste bootloader is in een chip van de hardware ingebakken (BIOS/UEFI) en zorgt ervoor dat een programma op je persistente geheugen (harde schijf, SSD of flash) wordt opgestart.
 
 ~~~
 +---------------------+
@@ -62,7 +44,22 @@ Dit programma dat beperkt in grootte is (meestal **GRUB** op klassieke computer 
 +----------+----------+
            |
 +----------v----------+
-|  2ND BOOTLOADER     |  (bv. GRUB, UBoot)
+|  2ND BOOTLOADER     |  (bv. GRUB, U-Boot)
++----------+----------+
+~~~
+
+Het eerste programma dat dan zo van het persistente geheugen wordt opgestart, is een secundaire bootloader.  
+Dit programma staat voor klassieke computers met een Basic Input/Output System (BIOS) in het Master Boot Record (MBR) van de harde schijf en voor computers met Unified Extensible Firmware Interface (UEFI) op de GUID Partition Table (GPT).
+
+Dit programma (meestal **GRUB** op klassieke computers of **U-Boot** op embedded devices) doet dan de nodige voorbereidingen (zoals geheugen initialiseren) om dan vervolgens een kernel op te starten, zoals de Linux- of Windows-kernel.
+
+~~~
++---------------------+
+|  1ST BOOTLOADER     | (bv. BIOS/UEFI)
++----------+----------+
+           |
++----------v----------+
+|  2ND BOOTLOADER     |  (bv. GRUB, U-Boot)
 +----------+----------+
            |
 +----------v----------+
@@ -70,17 +67,16 @@ Dit programma dat beperkt in grootte is (meestal **GRUB** op klassieke computer 
 +----------+----------+
 ~~~
 
-Deze kernel is dan verantwoordelijk om verschillende **low-level taken** uit te voeren zoals:
+Deze kernel is dan zoals we in de introductie van deze cursus al gezien hebben verantwoordelijk om verschillende **low-level taken** uit te voeren, zoals:
 
-* CPU initialisatie en testen
-* Geheugen-test en -initialisatie
-* Drivers en kernel-modules laden
-* "Device en -bus discovery"  
-  (zorgen dat alle randapparatuur wordt gedetecteerd)
-* Mounten van een root filesystem
+* processor initialiseren
+* geheugen initialiseren
+* apparaatstuurprogramma's (drivers) en kernelmodules laden
+* randapparatuur detecteren
+* rootbestandssysteem aankoppelen 
 
 De belangrijkste taak echter is - na bovenstaande initialisaties - het opstarten van 
-de userspace.
+de *user space* (in contrast met de *kernel space*).
 
 ~~~
 +---------------------+
@@ -88,7 +84,7 @@ de userspace.
 +----------+----------+
            |
 +----------v----------+
-|  2ND BOOTLOADER     |  (bv. GRUB, UBoot)
+|  2ND BOOTLOADER     |  (bv. GRUB, U-Boot)
 +----------+----------+
            |
 +----------v----------+
@@ -104,40 +100,35 @@ de userspace.
 +---------------------+
 ~~~
 
-Deze userspace is dat het 1ste niet-kernel programma dat wordt opgestart en zal dan 
-de verschillende dameons, services, windowing-systemen op starten.
-
-Dit allereerste init-programma krijgt dan de PID 1 en heet als parent-process 0.  
-(dit parent-proces 0 is dan de kernel)
+Het eerste programma dat in de user space opgestart wordt, zal verschillende services opstarten. Dit initialisatieprogramma krijgt proces-ID 1, terwijl het ouderproces (**parent process**), namelijk de kernel, PID 0 heeft.
 
 ~~~
-(base) bart@bvlegion:~$ ps -f 1
+bart@bvlegion:~$ ps -f 1
 UID          PID    PPID  C STIME TTY      STAT   TIME CMD
 root           1       0  0 Apr23 ?        Ss     0:05 /sbin/init splash
 ~~~
 
-Op de meeste desktop- en server-systemen is dit **systemd**.  
-**systemd** zal vanaf de opstart de verschillende services (die je nodig hebt als gebruiker) gaan opstarten, beheren en controleren.
+In dit geval is het programma `/sbin/init` een symbolische link:
 
 ~~~
-(base) bart@bvlegion:~$ ls -l /sbin/init 
+bart@bvlegion:~$ ls -l /sbin/init 
 lrwxrwxrwx 1 root root 20 Jan 10 05:56 /sbin/init -> /lib/systemd/systemd
-(base) bart@bvlegion:~$ 
+bart@bvlegion:~$ 
 ~~~
+
+Op de meeste Linux desktop- en serversystemen is dit proces met PID 1 `systemd`. Dit zal vanaf de opstart van de Linux-distributie de verschillende services die je nodig hebt als gebruiker opstarten, beheren en controleren.
 
 > Nota:  
-> We komen nog later terug op systemd, eerst focussen we op de processen en de andere tools
-> om deze te beheren
+> We komen later nog terug op `systemd`. We focussen nu eerst op de processen en de andere tools
+> om deze te beheren.
 
-### Processen bekijken met ps
+### Processen bekijken met `ps`
 
-We kunnen deze processen - en hun eigenschappen - bekijken op je machine via het commando **ps**.  
-ps is de afkorting voor **"process status"**
-Laten we het even uitvoeren...
+We kunnen deze processen - en hun eigenschappen - op je machine bekijken via de opdracht `ps`. Dit is de afkorting van **process status**.
 
 #### Shell-processen
 
-We zien dat - zonder bijhorende opties - dat dit commando enkel de processen printen binnen je huidige terminal.
+We zien dat - zonder extra opties - de opdracht `ps` alleen de processen toont binnen je huidige terminalsessie:
 
 ~~~
 student@studentdeb:~$ ps
@@ -147,19 +138,21 @@ student@studentdeb:~$ ps
 student@studentdeb:~$ 
 ~~~
 
-Momenteel geeft het dan ook maar 2 processen (en 2 lijnen) weer.  
-1 voor de bash-shell die binnen je terminal draait en 1 voor het commando ps zelf dat op die moment actief was.
+Momenteel geeft het dan ook maar twee processen weer:
 
-Daarnaast zien we dat er meerdere data wordt meegegeven in tabel-vorm:
+* de Bash-shell waarin je de opdracht `ps` intypt
+* de opdracht `ps` zelf die op dat moment actief was
 
-* PID  => het unieke process-id van je process
-* TTY  => de terminal waarmee je process is gelinkt
-* TIME => de tijd dat je programma al aan het uitvoeren is  
-* CMD  => het programma (of commando) waarmee je process is gestart
+Daarnaast zien we dat er voor elk proces meerdere data weergegeven worden in een tabelvorm:
 
-#### Meer info met de f-optie
+* PID  => het unieke process ID van het proces
+* TTY  => de terminal waaraan het proces is gekoppeld voor in- en uitvoer
+* TIME => de (processor)tijd dat het proces al actief is
+* CMD  => het programma (of de opdracht) waarmee het proces gestart is
 
-Als je de optie **"f"** toevoegt krijg je meer informatie te zien voor
+#### Meer info met de optie `-f`
+
+Als je de optie `-f` toevoegt, krijg je extra kolommen te zien voor elk proces:
 
 ~~~
 student@studentdeb:~$ ps -f
@@ -169,14 +162,16 @@ student     3613    1127  0 21:29 pts/3    00:00:00 ps -f
 student@studentdeb:~$ 
 ~~~
 
-* UID => de user-id verbonden aan het process
-* PPID => het parent-process (ofwel het process dat je terminal heeft gestart)
-* C => het percentage in cpu
-* STIME => de moment dat je process is gestart
+* UID => het ID van de gebruiker verbonden aan het proces
+* PPID => het ID van het ouderproces (het proces dat dit proces opgestart heeft)
+* C => het percentage in processorbelasting
+* STIME => de moment dat het proces is gestart
 
-#### Processen per user
+Merk op: het PPID van het proces met CMD `ps -f` is hetzelfde als het PID van het proces met CMD `bash`. Dit wil zeggen dat die laatste het ouderproces van het eerste is. En dat klopt: we hebben `ps -f` in deze Bash-sessie uitgevoerd.
 
-Als je bijvoorbeeld de processen wil zien die onder een specifieke user-name wil zien kan je de u-optie gebruiken:
+#### Processen per gebruiker 
+
+De optie `-u` laat je toe om de processen op te vragen die een specifieke gebruiker draait:
 
 ~~~
 student@studentdeb:~$ ps -u student
@@ -192,7 +187,7 @@ student@studentdeb:~$ ps -u student
     ...
 ~~~
 
-Deze kan je natuurlijk ook combineren met andere opties zoals -f
+Dit kun je natuurlijk ook combineren met andere opties, zoals `-f`:
 
 ~~~
 student@studentdeb:~$ ps -f -u student
@@ -208,10 +203,9 @@ student      805       1  0 15:07 ?        00:00:00 /usr/bin/VBoxClient --clipbo
 ...
 ~~~
 
-#### Alle processen bekijken met de e-optie
+#### Alle processen bekijken met de optie `-e`
 
-Als je alle processen wil zien gebruik je de optie **-e**.  
-Meestal combineer je deze optie met **-f** tot **"ps -e -f"** of afgekort **"ps -ef"**
+Als je alle processen wilt zien, niet alleen van je huidige shell-sessie of van een specifieke gebruiker, voeg dan de optie `-e` toe. Meestal combineer je deze optie met `-f` tot `ps -e -f`, wat je kunt afkorten tot `ps -ef`:
 
 ~~~
 student@studentdeb:~$ ps -ef
@@ -240,10 +234,9 @@ student     1103    1101  0 15:19 pts/1    00:00:00 nano nano_ttest
 ...
 ~~~
 
-#### Nog meer informatie zien met de l-optie
+#### Nog meer informatie zien met de optie `-l`
 
-Als je nog extra informatie wil bekomen kan je de l-optie gebruiken.
-Wat we bijvoorbeeld hieronder zien is dat er een extra veld **S** (status) is bijgekomen en dat stelt de status van het process voor.
+Nog meer informatie krijg je met de optie `-l`. Hieronder zien we bijvoorbeeld dat er een extra kolom **S** (status) is bijgekomen:
 
 ~~~
 student@studentdeb:~$ ps -efl
@@ -272,10 +265,7 @@ F S UID          PID    PPID  C PRI  NI ADDR SZ WCHAN  STIME TTY          TIME C
 4 R student     3931    1127  0  80   0 -  2425 -      22:59 pts/3    00:00:00 ps -efl
 ~~~
 
-### Process-status
-
-Dit status-veld geeft de mogelijk proces-statussen weer (of PROCESS STATE CODES).  
-In de man-pagina van het ps-commando staan deze als volgt opgesteld.
+In deze kolom staat voor elk proces een lettercode die de status van het proces voorstelt. In de man-pagina van de opdracht `ps` staan deze als volgt beschreven:
 
 ~~~
 D    uninterruptible sleep (usually IO)
@@ -289,59 +279,21 @@ X    dead (should never be seen)
 Z    defunct ("zombie") process, terminated but not reaped by its parent
 ~~~
 
-De **meest** **voorkomende** zijn:
+De meest voorkomende zijn:
 
-* **S** => het process wacht op een event (dikwijls IO-gerelateerd)
-* **R** => actief of de processor
-* **T** => gestopt door een pauze-signaal
-* **D** => wachtend op IO (lezen van een file of een netwerk)
-* **Z** => beeindigd/dood
+* **S** => wacht op een gebeurtenis
+* **R** => is actief
+* **T** => is gestopt door een extern signaal
+* **D** => wacht op invoer (lezen van een bestand of een netwerk)
+* **Z** => beëindigd maar nog niet opgekuist
 
-~~~
-     Waiting for resource of signal  +-------------------------+
-  +---------------------------------->                         |
-  |                                  | Interruptible Sleep (D) |
-  |    +-----------------------------+                         |
-  |    |  Wakes Up/Signal            +-------------------------+
-  |    |
-  |    |
-  |    |    Waiting for resources    +-------------------------+
-  |    |        +-------------------->                         |
-  |    |        |                    | Interruptible Sleep (S) |
-  |    |        |                    |                         |
-+-+----v--------+--------+<----------+-------------------------+
-|                        |  Wakes up
-|  Running          (R)  |
-|                        |  SIGSTOP
-+-+-------------^--------+<----------+-------------------------+
-  |             |                    |                         |
-  |             |                    | Stopped             (T) |
-  |             |           SIGCONT  |                         |
-  |             +--------------------+-------------------------+
-  |
-  |
-  |                                  +-------------------------+
-  |                                  |                         |
-  |     exit() of kill-signal        | Zombie              (Z) |
-  +---------------------------------->                         |
-                                     +-------------------------+
-~~~
+### Signalen
 
-### Signals
+Om de status van een proces te wijzigen kun je vanuit de shell **signalen** naar het proces sturen. Deze signalen zijn een communicatiemiddel tussen processen.
 
-Om de status te kunnen wijzigen kan je vanuit de shell de status van processen wijzigen via **signalen**.  
-Deze signalen worden tussen processen naar elkaar doorgestuurd om 
+Wanneer een proces een signaal ontvangt, onderbreekt het proces zijn uitvoering en wordt een **signal handler** uitgevoerd. Hoe het programma op een signaal reageert, hangt meestal af van het type signaal dat wordt ontvangen. Nadat het signaal is verwerkt, kan het proces zijn normale uitvoering al dan niet voortzetten.
 
-De signalen zijn een communicatiemiddel tussen processen.  
-Wanneer een proces een signaal ontvangt, onderbreekt het proces de uitvoering ervan en wordt een signaalbehandelaar uitgevoerd.
-
-Hoe het programma zich gedraagt, hangt meestal af van het type signaal dat wordt ontvangen.  
-Nadat het signaal is verwerkt, kan het proces zijn normale uitvoering al dan niet voortzetten.
-
-De Linux-kernel kan bijvoorbeeld signalen verzenden wanneer een proces probeert te delen door nul en het SIGFPE-signaal ontvangt.  
-(zie bijvoorbeeld in je Python-cursus waar we een exception provoceren door een getal door 0 te delen, hetgeen een exception genereerd)
-
-Een overzicht van deze signalen kan je bekomen via het commando **kill -l** (zo dadelijk meer of het kill-commando)
+Een overzicht van deze signalen verkrijg je via de opdracht `kill -l` (zo dadelijk meer over de opdracht `kill`):
 
 ~~~
 bart@bvlegion:~$ kill -l
@@ -361,65 +313,52 @@ bart@bvlegion:~$ kill -l
 ~~~
 
 Niet alle signalen zijn even belangrijk.  
-De belangrijkste (meest gebruikte) signalen zijn SIGTERM, SIGQUIT, SIGSTOP? SIGING en SIGKILL
+De belangrijkste (meest gebruikte) signalen zijn SIGTERM, SIGQUIT, SIGSTOP, SIGINT en SIGKILL.
 
 
 #### SIGTERM (15) en SIGQUIT (13)
 
-SIGTERM- en alsook SIGQUIT-signalen zijn bedoeld om het proces te beëindigen.  
-In dit geval vragen we specifiek om het af te maken. 
+SIGTERM- en SIGQUIT-signalen zijn bedoeld om een proces te beëindigen. Het zijn beide 'vriendelijke' manieren van vragen, want programma's kunnen dit signaal negeren of er een specifieke behandeling aan koppelen.
 
-SIGTERM is trouwens het standaardsignaal wanneer we het kill-commando gebruiken.  
-maw het is een vriendelijke manier van vragen, want programma's kunnen dit negeren of een specifieke behandeling aan koppelen
-
-SIGQUIT genereert echter ook een kerndump voordat het wordt afgesloten.
+SIGTERM is het standaardsignaal wanneer we de opdracht `kill` gebruiken. SIGQUIT genereert ook een bestand met de inhoud van het geheugen voordat het proces beëindigd wordt. Dat is nuttig om problemen te analyseren.
 
 #### SIGSTOP (19) en SIGCONT (18)
 
-SIGSTOP EN SIGCONT worden veel te samen gebruikt.  
+SIGSTOP en SIGCONT worden vaak samen gebruikt.  
 
-De 1ste zal een process suspenden of pauzeren, het programma wordt niet beeindigd!!!  
-Dit komt overeen met **"ctrl + z"** op de command-line.
+Het eerste signaal zal een proces pauzeren (suspend). Het programma wordt daardoor niet beëindigd. Dit signaal wordt aan een lopend proces gestuurd wanneer je Ctrl+Z in de terminal indrukt.
 
-De 2de is een signaal om het process (dat eerder via signaal 19 was stopgezet) terug op te starten.
+Het tweede signaal start een proces dat eerder via signaal 19 gepauzeerd was terug op.
 
-> We tonen hier zo dadelijk een voorbeeld van
+#### SIGINT (2) of keyboard interrupt
 
-#### SIGINT (2) of keyboard-interrupt
+SIGINT is het signaal dat verzonden wordt wanneer we Ctrl+C in de terminal invoeren. De standaardactie is om het proces te beëindigen.  
 
-SIGINT is het signaal dat wordt verzonden wanneer we Ctrl+C ingegven.  
-De standaardactie is om het proces te beëindigen.  
-
-Sommige programma's negeren deze actie echter en gaan er anders mee om.
-Een bekend voorbeeld is de bash-interpreter.  
-
-Wanneer we op Ctrl+C drukken, wordt het niet afgesloten, maar wordt een nieuwe en lege promptregel afgedrukt. 
-
+Sommige programma's negeren dit signaal echter en gaan er anders mee om. Een voorbeeld is Bash. Als je in de Bash-prompt op Ctrl+C drukt, wordt Bash niet afgesloten, maar krijg je een nieuwe, lege prompt te zien.
 
 #### SIGKILL (9)
 
-Ook wel de ultieme manier genoemd om een process te stoppen (als alle anderen falen).  
+De ultieme manier om een proces te stoppen (als alle andere manieren falen) is het signaal SIGKILL.  
 
-Wanneer een proces deze SIGKILL ontvangt, wordt het zowiezo beëindigd.  
-Dit is een speciaal signaal omdat het niet kan worden genegeerd door het process en het process zowiezo wordt beeindigd
+Dit is een speciaal signaal, omdat een proces het niet kan negeren. Wanneer een proces dit signaal ontvangt, wordt het dus sowieso beëindigd. 
 
-We gebruiken dit signaal om het proces geforceerd te beëindigen.  
-We moeten voorzichtig zijn, omdat het proces geen enkele opruimroutine kan uitvoeren.
+Dit signaal kun je gebruiken om een proces geforceerd te beëindigen. Doe dat wel altijd met de hoogste voorzichtigheid, omdat het proces niet de kans krijgt om opruimtaken uit te voeren.
 
-Een veelgebruikte manier om SIGKILL te gebruiken is om eerst SIGTERM te verzenden.  
-We geven het proces wat tijd om te beëindigen, we kunnen ook een paar keer SIGTERM sturen. Als het proces niet vanzelf wordt voltooid, sturen we SIGKILL om het te beëindigen.
+Vaak stuur je eerst het signaal SIGTERM als je een proces wilt beëindigen. Geef het proces wat tijd om zijn opruimtaken uit te voeren. Als het dan nog niet stopt, stuur het dan pass een SIGKILL-signaal.
 
-### Kill-commando
+### Signalen sturen met de opdracht `kill`
 
-Het kill-commando laat je toe 1 van bovenstaande signalen naar een applicatie toe te sturen.  
-Je gebruik dit als volgt:
+De opdracht `kill` laat je toe om één van bovenstaande signalen naar een proces te sturen.  
+Je gebruikt dit als volgt:
 
 ~~~
-kill -<nummer> <pid>
+kill -<signaal> <pid>
 ~~~
 
-We illusteren dit adhv de SIGSTOP en SIGCONT-signalen...  
-Als eerste starten we een langdurende job (die de prompt zal onderbreken)
+Je kunt het signaal opgeven als getal (bijvoorbeeld `-9`) of als signaal (bijvoorbeeld `-SIGKILL` of `-KILL`).
+
+We illustreren dit aan de hand van de signalen SIGSTOP en SIGCONT.
+Als eerste starten we een langdurende job (die de prompt zal onderbreken):
 
 * Terminal 1:
 
@@ -427,22 +366,21 @@ Als eerste starten we een langdurende job (die de prompt zal onderbreken)
 $ sleep 5000
 ~~~
 
-We openen een aparte console om het PID op te zoeken
+We openen nu een aparte terminal om het PID van dit proces op te zoeken:
 
 * Terminal 2:
 
 ~~~
-$ ps -u bvo | grep sleep
+$ ps -u student | grep sleep
 50663 pts/23   00:00:00 sleep
 $ ps -f 50663 | grep sleep
-bvo      50663 57255  0 13:49 pts/23   S      0:00 sleep 5000
+student      50663 57255  0 13:49 pts/23   S      0:00 sleep 5000
 ~~~
 
-We zien dat deze job pid 50663 heeft en in de idle-state is.  
+We zien dat deze job pid 50663 heeft en zich in de toestand **idle** bevindt.  
 
-
-Via het kill-commando kan ik nu signaleren sturen.  
-We sturen het SIGSTOP-signaal (19) om er voor te zorgen dat deze job stopt (pauzeert)
+Via de opdracht `kill` kun je nu signalen sturen.  
+We sturen het SIGSTOP-signaal (19) om ervoor te zorgen dat deze job stopt (pauzeert):
 
 * Terminal 2:
 
@@ -452,8 +390,8 @@ $ ps -f 50663 | grep sleep
 bvo      50663 57255  0 13:49 pts/23   T      0:00 sleep 5000
 ~~~
 
-Aan de kant van terminal 1 zien we dat de prompt is vrijgekomen.  
-Daar kunnen we zien (via het commando jobs dat we zo dadelijk verder uitleggen) dat deze job in een stop-state staat...
+In terminal 1 zie je nu dat de prompt weer beschikbaar is.  
+Daar kunnen we zien (via de opdracht `jobs` die we zo dadelijk verder uitleggen) dat deze job in de toestand **Stopped** staat:
 
 * Terminal 1:
 
@@ -463,8 +401,8 @@ $ jobs
 $ 
 ~~~
 
-De job staat dan wel in de stop-state (T), dit betekent echter niet dat deze job beeindigd is.  
-We kunnen deze job laten herstarten via het SIGSTART-signaal (18).
+De job staat dan wel in de stop-state (**T** in de uitvoer van `ps`), dit betekent echter niet dat deze job beëindigd is.  
+We kunnen deze job herstarten via het SIGSTART-signaal (18):
 
 * Terminal 2:
 
@@ -475,21 +413,25 @@ bvo      50663 57255  0 13:49 pts/23   S      0:00 sleep 5000
 $
 ~~~
 
-Aan de kant van terminal 1 zien we dat deze job ook runnig is (weliswaar in de achtergrond)
+Aan de kant van terminal 1 zien we dat deze job ook running is (weliswaar in de achtergrond):
 
 * Terminal 1:
 
 ~~~
 $ jobs
 [1]+  Running                 sleep 5000 &
+~~~
+
+We kunnen de job nu naar de voorgrond brengen:
+
+~~~
 $ fg
 sleep 5000
 ~~~
 
-### top voor realtime monitoring
+### Realtime monitoring van processen met `top`
 
-**ps** zal je een **snapshot** geven van wat er op die moment gaande is.  
-ipv ps kan je top gebruiken voor real-time-monitoring, hou er wel rekening mee dat deze performantie-impact heeft
+Met de opdracht `ps` krijg je een **snapshot** van wat er op dat moment gaande is. Als je realtime processen wilt monitoren, gebruik je `top`. Hou er wel rekening mee dat dit continu je processor belast. Laat dit dus niet langer draaien dan nodig:
 
 ~~~
 top - 12:48:49 up 19:38, 21 users,  load average: 2,83, 2,12, 1,88
@@ -529,7 +471,7 @@ MiB Swap:   2048,0 total,   2048,0 free,      0,0 used.  21606,6 avail Mem
     ...
 ~~~
 
-1ste deel van top geeft ons statistieken rond uptime, users, aantal processen, cpu- en memory
+In het bovenste deel van de uitvoer geeft `top` statistieken rond uptime (de tijd sinds de computer opgestart is), het aantal ingelogde gebruikers, het aantal processen, en het gebruikte geheugen:
 
 ~~~
 top - 12:48:49 up 19:38, 21 users,  load average: 2,83, 2,12, 1,88
@@ -539,39 +481,38 @@ MiB Mem :  31991,0 total,  13155,7 free,   8652,9 used,  10182,4 buff/cache
 MiB Swap:   2048,0 total,   2048,0 free,      0,0 used.  21606,6 avail Mem 
 ~~~
 
-* PID    =>  unieke identifier van het process
-* USER   =>  de user gelinkt aan het process
-* S      =>  status van het process
-* %CPU => percentage cpu
-* %MEM => percentage van het totale memory
-* TIME => totale CPU-tijd dat het programma heeft ingenomen
-* COMMAND => commando dat het process heeft gestart
+Daarna komt een tabel met alle processen. Dit zijn de kolommen:
 
-### JOBS & JOBCONTROL
+* PID    =>  uniek ID van het proces
+* USER   =>  de gebruiker gekoppeld aan het proces
+* S      =>  status van het proces
+* %CPU => percentage processorbelasting
+* %MEM => percentage van het totale werkgeheugen
+* TIME => totale processortijd dat het programma heeft ingenomen
+* COMMAND => opdracht waarmee het proces opgestart is
 
-**Job control** is een tools binnen de shell die je toelaat vanuit 1 shell (of command-line) verschillende commando's te starten en te managen (in parallel)  
+### Jobs en job control
 
-Wanneer we een **commando** uitvoeren in **bash**, wordt het dus **uitgevoerd** als een **job**.  
-Het verstaan hoe dat je deze jobs moet **beheren** EN geeft je veel extra mogelijkheden...
+**Job control** is een tool binnen de shell die je toelaat om in één shell verschillende opdrachten op te starten en parallel uit te voeren.
 
-Bedoeling van dit stuk is proberen uit te zoeken wat deze jobs zijn (in bash) en hoe deze gelinkt worden aan processen.  
-We bekijken ook hoe je ze moet starten, pauzeren, in "background" laten runnen, ...
+Wanneer we een opdracht in Bash opstarten, wordt die uitgevoerd als een **job**.  
 
+We bekijken in dit deel van de cursus hoe die jobs gelinkt zijn aan processen, hoe je ze moet starten, pauzeren en in de achtergrond laten draaien.
 
-#### Een job/commando => meerdere processen
+#### Een job/opdracht => meerdere processen
 
-Een eerste belangrijk principe om te begrijpen is dan een JOB kan bestaan uit meerdere processen
+Een eerste belangrijk principe om te begrijpen is dan een job kan bestaan uit meerdere processen:
 
 ~~~
 +--------+
-|  CMD   |  Een commando starten 
-+---+----+  maakt een job aan binnen bash
+|  CMD   |  Een opdracht starten 
++---+----+  maakt een job aan binnen Bash
     |
     |
 +---v----+              +----------+
 |  JOB   +--------------+ PROCESS  |
 +---+----+              +----------+
-    |  Deze job bestaat uit 1 of meerdere processen
+    |  Deze job bestaat uit één of meer processen
     |                   +----------+
     +-------------------+ PROCESS  |
                         +----------+
@@ -579,21 +520,21 @@ Een eerste belangrijk principe om te begrijpen is dan een JOB kan bestaan uit me
                          ...
 ~~~
 
-Laten we starten met een job die normaal gezien veel tijd moeten innemen.  
-De volgende opdracht gaat voor het woord blabla zoeken in all files binnen mijn home-directory.  
-(een job die meer dan een paar minuten kan duren afhanklijk van de grootte van je home-directory)
+Laten we starten met een job die normaal gezien veel tijd moet innemen.  
+De volgende opdracht zoekt het woord blabla in alle bestanden binnen mijn home-directory.  
+Dit is een job die meer dan een paar minuten kan duren afhankelijk van de grootte van je home-directory.
 
 ~~~
 bart@bvlegion:~$ rgrep "blabla" . | less
 ~~~
 
-Dit heeft nu een job gestart met 2 commando (grep en less).
+Dit heeft nu een job gestart met twee processen (`grep` en `less`).
 
 
 #### Job onderbreken met Ctrl+Z
 
-Laten we nu even deze job stoppen met de key-combo (ctrl-z) gebruik.  
-Dit zal deze job stoppen (of pauzeren) en dan krijg je een boodschap als hieronder op het scherm
+Laten we nu even deze job stoppen met de toetsencombinatie Ctrl+Z.  
+Dit zal deze job stoppen (of pauzeren). Je krijgt dan een boodschap zoals hieronder:
 
 ~~~
 [1]+  Stopped                 rgrep "blabla" . | less
@@ -602,16 +543,15 @@ bart@bvlegion:~$ pwd
 bart@bvlegion:~$
 ~~~
 
-Bemerk ook dat de prompt nu vrijgegeven is en ik andere commando's kan uitvoeren (voorbeeld met pwd)
+Bemerk ook dat de prompt nu beschikbaar is en ik andere opdrachten in de shell kan uitvoeren (geïllustreerd met `pwd`).
 
-#### Job-table (en het commando jobs)
+#### Job table (en de opdracht `jobs`)
 
 De processen en de jobs zijn gestopt maar niet verdwenen.  
-Hiervoor voorziet bash namelijk een **job-table** die bijhoudt welke jobs worden uitgevoerd.
+Hiervoor voorziet Bash namelijk een **job table** die bijhoudt welke jobs worden uitgevoerd.
 
-Deze table kan je consulteren via het commando **jobs**.  
-Deze duidt aan dat er momenteel 1 job draaiende is, let ook dat deze een id heeft gekregen.  
-(in dit geval 1)
+Deze tabel kun je raadplegen via de opdracht `jobs`.  
+Deze duidt aan dat er momenteel één job draaiende is. Bemerk ook dat deze een id heeft gekregen (in dit geval 1):
 
 ~~~
 bart@bvlegion:~$ jobs
@@ -619,7 +559,7 @@ bart@bvlegion:~$ jobs
 ~~~
 
 Dit id (1 in het voorbeeld) is niet te verwarren met de PID.  
-Deze kan je ook bekijken door een extra optie mee te geven aan jobs (-l).
+De PID kun je ook opvragen door een extra optie mee te geven aan jobs (`-l`):
 
 ~~~
 bart@bvlegion:~$ jobs -l
@@ -628,8 +568,8 @@ bart@bvlegion:~$ jobs -l
 bart@bvlegion:~$ 
 ~~~
 
-Deze toont ook aan da je meerdere processen verbonden hebt aan deze job met hun pid (88420 en 88421 in dit geval).  
-Als we dit dan bestuderen via ps:
+Je ziet hier dat er meerdere processen verbonden zijn aan deze job, namelijk met PID 88420 en 88421. De bijbehorende opdrachten worden ook getoond.  
+Bestudeer deze processen nu via `ps`:
 
 ~~~
 bart@bvlegion:~$ ps -l
@@ -640,32 +580,31 @@ F S   UID     PID    PPID  C PRI  NI ADDR SZ WCHAN  TTY          TIME CMD
 4 R  1000   86246    3116  0  80   0 -  2936 -      pts/6    00:00:00 ps
 ~~~
 
-* Je **main-process** is je **bash-shell** en heeft de pid **3116**
-  * Dit process staat in de de **S-status**  
-    (wat er op neerkomt dat deze wacht op CPU-tijd en idle is)
-* Deze heeft **2 children**
-  * 84420 => grep-commando
-  * 84421 => less-commando
-  * Deze **2 commando's** staan in de **T-status**  
-    (stop-status die je na een SIGSTOP verkrijgt)
+* Het hoofdproces is de **Bash-shell** en heeft PID **3116**.
+  * Dit proces heeft de status **S**  
+    (wat er op neerkomt dat deze wacht op CPU-tijd en **idle** is).
+* Dit proces heeft twee kinderen:
+  * 84420 => `grep`
+  * 84421 => `less`
+  * Deze twee processen hebben de status **T**  
+    (stop-status die je na een signaal SIGSTOP verkrijgt).
 
-Om deze job terug naar de voorgrond te brengen kan je het commando **fg** gebruiken waardoor het 
-terug op de voorgrond verschijnt en je bijvoorbeeld Ctrl+C kan gebruiken om dit te beeindigen.
+Om deze job terug naar de voorgrond te brengen, gebruik je de opdracht `fg`. De Bash-prompt is dan niet meer toegankelijk en je kunt de job beëindigen met Ctrl+C.
 
-Hoe dit programma **fg** en zijn collega **bg** kunnen gebruiken om meerdere jobs te runnen gaan we nu zien.
+We gaan nu zien hoe je dit programma `fg` en zijn collega `bg` gebruikt om meerdere jobs parallel te draaien.
 
-#### Een job in background draaien met &
+#### Een job in de achtergrond draaien met &
 
-Een job waarvan het process wordt gepauzeerd (door een STOP-signaal) wordt in background geplaatst.  
-Wat als je een job **direct** in de **achtergrond** wil laten lopen (en niet stoppen)?
+Een job waarvan het proces wordt gepauzeerd (door een STOP-signaal) wordt in de achtergrond geplaatst.  
+Wat als je een job **rechtstreeks** in de **achtergrond** wilt laten lopen (en niet stoppen)?
 
-Dit kan op verschillende manieren, maar een veel gebruikte is je commando te laten volgen door een **&**.  
-Dit zorgt ervoor dat je command-prompt niet zal wachten op deze job en deze dus in background draait...
+Een veel gebruikte manier is om je opdracht te laten volgen door een `&`.  
+Daardoor zal je opdrachtprompt niet wachten op deze job en deze dus in de achtergrond draaien...
 
-In het onderstaande voorbeeld starten we 3 jobs adhv het commando sleep 
+In het onderstaande voorbeeld starten we drie jobs met de opdracht `sleep`. 
 
-> sleep is een tool die een gegeven aantal seconden zal wachten
-> deze wordt veel gebruikt binnen scripten om voor een delay te zorgen
+> Met de opdracht `sleep` kun je een gegeven aantal seconden wachten.
+> Dit wordt vaak gebruikt binnen scripts om een vertraging toe te voegen.
 
 ~~~
 $ sleep 360 &
@@ -676,10 +615,10 @@ $ sleep 370 &
 [3] 31714
 ~~~
 
-#### Job-table
+#### Job table
 
-Bash houdt alle jobs binnen je bash-sessie bij in een job-table.  
-Zoals eerder getoond kan je hier het commando jobs voor gebruiken, de short option l zorgt ervoor dat je deze kan correleren met het process-id
+Bash houdt alle jobs binnen je Bash-sessie bij in een **job table**.  
+Zoals eerder getoond, kun je hier de opdracht `jobs` voor gebruiken. Met de optie `-l` krijg je bij deze jobs het overeenkomende PID te zien:
 
 ~~~
 $ jobs -l
@@ -688,15 +627,15 @@ $ jobs -l
 [3]+ 31714 Running                 sleep 370 &
 ~~~
 
-Als we nu de job-table bekijken zien we dat er 3 jobs draaien:
+Als we nu de job table bekijken, zien we dat er drie jobs draaien:
 
-* job 1 met een process 31056 (sleep 360)
-* job 1 met een process 31452 (sleep 365)
-* job 1 met een process 31714 (sleep 370)
+* job 1 met PID 31056 (sleep 360)
+* job 1 met PID 31452 (sleep 365)
+* job 1 met PID 31714 (sleep 370)
 
-> Bemerk ook dat de laatst gestart job wordt voorafgegaan door een + en de voorlaatste door een -
+> Bemerk ook dat de laatst gestarte job voorafgegaan wordt door een + en de voorlaatste door een -.
 
-De processen die gelinkt zijn aan deze job vind je terug via ps (zie PID's):
+De processen die gelinkt zijn aan deze job vind je terug via `ps`. Kijk naar de PID's:
 
 ~~~
 $ ps -l
@@ -708,29 +647,26 @@ F S   UID   PID  PPID  C PRI  NI ADDR SZ WCHAN  TTY          TIME CMD
 0 R  1173 33096  2425  0  80   0 -  2637 -      pts/16   00:00:00 ps
 ~~~
 
-#### fg-commando
+#### Job naar de voorgrond brengen met `fg` 
 
-Stel dat je 1 van de jobs terug naar de voorgrond wil brengen dan kan je dit doen via het fg-commando.
+Stel dat je één van de jobs terug naar de voorgrond wilt brengen, dan kan dat via de opdracht `fg`.
+
+Hiervoor duid je de job die je naar de voorgrond wenst te brengen aan met een `%` gevolgd door het jobnummer (niet de PID):
 
 ~~~
 $ jobs -l
 [1]  31056 Running                 sleep 360 &
 [2]- 31452 Running                 sleep 365 &
 [3]+ 31714 Running                 sleep 370 &
-~~~
-
-Hiervoor duid je de job aan die je wenst naar de voorgrond te brengen met een % gevolgd door de jobnummer (niet de pid)
-
-~~~
 $ fg %2
 sleep 365
 ~~~
 
-Job met nummer 2 wordt dan opnieuw naar de voorgrond en de prompt wordt dan opnieuw geblokkeerd (wachtende op het beeindigen van deze job)
+Job met nummer 2 wordt dan opnieuw naar de voorgrond gebracht. De prompt is nu opnieuw geblokkeerd, omdat Bash wacht tot deze job beëindigd wordt.
 
-#### bg-commando
+#### Naar de achtergrond brengen met `bg` 
 
-Als je nu (vanuit deze shell) de job terug naar de achtergrond wil brengen gebruik je Ctrl+z hetgeen een stop-signaal zal zenden naar het process gelinkt naar deze job.
+Als je nu (vanuit deze shell) de job terug naar de achtergrond wilt brengen, druk je Ctrl+Z in. Dit zendt een stop-signaal naar het proces gelinkt aan deze job.
 
 ~~~
 $ fg %2
@@ -740,7 +676,7 @@ sleep 365
 $
 ~~~
 
-De prompt komt terug vrij maar de job blijft echter nog in een stop-status
+De prompt is weer beschikbaar, maar de job blijft nog in een stop-status:
 
 ~~~
 $ jobs -l
@@ -749,7 +685,7 @@ $ jobs -l
 [3]- 31714 Running                 sleep 370 &
 ~~~
 
-Het je ook terugvindt in de proces-table, zie pid 31452 dat in status T staat.
+Hetzelfde vind je terug in de procestabel. Zie het proces met PID 31452, dat de status T heeft:
 
 ~~~
 $ ps -l
@@ -761,8 +697,8 @@ F S   UID   PID  PPID  C PRI  NI ADDR SZ WCHAN  TTY          TIME CMD
 0 R  1173 35174  2425  0  80   0 -  2637 -      pts/16   00:00:00 ps
 ~~~
 
-Om het proces terug te hervatten kan je die doen via het commando bg.  
-Deze zal de job terug in running-state plaatsen en het process hervatten.
+Om het proces te hervatten, gebruik je de opdracht `bg` met `%` en dan het jobnummer.  
+Dit plaatst de job weer in de toestand **Running**, waardoor het proces op de achtergrond draait:
 
 ~~~
 $ bg %2
@@ -773,14 +709,12 @@ $ jobs -l
 [3]+ 31714 Running                 sleep 370 &
 ~~~
 
-Je kon ook kiezen dit process opnieuw in fg te brengen
+#### Job beëindigen met `fg` en `Ctrl+C`
 
-#### Job beeindigen met fg en Ctrl-C
+De eenvoudigste manier om een job te beëindigen, is het volgende tweestappenplan:
 
-De meest éénvoudige manier om een job te beeindigen is het volgende 2-stappen-process:
-
-* De job naar de voorgrond brengen (via fg)
-* Deze job vervolgens te stoppen via Ctrl+c
+* de job naar de voorgrond brengen (via `fg`)
+* deze job vervolgens te stoppen met Ctrl+C
 
 ~~~
 $ fg %3
@@ -789,7 +723,7 @@ sleep 370
 $ 
 ~~~
 
-Vervolgens zal je zien dat deze job gestopt is (en verwijderd uit de job-table)
+Vervolgens zie je dat deze job gestopt is (en verwijderd uit de jobtabel):
 
 ~~~
 $ jobs
@@ -798,10 +732,9 @@ $ jobs
 $
 ~~~
 
-#### Beeindigen via kill
+#### Job beëindigen via `kill`
 
-Je kan een job ook beindigen adhv het kill commando.  
-Gegeven dat je onderstaande job-table overhebt...
+Je kunt een job ook beëindigen met de opdracht `kill`. Gegeven dat je onderstaande jobtabel overhebt...
 
 ~~~
 $ jobs
@@ -810,13 +743,13 @@ $ jobs
 $
 ~~~
 
-...kan je deze job stoppen met hulp van de percentage-notatie (je hoeft niet de pid te gebruiken)
+...kun je een van deze jobs stoppen met behulp van de percentagenotatie (je hoeft dus niet de PID te gebruiken):
 
 ~~~
 $ kill %1
 ~~~
 
-Deze job zie je nadien nog in de job-table met de status "Terminated"
+Deze job zie je nadien nog in de jobtabel met de status **Terminated**:
 
 ~~~
 $ jobs
@@ -827,7 +760,7 @@ $
 
 #### Done...
 
-Als we de overblijvende job laten "uitdraaien" dan zal deze job uiteindelijk (na +- 365 seconden in de )
+Als we de overblijvende job laten "uitdraaien" dan zal deze job uiteindelijk (na 365 seconden) de toestand **Done** hebben:
 
 ~~~
 $ jobs
@@ -836,7 +769,7 @@ $ jobs
 $
 ~~~
 
-Eénmaal de info is opgevraagd verdwijnt deze job uit de jobtable...
+Eenmaal je deze informatie opgevraagd hebt, verdwijnt de job uit de jobtabel...
 
 ### crontab
 
