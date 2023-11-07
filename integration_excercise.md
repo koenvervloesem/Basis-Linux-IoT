@@ -4,11 +4,11 @@
 
 #### Deel 1: script aanmaken
 
-Maak een **script** dat een **folder** aanmaakt op basis van de datum vandaag.  
-Als voorbeeld, stel dat het vandaag **22 December 2021** is dan moet deze folder **20211222** noemen.  
+Maak een **script** dat een directory aanmaakt op basis van de datum van vandaag.  
+Een voorbeeld: stel dat het vandaag **22 december 2021** is, dan moet deze map **20211222** heten.  
 
-Geef dit script de naam **create_daily_folder.sh**.  
-Als je dit script uitvoert zal het zich als volgt gedragen:
+Geef dit script de naam `create_daily_folder.sh`.  
+Als je dit script uitvoert, zal het zich als volgt gedragen:
 
 ~~~
 student@studentdeb:~$ date
@@ -20,22 +20,21 @@ drwxr-xr-x 2 student student 4096 Dec 22 13:36 20211222
 student@studentdeb:~$
 ~~~
 
-2 hingt (zie ook help-paragrafen hieronder), om de folder aan te maken maak gebruik van **2 tools binnen Bash**
+Om deze directory aan te maken, maak je gebruik van:
 
-* Het commando date
-* Het principe van "command substution"
+* de opdracht `date`
+* het principe van **command substitution**
 
-##### Help: date-commmando
+##### Help: `date`
 
-Het date-commando wordt in Bash gebruikt om de exacte tijdstip op te vragen zoals hieronder geillustreerd
+De opdracht `date` wordt in Bash gebruikt om het exacte tijdstip op te vragen, zoals hieronder geïllustreerd:
 
 ~~~
 student@studentdeb:~$ date
 Wed 22 Dec 2021 01:51:04 PM CET
 ~~~
 
-Om een **datum** via een **exact formaat** te printen kan je als argument het formaat zetten voorafgegaan door een +
-zoals hieronder vertoond.  
+Om een **datum** via een **exact formaat** te tonen kun je als argument het formaat opgeven voorafgegaan door een `+` zoals hieronder vertoond:
 
 ~~~
 student@studentdeb:~$ date +%y
@@ -43,63 +42,56 @@ student@studentdeb:~$ date +%y
 student@studentdeb:~$
 ~~~
 
-Aan jou om te bekijken hoe je dit formaat moet vormen
+De oefening is nu om te bekijken met welk formaat je de datum in de gevraagde vorm kunt weergeven.
 
-> Tip: Om dit formaat te creeren kijk naar de man-pagina van date  
-> (probeer google te vermijden voor de oefening)
+> Tip: Bekijk de man-pagina van `date`.  
 
+##### Help: command substitution
 
-##### Help: command-substitution
-
-Om het date-commando te combineren met het commando om een directory aan te maken
-gebruik we **command substitution**
+Om de opdracht `date` te combineren met de opdracht om een directory aan te maken, gebruik je **command substitution**. Een voorbeeld van dit principe:
 
 ~~~
 student@studentdeb:~$ hostname -s
 studentdeb
-student@studentdeb:~$ touch $(hostname -s)_filtest
+student@studentdeb:~$ touch $(hostname -s)-filetest
 student@studentdeb:~$ ls *filetest
-student@studentdeb:~$ touch $(hostname -s)_filetest
-student@studentdeb:~$ ls *filetest
-bvlegion_filetest
+studentdeb-filetest
 student@studentdeb:~$ 
 ~~~
 
-#### Deel 2: folder bestaat al...
+#### Deel 2: de directory bestaat al...
 
-Het script **print** ook nog een **boodschap** af dat de folder reeds is aangemaakt.  
+Als de directory al aangemaakt is, moet het script:
+
+* de directory niet opnieuw aanmaken
+* een foutmelding tonen
+* met exitcode 2 afsluiten
+
+Dat ziet er dan als volgt uit:
 
 ~~~
 student@studentdeb:~$ ls -ld 20211222
 drwxr-xr-x 2 student student 4096 Dec 22 13:36 20211222
 student@studentdeb:~$ ./create_daily_folder.sh
 Folder /home/student/202112 exists already
-~~~
-
-Maak deze folder alleen aan als deze nog niet bestaat en print bovenstaande errorboodschap af.  
-Zorg ook dat in dat geval een exit code 2 wordt gebruik zodat je dit kan afleiden:
-
-~~~
-student@studentdeb:~$ ./create_daily_folder.sh
-Folder /home/student/202112 exists already
-echo $?
+student@studentdeb:~$ echo $?
 2
 ~~~
 
-##### Help: nakijken of file/folder bestaat
+##### Help: nakijken of een bestand of map al bestaat
 
-Je hebt de volgende opties ter beschikking om na te kijken of files te bekijken (zien hoofdstuk files)
+Je hebt de volgende opties ter beschikking om na te kijken of een bestand of map al bestaat (zie eerder in de cursus):
 
 ~~~
--e FILE => FILE bestaat.
--d FILE => FILE bestaat en is een directory.
--r FILE => FILE bestaat en de read-permissie is toegekend.
--s FILE => FILE bestaat en is niet leeg.
--w FILE => FILE bestaat en je mag er naar schrijven.
--x FILE => FILE bestaat en heeft execute-permissies.
+-e FILE => FILE bestaat
+-d FILE => FILE bestaat en is een directory
+-r FILE => FILE bestaat en je mag het lezen
+-s FILE => FILE bestaat en is niet leeg
+-w FILE => FILE bestaat en je mag ernaar schrijven
+-x FILE => FILE bestaat en je mag het uitvoeren
 ~~~
 
-Het volgende voorbeeld kijkt na of het argument een file is:
+Het volgende voorbeeld kijkt na of het argument een bestand is:
 
 ~~~bash
 #!/bin/bash
@@ -115,14 +107,12 @@ else
 fi
 ~~~
 
-Let wel je moet ook nakijken of het een directory is.
+Gebruik een gelijkaardige aanpak om in je script na te kijken of de directory al bestaat.
 
-Optioneel oefening: als al bestaat kijk na of je deze folder kan aanpassen en als workdirectory kan gebruiken
+### Deel 3: geef een directory mee als argument
 
-### Deel 3: geef een folder mee als argument
-
-Het script maakt **zonder argument** een folder aanmaakt binnen de folder vanwaar je het script uitvoert.  
-Zorg er nu voor dat het script deze folder aanmaakt binnen een andere folder als je een extra argument meegeeft.
+Het script maakt **zonder argument** een directory aan binnen de directory vanwaar je het script uitvoert (de werkdirectory).  
+Zorg er nu voor dat het script deze directory aanmaakt binnen een andere directory als je een extra argument meegeeft.
 
 ~~~
 student@studentdeb:~$ ./create_daily_folder.sh /home/student/Tmp
@@ -131,27 +121,27 @@ student@studentdeb:~$ ls -ld /home/student/Tmp/20211222
 drwxr-xr-x 2 student student 4096 Dec 22 13:36 20211222
 ~~~
 
-Geef wel een foutboodschap mee indien de basisfolder niet bestaat
+Laat het script wel een foutmelding tonen als de bovenliggende directory niet bestaat.
 
 ~~~
 student@studentdeb:~$ ./create_daily_folder.sh /home/student/Blabla
 Cannot create af folder /home/student/Blabla/20211222 because /home/student/Blabla doesn't exist
 ~~~
 
-#### Deel 4: schrijf alles weg in een logfile
+#### Deel 4: schrijf alles weg in een logbestand
 
-Schrijf de boodschappen die je tot nog toe hebt gemaakt weg naar een file create_daily_folder.log.  
-Deze file bevindt zich in de basis-folder waar je de datum folders aanmaakt.
+Schrijf de boodschappen die je tot nog toe hebt gemaakt weg naar een logbestand `create_daily_folder.log`.  
+Dit bestand bevindt zich in de basisdirectory waarin je de directory met de datum aanmaakt.
 
 #### Deel 5: plan dit dagelijks met een crontab
 
-Roep dit **script** op **dagelijkse basis** aan via een crontab (dagelijks om 18.05).  
-Schrijf dit weg naar de folder /home/student/shared/ (via het argument)
+Roep dit **script** op **dagelijkse basis** aan via een crontab (dagelijks om 18:05).  
+Pas het script toe op de directory `/home/student/shared/` (via het argument).
 
-#### Deel 6: groepen, users
+#### Deel 6: groepen en gebruikers
 
-* Maak een groep shared aan
-* Zorg dat bovenstaand folder eigendom is van deze groep
-* Enkel members van deze groep hebben access tot deze folder
-* De subfolders die worden aangemaakt behoren automatisch tot deze groep
+* Maak een groep `shared` aan.
+* Zorg dat bovenstaande directory uit deel 5 eigendom is van deze groep.
+* Enkel leden van deze groep hebben toegang tot deze directory.
+* De subdirectory's die worden aangemaakt behoren automatisch tot deze groep.
 

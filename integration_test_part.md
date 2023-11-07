@@ -1,54 +1,50 @@
 ## Proeftest
 
-Los al je vragen op binnen deze text-file en upload deze naar Toledo.  
+Los al je vragen op binnen dit tekstbestand en upload dit naar Toledo.  
 
-### Basisgedeelte
+### Basisgedeelte (16 punten)
 
-#### Users en access
+#### Gebruikers en permissies
 
-Maak 2 users **gwen** en **mark** aan op je linux-systeem.  
-Voeg beide users aan de groep **lectoren** toe.
+Maak twee gebruikers **gwen** en **mark** aan op je Linux-systeem.  
+Voeg beide gebruikers aan de groep **lectoren** toe.
 
-Maak een directories /home/lectoren/leerstof aan en een directory /home/lectoren/examens resultaten.  
-Zorg ervoor dat niemand de directories leerstof en examens kan deleten.
+Maak een directory **/home/lectoren/leerstof** aan en een directory **/home/lectoren/examens**.   
+Zorg ervoor dat niemand de directory's leerstof en examens kan deleten.
 
-Zorg ervoor dat enkel gwen en mark files kunnen toevoegen beide subdirectories /home/lectoren/leerstof en directory /home/lectoren/examens
-Alle gebruikers op het systeem hebben toegang tot /home/lectoren/leerstof.
+Zorg ervoor dat enkel gwen en mark bestanden kunnen toevoegen aan beide directory's. Alle gebruikers op het systeem hebben toegang tot /home/lectoren/leerstof.
 
-Buiten mark en gwen kan er niemand de directory /home/lectoren/examens gebruiken (enkel gwen en mark)
+Buiten mark en gwen heeft er niemand toegang tot de directory /home/lectoren/examens.
 
-Extra: Zorg er ook voor dat mark en gwen elkaars files niet kunnen deleten.
+Extra: Zorg er ook voor dat mark en gwen elkaars bestanden niet kunnen verwijderen.
 
-Antwoord (tussen de tildes):
+Antwoord:
 
 ~~~bash
 
 ~~~
 
-#### Vraag => modbits
+#### Modbits
 
-Welke permissies stellen volgende **modbits** voor **631**?   
-Leg (heel beknopt) uit.  
-Converteer ook naar de symbool-versie (die je verkrijgt met ls -l)
+Welke permissies stellen volgende **modbits** voor: **631**. Leg (heel beknopt) uit.  
+Zet ook om naar de symbolische versie (die je verkrijgt met `ls -l`).
 
-Antwoord (schrijf je antwoord tussen de tildes):
-
-~~~
+Antwoord:
 
 ~~~
 
-#### Script toegankelijk maken?
+~~~
 
-Ik voer volgend commando uit
+#### Script toegankelijk maken
+
+Ik voer volgende opdracht uit:
 
 ~~~
 $ echo "echo Hello World" > ~/hello.sh
 ~~~
 
 Waar komt dit script terecht?  
-Welke 2 extra commando's dien ik uit te voeren opdat ik het volgende kan doen vanuit eender welke directory?  
-
-> Zowel permissies als een specifieke variabele moet gezet worden...
+Welke twee extra opdrachten dien ik uit te voeren opdat ik het volgende kan doen vanuit gelijk welke directory:
 
 ~~~
 $ hello.sh
@@ -56,56 +52,58 @@ Hello World
 $
 ~~~
 
-Vul hieronder in:
+> Tip: zowel permissies als een specifieke variabele moeten ingesteld worden...
+
+Antwoor:
 
 ~~~
 
 ~~~
 
-#### Afdrukken
+#### Directory tonen
 
-Druk de huidige directory af via een script.
-Gebruik hiervoor "command-substitution":
+Toon de huidige directory via een script.
+Gebruik hiervoor **command substitution**:
 
 ~~~
 $ ./print_current_directory
-Mijn huidige directory is /home/bart/test"
+Mijn huidige directory is /home/bart/test
 ~~~
 
-Plaats hier je script
+Antwoord (script):
 
 ~~~bash
 
 ~~~
 
-#### Commmando's
+#### Opdrachten
 
-Met welk commando kan vanuit eender welke locatie naar de home-directory gaan?
-
-~~~
-
-~~~
-
-Gegeven een directory dossiers, hoe kan je een volledige directory met inhoud kopieren naar een nieuwe folder backup_dossiers?
+Met welke opdracht kun je vanuit gelijk welke locatie naar de home-directory gaan?
 
 ~~~
 
 ~~~
 
-Welk commando gebruik je om je huidige working directory te zien?
+Gegeven een directory **dossiers**, hoe kun je de volledige directory met inhoud kopiëren naar een nieuwe directory **backup_dossiers**?
 
 ~~~
 
 ~~~
 
-Welk commando gebruik je om een lege file aan te maken
+Welke opdracht gebruik je om de huidige werkdirectory te zien?
+
+~~~
+
+~~~
+
+Welke opdracht gebruik je om een leeg bestand aan te maken?
 
 
 ~~~
 
 ~~~
 
-Ik wil alle files en diretories oplijsten in volgorde van tijd, de meest recente file laatst
+Ik wil alle bestanden en directory's tonen in volgorde van tijd, met de meest recente bestanden op het laatst:
 
 ~~~
 
@@ -113,53 +111,35 @@ Ik wil alle files en diretories oplijsten in volgorde van tijd, de meest recente
 
 #### crontab
 
-Beschrijf een crontab (1 lijn) die een job /home/students/test.sh elke Woensdag om 18.25 opstart.
+Beschrijf een crontab (één regel) die een script **/home/students/test.sh** elke woensdag om 18:25 opstart:
 
 ~~~
 
 ~~~
 
-### Gevorderd
-
-Dit deel is ter onderscheiding als je de rest volledig juist hebt ingevuld zal dit gebruikt worden om te jureren tussen 16/20 en 20/20 
+### Gevorderd (4 punten)
 
 #### Mini-scriptje
 
-Schrijf een kort script dat een file kopieert.  
-Geef beide namen mee als argument, zoals hieronder gedemonstreerd
+Schrijf een kort script dat een bestand kopieert.  
+Geef beide namen mee als argument, zoals hieronder gedemonstreerd:
 
 ~~~
 student@studentdeb:~$ ./copy_files.sh fileone filetwo
 ~~~
 
-De eerste file is de te kopieren file..  
-Zorg er wel voor dat je enkel kopieert als de target-file niet bestaat, anders print je een duidelijke boodschap.
-
-
-Plaats het antwoord tussen de tildes...
+Het eerste bestand is het te kopiëren bestand.  
+Zorg er wel voor dat je het bestand alleen kopieert als het doelbestand niet bestaat. Als dat al wel bestaat, toon je een duidelijke boodschap.
 
 ~~~bash
 
 ~~~
 
-#### Vraag => wildcards
+#### Heeft bart toegang tot de directory?
 
-Welk commando kan je gebruiken om alle files met minimum 2 karakters binnen de huidige workdirectory op te lijsten 
+Gebruiker bart maakt deel uit van de groep students.
 
-Als bijvoorbeeld de files aa, bbb, cccc, ddddd zich binnen je directory bevinden moet dit commando cccc, ddddd oplijsten.  
-Probeer dit uit in de console, maakt deze lege files aan en test het commando.  
-Copieer de output naar deze text file
-
-Antwoord (copieer je commando's tussen de tildes):
-
-~~~
-
-~~~
-
-#### Vraag: heeft bart toegang tot de folder?
-
-Bart maakt deel uit van de groep students, kan hij deze directory als working directory (cd /home/students/) gebruiken?  
-Waarom wel of niet?  Leg heel kort uit...
+Die directory heeft de volgende eigenschappen:
 
 ~~~
 $ ls -ld /home/students
@@ -167,29 +147,29 @@ drw-rwx--T 2 bart students 4096 Jan 25 20:24 /home/students/
 $
 ~~~
 
-Antwoord (tussen de tildes)
+Kan bart deze directory als werkdirectory (`cd /home/students/`) gebruiken?  
+Waarom wel of niet?  Leg heel kort uit...
+
+Antwoord:
 
 ~~~
 
 ~~~
 
-#### Vraag: umask?
+#### umask
 
-Ik voer het commando "umask 0065" uit.  
-Leg bondig uit wat het gevolg hiervan is en wat het resultaat is als ik de volgende commando's uitvoer:
+Ik voer de opdracht `umask 0065` uit.  
+Leg bondig uit wat het gevolg hiervan is en wat het resultaat is als ik de volgende opdrachten uitvoer:
 
 ~~~
 $ mkdir hello
 $ touch world
 ~~~
 
-Leg bondig uit ik heb een umask van 065.
-
-
-~~~
-
+Antwoord:
 
 ~~~
 
-Bonus-vraag: ik wil graag dat deze umask-waardes telkens worden toegepast bij het inloggen?  
-Hoe doe ik dit?
+~~~
+
+Bonus-vraag: ik wil graag dat deze umask-waardes telkens worden toegepast bij het inloggen. Hoe doe ik dat?

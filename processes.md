@@ -773,29 +773,30 @@ Eenmaal je deze informatie opgevraagd hebt, verdwijnt de job uit de jobtabel...
 
 ### crontab
 
-Cron is een applicatie waar je mee scripten en taken kan automatiseren.
+Cron is een toepassing waarmee je scripts en taken kunt automatiseren.
 
-Door te werken met een cron job (of geplande taak) kan u achter de schermen via de cron commando's op terugkerende tijdstippen uitvoeren.  
-Je kan dit gebruiken voor bijvoorbeeld:
+Door te werken met een **cron job** (of geplande taak) kun je achter de schermen opdrachten op terugkerende tijdstippen uitvoeren.  
 
-* Opkuisen, backup maken, verplaatsen van folders en betanden
-* Regelmatig aansturen van metingen (bijvoorbeeld met sensors
+Je kunt dit gebruiken om periodiek:
+
+* bestanden op te kuisen
+* back-ups te maken
+* metingen te doen
 * ...
 
 Hoe werkt dit?
 
-Elke gebruiker beschikt over een eigen crontab, deze kan eenvoudig gebruikt worden aan de hand van het crontab-commando.  
-3 belangrijke varianten van het aanroepen van een crontab bestaan:
+Elke gebruiker beschikt over een eigen crontab. Die gebruik je via de opdracht `crontab`. Dit programma kun je op de volgende manieren aanroepen:  
 
-* crontab -e => Wijzigen van een crontab
-* crontab -l => Weergave van de crontab
-* crontab -r => Verwijderen/clearnen van de volledige crontab
+* `crontab -e` => crontab wijzigen (*edit*)
+* `crontab -l` => crontab weergeven (*list*)
+* `crontab -r` => crontab verwijderen (*remove*)
 
-Binnen zo'n crontab kan je meerdere regels plaatsen, elke regel staat dan voor een geplande taak.  
+Binnen zo'n crontab kun je meerdere regels plaatsen. Elke regel staat dan voor een geplande taak.  
 De regel start steeds met de definitie van het tijdstip.
 
-De vorm van een regel lijkt in het eerste zicht intimiderend, de opbouw is echter logisch.
-Een crontab regel bestaat uit 6 velden, welke telkens gescheiden worden door witte ruimtes (één of meerder spaties of tabs).
+De vorm van een regel lijkt op het eerste gezicht intimiderend, maar de opbouw is logisch.
+Een crontab-regel bestaat uit zes velden, die telkens gescheiden worden door witruimte (één of meerder spaties of tabs):
 
 ~~~
 +------------- minuten (0 - 59) 
@@ -805,7 +806,7 @@ Een crontab regel bestaat uit 6 velden, welke telkens gescheiden worden door wit
 ¦ ¦ ¦ ¦ +----------------- weekdag (0 - 6) (0 is zondag, 1 is maandag, ..., 7 is eveneens zondag)
 ¦ ¦ ¦ ¦ ¦
 ¦ ¦ ¦ ¦ ¦
-* * * * *     plaats hier je commando
+* * * * *     plaats hier je opdracht
 ~~~
 
 Een correcte regel kan er dus als volgt uit zien:
@@ -814,26 +815,23 @@ Een correcte regel kan er dus als volgt uit zien:
 05 18 * * 3     echo "hello $(date)" >> /home/student/test.txt
 ~~~
 
-De bovenstaande regel zorgt er voor dat éénmaal per week, namelijk op Woensdag om 18.05 hello gevolgd naar een file test.txt in de home-folder van de
-gebruiker student schrijven.
+De bovenstaande regel zorgt ervoor dat éénmaal per week, namelijk op woensdag om 18.05, "hello" gevolgd door de datum en het tijdstip naar een bestand test.txt in de home-directory van de gebruiker student geschreven wordt.
 
-
-Als je bijvoorbeeld elke dag wil vervang je bijvoorbeeld de 3 door een *
+Als je dit nu elke dag wilt, dan vervang je de `3` door een `*`:
 
 ~~~
 05 18 * * *     echo "hello $(date)" >> /home/student/test.txt
 ~~~
 
-Als je het tijdelijk wil uitschakelen kan je de lijn in commentaar zetten
+Als je deze periodieke taak tijdelijk wilt uitschakelen, voeg dan een commentaarteken (`#`) aan het begin van de regel toe:
 
 ~~~
 # 05 18 * * *     echo "hello $(date)" >> /home/student/test.txt
 ~~~
 
-### Eerste maal gebruik maken van cron
+### Eerste keer gebruikmaken van cron
 
-Als je als gebruiker voor het eerst cron gebruikt, moet je een editor kiezen.  
-Maak hier de keuze voor nano (vim enkel gebruikt wanneer je daar kennis van hebt)
+Als je voor het eerst cron gebruikt, moet je een editor kiezen. Maak hier de keuze voor `nano` (`vim` alleen als je daar kennis van hebt):
 
 ~~~
 student@studentdeb:~$ crontab -l
@@ -848,7 +846,7 @@ Select an editor.  To change later, run 'select-editor'.
 Choose 1-2 [1]: 1
 ~~~
 
-Vervolgens zal nano open waar je een crontab kan toevoegen:
+Vervolgens opent `nano` een standaard crontab met uitleg in commentaarregels:
 
 ~~~bash
 # Edit this file to introduce tasks to be run by cron.
@@ -876,15 +874,13 @@ Vervolgens zal nano open waar je een crontab kan toevoegen:
 # m h  dom mon dow   command
 ~~~
 
-Volgend commando zal bijvoorbeeld elke minuut een lijn met het tijdstip toevoegen aan de file
-/home/student/text
+Hieraan kun je nu regels toevoegen. Op de volgende manier voeg je bijvoorbeeld elke minuut een regel met het tijdstip toe aan het bestand `/home/student/test.txt`:
 
 ~~~
 * * * * * echo "$(date)" >> /home/student/test.txt
 ~~~
 
-Voeg de bovenstaande lijn toe en sluit de editor af.  
-Na het afsluiten kan je de crontab-shedules bekijken via het volgende commando:
+Voeg deze regel toe, sla de crontab op en sluit de editor af. Daarna kun je de crontab bekijken met:
 
 ~~~bash
 student@studentdeb:~$ crontab -l
@@ -915,7 +911,7 @@ student@studentdeb:~$ crontab -l
 * * * * * echo "$(date)" >> /home/student/test.txt
 ~~~
 
-+- 1 minuut later zou deze file moeten aangemaakt worden (en stelselmatig groeien)
+Een minuut later zou het bestand `/home/student/test.txt` aangemaakt moeten zijn (en stelselmatig groeien):
 
 ~~~
 student@studentdeb:~$ ls -l /home/student/student.txt 
@@ -932,30 +928,29 @@ student@studentdeb:~$
 
 #### Andere opties
 
-Zoals we eerder aangeven zorgt het asterisk-teken ervoor dat de specifieke
-precisie (minuut - uur - dag - maand - weekdag) niet uitmaakt
+Zoals we eerder aangaven, zorgt het asterisk-teken (`*`) ervoor dat de specifieke
+precisie (minuut - uur - dag - maand - weekdag) niet uitmaakt.
 
 In het onderstaande voorbeeld zal cron ervoor zorgen dat het script wordt 
 uitgevoerd om 18 uur en 5 minuten.  
-De dag, maand of weekdag zal hier niet bij uitmaken
+De dag, maand of weekdag maakt hierbij niet uit:
 
 ~~~
 # 05 18 * * *     echo "hello $(date)" >> /home/student/test.txt
 ~~~
 
-Je kan dit echter nog verfijnen met behulp van een aantal andere opties
+Je kunt dit echter nog verfijnen met behulp van een aantal andere opties.
 
 ##### Lijst
 
-Je kan een lijst specifieren bijvoorbeeld, dit doe je door cijfers aan te duiden 
-gescheiden door comma's.  
-Als je bijvoorbeeld enkel de 1ste en de 15de van de maand het script wil uitvoeren:
+Je kunt een lijst specificeren door cijfers aan te duiden gescheiden door komma's.  
+Als je bijvoorbeeld alleen de eerste en de vijftiende van de maand het script wilt uitvoeren:
 
 ~~~
 # 05 18 1,15 * *     echo "hello $(date)" >> /home/student/test.txt
 ~~~
 
-Of je wil om zowel 12:05 en 18:05 uitvoeren...
+Of je wilt het zowel op 12:05 als op 18:05 uitvoeren:
 
 ~~~
 # 05 12,18 * * *     echo "hello $(date)" >> /home/student/test.txt
@@ -963,19 +958,18 @@ Of je wil om zowel 12:05 en 18:05 uitvoeren...
 
 ##### Bereik
 
-Naast een lijst kan je ook een bereik instellen door een streepje te plaatsen
+Naast een lijst kun je ook een bereik instellen door een streepje te plaatsen
 tussen 2 getallen.
 
-Bijvoorbeeld in onderstaand voorbeeld zal het script elk uur worden uit tussen
-9 en 17.  
-Let wel, het is tot en met, 17 is inbegrapen in dit bereik/range
+Voer het script bijvoorbeeld elk uur uit tussen 9 en 17:
 
 ~~~
 # 05 9-17 * * *     echo "hello $(date)" >> /home/student/test.txt
 ~~~
 
-Je kan dit bijvoorbeeld ook gebruiken om dit script enkel tijdens weekdagen
-in te plannen (1=Maandag tem 5=Vrijdag)
+Let op: dit is tot en met, dus 17 is inbegrepen in dit bereik.
+
+Je kunt op deze manier ook een script alleen tijdens weekdagen inplannen (1=maandag, 5=vrijdag):
 
 ~~~
 # 05 18 * * 1-5     echo "hello $(date)" >> /home/student/test.txt
@@ -983,20 +977,19 @@ in te plannen (1=Maandag tem 5=Vrijdag)
 
 ##### Stappen
 
-Een meer complexere is het gebruik van stappen.  
-Dit houdt in dat je een startwaarde geeft, gevolgd door een /, 
-gevolgd door de stappen waarmee je wil verhogen
+Een complexere optie is het gebruik van stappen.  
+Dit houdt in dat je een startwaarde geeft, gevolgd door een `/`, 
+gevolgd door de stappen waarmee je wilt verhogen.
 
-Stel bijvoorbeeld dat je het script enkel op even dagen wil uitvoeren kan je het 
-volgende script uitvoeren.
+Stel dat je het script alleen op even dagen wilt uitvoeren, dan noteer je dat als volgt:
 
 ~~~
 # 05 18 2/2 * *     echo "hello $(date)" >> /home/student/test.txt
 ~~~
 
-##### Onofficiele toevoegingen
+##### Onofficiële toevoegingen
 
-De reeks van 5 posities kan ook vervangen worden door 1 van volgende waardes
+De reeks van vijf posities kan ook vervangen worden door één van de volgende waardes:
 
 ~~~
 @yearly	
@@ -1009,13 +1002,12 @@ De reeks van 5 posities kan ook vervangen worden door 1 van volgende waardes
 ~~~
 
 Je mag deze letterlijk vertalen, yearly is jaarlijks, monthly elke maand, ...  
-Hou echter rekening mee dat deze niet noodzakelijk in elke distributie worden ondersteund 
-dus het gebruik wordt bij deze afgeraden
+Hou er echter rekening mee dat deze niet noodzakelijk in elke Linux-distributie worden ondersteund, dus het gebruik wordt afgeraden.
 
 #### Extra info
 
-Een handige website om je crontabs te testen is https://crontab.guru/
+Een handige website om je crontabs te testen is <https://crontab.guru>.
 
 #### Alternatief: systemd-timers
 
-Een belangrijke nieuwere implementatie is voorzien in systemd, deze worden in het systemd-hoofdstuk behandeld
+Een belangrijke nieuwere implementatie is voorzien in systemd, deze worden in een verder hoofdstuk in deze cursus behandeld.

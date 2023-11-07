@@ -1,14 +1,13 @@
-### Oplossing/step-by-step
+### Oplossing (stap voor stap)
 
-#### Script aanmaken (deel 1 tem 4)
-
+#### Script aanmaken (deel 1 tot en met 4)
 
 ##### Aanmaken van het script
 
-Om te starten en het script aan te maken waren de volgende stappen aan te raden:
+Om te starten en het script aan te maken, zijn de volgende stappen aan te raden:
 
-* Een **specifieke** **directory** aanmaken (om het overzichtelijk te houden)
-* De file aanmaken met **nano**
+* Een **nieuwe directory** aanmaken (om het overzichtelijk te houden)
+* Het script aanmaken met `nano`
 
 ~~~
 student@studentdeb:~$ mkdir integration_excercise
@@ -16,7 +15,7 @@ student@studentdeb:~$ cd integration_excercise/
 student@studentdeb:~/integration_excercise$ nano create_daily_folder.sh
 ~~~
 
-* Vervolgens mocht je niet vergeten de **permissies** goed te zetten
+* Vervolgens mag je niet vergeten om de **permissies** goed te zetten. Het script moet namelijk uitvoerbaar zijn:
 
 ~~~
 student@studentdeb:~/integration_excercise$ chmod u+x create_daily_folder.sh 
@@ -35,7 +34,7 @@ logfile=create_daily_folder.log
 if [ $# -eq 1 ]; then
         base_path=$1
         if [ ! -d $base_path ]; then
-                echo "Argument $base_path doesn't exists"
+                echo "Argument $base_path doesn't exist"
                 exit 3
         fi
 else
@@ -62,27 +61,23 @@ fi
 Let op volgende **kenmerken** in de bovenstaande oplossing:
 
 * Script-argumenten:
-  * De folder kan je doorgeven als argument **``$0``**
-  * Om te weten dat er een argument was kon je testen op **``$#``** (aantal argumenten)
-  * Als het argument leeg was gebruikte je **pwd** om de **huidige work-directory** te gebruiken
-* De huidige dag wordt in een variabele geplaatst via **command-substitution**  
-  Dit doe je door een **commando** in **binnen** **``$(...)``** te plaatsen.  
-  Hiermee kan je de **waarde** van dit **commando** opvangen in een **variabele**
-* We maken gebruik van **variable-substitution** binnen een string door deze  te prependen met **``$``** of te plaatsen tussen **``${..}``**
-* Er wordt gebruik **gemaakt** van het command **date**.  
-  In de man-pagina (man date) kan je alle informatie terugvinden.  
-  Tip: **man** maakt gebruik van **less** als **pager** (je kan dus opzoeken met ``/``-symbool)
-* Er wordt gebruikt gemaakt van **redirection** (>>) om de output van echo weg te schrijven
-  naar een file.  (let wel **``>``** zal de **file overschrijven**)
-* Het exit **commando** wordt gebruikt om het **process** (uitvoering script) te **beëindigen** met een
-  specifieke **error-code**
-* We kunnen het bestaan van een directory testen via een **if**-statement gecombineerd met de "**-d**"-optie  
-  Als je hier meer wil over weten kan je "**man test**" consulteren
+  * De directory kun je doorgeven als argument `$0`.
+  * Om te weten dat er een argument is, kun je testen op `$#` (aantal argumenten).
+  * Als het argument leeg is, gebruik je `pwd` om de **huidige werkdirectory** te gebruiken.
+* De huidige dag wordt in een variabele geplaatst via **command substitution**.
+  Dat doe je door een opdracht binnen `$(...)` te plaatsen. Hiermee kun je de **waarde** van deze opdracht opslaan in een **variabele**.
+* We maken gebruik van **variable substitution** binnen een string door deze te laten voorafgaan door `$` of te plaatsen tussen `${..}`.
+* Er wordt gebruik gemaakt van de opdracht `date`.  
+  In de man-pagina (`man date`) kun je alle informatie terugvinden.  
+  Tip: `man` maakt gebruik van `less` als **pager** (je kunt dus zoeken met `/` en dan je zoekterm).
+* Er wordt gebruikt gemaakt van **redirection** (`>>`) om de uitvoer van `echo` weg te schrijven naar een bestand.  (Let wel op: `>` zal het **bestand overschrijven**).
+* De opdracht `exit` wordt gebruikt om de uitvoering van het script te **beëindigen** met een specifieke **exitcode**.
+* We kunnen het bestaan van een directory testen via een `if`-statement gecombineerd met de optie `-d`. Als je hier meer over wilt weten, kun je `man test` raadplegen.
 
-##### date-commando
+##### `date`-opdracht
 
-Kleine **tip**, **voordat** je het **script** schreef kon je al het **één** en het ander uitproberen op de **command-line**...  
-Bijvoorbeeld hieronder een **demonstratie** van het **testen** met **date** en het uiteindelijk **gebruik** van **command-substitution**
+Kleine **tip**: voordat je het script schreef, kon je al het één en ander uitproberen op de opdrachtregel...  
+Bijvoorbeeld hieronder een **demonstratie** van het **testen** van `date` met verschillende opties, en het uiteindelijk gebruik van **command substitution**:
 
 ~~~
 student@studentdeb:~$ date +%Y
@@ -100,7 +95,7 @@ student@studentdeb:~$ echo $today
 20220124
 ~~~
 
-##### Testen van script
+##### Testen van het script
 
 Een voorbeeld van het uittesten van het script:
 
@@ -121,16 +116,15 @@ Creating folder /home/student/shared/20220124
 /home/student/shared/20220124 exists already
 ~~~
 
-
 #### Crontab aanmaken (deel 5)
 
-Gebruik het volgende **commando** om de **crontab** te **bewerken**
+Gebruik de volgende opdracht om de **crontab** te **bewerken**:
 
 ~~~
 $ crontab -e
 ~~~
 
-De volgende **crontab** zal elke dag om **18.05** het **script** aanroepen
+De volgende **crontab** zal elke dag om **18:05** het **script** aanroepen:
 
 ~~~
 # Edit this file to introduce tasks to be run by cron.
@@ -161,9 +155,9 @@ De volgende **crontab** zal elke dag om **18.05** het **script** aanroepen
 5 18 * * * /home/student/integration_excercise/create_daily_folder.sh /home/student/shared
 ~~~
 
-#### Users en rechten (deel 6)
+#### Gebruikers en rechten (deel 6)
 
-* **Groep** aanmaken en **users** toevoegen:
+* **Groep** aanmaken en **gebruikers** toevoegen:
 
 ~~~
 root@studentdeb:~# groupadd shared
@@ -171,7 +165,7 @@ root@studentdeb:~# usermod -aG shared student
 root@studentdeb:~# usermod -aG shared bart
 ~~~
 
-* **Groep** wijzigen van de **shared**-folder
+* **Groep** wijzigen van de directory **shared**:
 
 ~~~
 root@studentdeb:~# chgrp shared /home/student/shared
@@ -179,7 +173,7 @@ root@studentdeb:~# ls -ld /home/student/shared
 drwxrwxr-- 3 student shared 4096 Jan 24 21:45 /home/student/shared
 ~~~
 
-* Enkel **group** (en user) **toegang** geven
+* Alleen groep (en gebruiker) **toegang** geven:
 
 ~~~
 root@studentdeb:~# chmod ug=rwx /home/student/shared
@@ -188,7 +182,7 @@ root@studentdeb:~# ls -ld /home/student/shared
 drwxrwx--- 3 student shared 4096 Jan 24 21:45 /home/student/shared
 ~~~
 
-* De **gsid** toekennen (zodat sub-files en -folders automatisch de groep als eigenaar krijgen)
+* De **gsid** toekennen (zodat onderliggende bestanden en directory's automatisch de groep als eigenaar krijgen):
 
 ~~~
 root@studentdeb:~# chmod g+s /home/student/shared
@@ -197,7 +191,7 @@ drwxrws--- 2 student shared 4096 Jan 24 22:40 /home/student/shared
 root@studentdeb:~# 
 ~~~
 
-* De **folder** en **log** die door cron wordt aangemaakt krijgen **automatisch** de **shared-group** toegekend
+* De directory en het logbestand die door cron worden aangemaakt, krijgen **automatisch** de groep **shared** toegekend:
 
 ~~~
 student@studentdeb:~$ ls -l shared
