@@ -54,7 +54,7 @@ $
 
 > Tip: zowel permissies als een specifieke variabele moeten ingesteld worden...
 
-Antwoor:
+Antwoord:
 
 ~~~
 

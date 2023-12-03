@@ -936,7 +936,7 @@ uitgevoerd om 18 uur en 5 minuten.
 De dag, maand of weekdag maakt hierbij niet uit:
 
 ~~~
-# 05 18 * * *     echo "hello $(date)" >> /home/student/test.txt
+05 18 * * *     echo "hello $(date)" >> /home/student/test.txt
 ~~~
 
 Je kunt dit echter nog verfijnen met behulp van een aantal andere opties.
@@ -947,13 +947,13 @@ Je kunt een lijst specificeren door cijfers aan te duiden gescheiden door komma'
 Als je bijvoorbeeld alleen de eerste en de vijftiende van de maand het script wilt uitvoeren:
 
 ~~~
-# 05 18 1,15 * *     echo "hello $(date)" >> /home/student/test.txt
+05 18 1,15 * *     echo "hello $(date)" >> /home/student/test.txt
 ~~~
 
 Of je wilt het zowel op 12:05 als op 18:05 uitvoeren:
 
 ~~~
-# 05 12,18 * * *     echo "hello $(date)" >> /home/student/test.txt
+05 12,18 * * *     echo "hello $(date)" >> /home/student/test.txt
 ~~~
 
 ##### Bereik
@@ -964,7 +964,7 @@ tussen 2 getallen.
 Voer het script bijvoorbeeld elk uur uit tussen 9 en 17:
 
 ~~~
-# 05 9-17 * * *     echo "hello $(date)" >> /home/student/test.txt
+05 9-17 * * *     echo "hello $(date)" >> /home/student/test.txt
 ~~~
 
 Let op: dit is tot en met, dus 17 is inbegrepen in dit bereik.
@@ -972,7 +972,7 @@ Let op: dit is tot en met, dus 17 is inbegrepen in dit bereik.
 Je kunt op deze manier ook een script alleen tijdens weekdagen inplannen (1=maandag, 5=vrijdag):
 
 ~~~
-# 05 18 * * 1-5     echo "hello $(date)" >> /home/student/test.txt
+05 18 * * 1-5     echo "hello $(date)" >> /home/student/test.txt
 ~~~
 
 ##### Stappen
@@ -984,7 +984,7 @@ gevolgd door de stappen waarmee je wilt verhogen.
 Stel dat je het script alleen op even dagen wilt uitvoeren, dan noteer je dat als volgt:
 
 ~~~
-# 05 18 2/2 * *     echo "hello $(date)" >> /home/student/test.txt
+05 18 2/2 * *     echo "hello $(date)" >> /home/student/test.txt
 ~~~
 
 ##### Onofficiële toevoegingen

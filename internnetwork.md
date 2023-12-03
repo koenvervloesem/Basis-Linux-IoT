@@ -1,42 +1,37 @@
-## Aanmaken van extra netwerk tussen 2 hosts
+## Extra netwerk tussen twee virtuele machines aanmaken
 
-Beide VM's kregen (by default) 1 netwerkadapter (en NIC) om te
-connecteren aan de buitenwereld.
+Beide virtuele machines kregen standaard één netwerkadapter (NIC) om te
+verbinden met de buitenwereld.
 
-Zoals je ziet hieronder wordt hiervoor een NAT-adapter voorzien zodat er
+Zoals je hieronder ziet, wordt hiervoor een NAT-adapter voorzien zodat er door VirtualBox:
 
-* (Virtualbox) private addressen worden iutgedeeld
-* De "NATTING" of vertaalslag wordt gedaan net zoals het in een klassieke (IPV4) situatie gebeurd.
+* privé-adressen worden uitgedeeld aan de virtuele machines
+* aan Network Address Translation (NAT) wordt gedaan net zoals het in een klassieke (IPv4-)situatie gebeurt
 
 ![](Pictures/10000000000002FC0000022611049BCBEBC4B966.png)
 
-### Setup internal network
+### Intern netwerk
 
-De **bedoeling** echter is dat we onze **2 VM's** met elkaar laten
-praten via een intern netwerk.
+De bedoeling is nu echter dat we onze twee virtuele machines met elkaar laten
+communiceren via een intern netwerk.
 
-Om dit te kunnen doen kan je via Virtualbox een intern netwerk (of
-alternatiefeen host-only network) aanmaken.
+Om dat te kunnen doen, kun je in VirtualBox een intern netwerk (of
+als alternatief een host-only network) aanmaken.
 
-Om dit te kunnen doen enable je voor beide VM's een 2de adapter zoals je
-hieronder ziet.
-
-Om beide VM's op het zelfde netwerk te hangen typ je dezelfde naam, je
-kiest hiervoor de naam **studentnet** zoals hieronder geillustreerd voor
-de beide devices.
+Schakel dus voor beide virtuele machines een tweede netwerkadapter in, kies **Internal Network** en geef het netwerk bij beide machines dezelfde naam **studentnet**.
 
 Voor **studentfed**:
 
 ![](Pictures/10000000000002F600000223EF15E24ED8DEE9C5.png)
 
-en voor **studentdeb** doe je exact **hetzelfde**
+en voor **studentdeb** doe je exact hetzelfde:
 
 ![](Pictures/10000000000002FB0000022A8184213687799D55.png)
 
 ### Testen
 
-We zien op beide VM's een nieuwe NIC verschijnen.  
-Op studentfed is dit enp0s8, we zien wel via het commando "ip a" dat deze niet by default wordt aangezet.
+We zien op beide virtuele machines een nieuwe NIC verschijnen.  
+Op studentfed is dit enp0s8. We zien via de opdracht `ip a` dat deze niet standaard ingeschakeld wordt.
 
 ~~~
 [student@fedora ~]$ ip a
@@ -56,7 +51,7 @@ Op studentfed is dit enp0s8, we zien wel via het commando "ip a" dat deze niet b
     link/ether 08:00:27:1c:bf:74 brd ff:ff:ff:ff:ff:ff
 ~~~
 
-Om deze link op te starten gebruik je onderstaand commando
+Om deze op te starten, gebruik je de onderstaande opdracht:
 
 ~~~
 [student@fedora ~]$ sudo ip link set enp0s8 up
@@ -77,12 +72,12 @@ Om deze link op te starten gebruik je onderstaand commando
     link/ether 08:00:27:1c:bf:74 brd ff:ff:ff:ff:ff:ff
     inet6 fe80::a00:27ff:fe1c:bf74/64 scope link 
        valid_lft forever preferred_lft forever
-
-[student@fedora ~]$ 
 ~~~
 
-We zien dat er automatisch een link-local ipv6 wordt aangemaakt dat we kunnen gebruiken om te testen.  
-Aan de studentdeb-kant voeren we dezelfde procedure uit, per toeval zien we dat hier de zelfde NIC-naam wordt gekozen...
+Merk op: op Fedora kun je standaard niet als root-gebruiker inloggen. Maar als we een opdracht laten voorafgaan door `sudo`, kunnen we die ook met rootrechten uitvoeren.
+
+We zien dat er automatisch een link-local IPv6-adres aangemaakt wordt, dat we kunnen gebruiken om te testen.  
+Aan de studentdeb-kant voeren we dezelfde procedure uit, per toeval zien we dat hier dezelfde NIC-naam wordt gekozen...
 
 ~~~
 student@studentdeb:~$ ip a
@@ -102,10 +97,10 @@ student@studentdeb:~$ ip a
     link/ether 08:00:27:4a:c5:21 brd ff:ff:ff:ff:ff:ff
 ~~~
 
-We starten deze ook op...
+We starten deze ook op (let op: eerst inloggen als root).
 
 ~~~
-root@studentdeb:~# sudo ip link set enp0s8 up
+root@studentdeb:~# ip link set enp0s8 up
 root@studentdeb:~# ip a
 1: lo: <LOOPBACK,UP,LOWER_UP> mtu 65536 qdisc noqueue state UNKNOWN group default qlen 1000
     link/loopback 00:00:00:00:00:00 brd 00:00:00:00:00:00
@@ -123,11 +118,10 @@ root@studentdeb:~# ip a
     link/ether 08:00:27:4a:c5:21 brd ff:ff:ff:ff:ff:ff
     inet6 fe80::a00:27ff:fe4a:c521/64 scope link tentative 
        valid_lft forever preferred_lft forever
-root@studentdeb:~# 
 ~~~
 
-We zien dat ook een ipv6-address wordt gegenereerd.  
-We kunnen nu op basis van deze local-link-adressen even testen
+We zien dat hier ook een IPv6-adres wordt gegenereerd.  
+We kunnen nu op basis van deze link-local-adressen even testen:
 
 ~~~
 root@studentdeb:~# ping fe80::a00:27ff:fe1c:bf74%enp0s8
@@ -144,7 +138,9 @@ rtt min/avg/max/mdev = 0.895/1.327/1.843/0.384 ms
 root@studentdeb:~# 
 ~~~
 
-We testen ondertussen ook van de andere kant
+Merk op: na het link-local IPv6-adres moet je `%` en de naam van de interface plaatsen.
+
+We testen ondertussen ook van de andere kant:
 
 ~~~
 [student@fedora ~]$ ping fe80::a00:27ff:fe4a:c521%enp0s8
@@ -160,3 +156,5 @@ PING fe80::a00:27ff:fe4a:c521%enp0s8(fe80::a00:27ff:fe4a:c521%enp0s8) 56 data by
 rtt min/avg/max/mdev = 0.441/0.505/0.568/0.043 ms
 [student@fedora ~]$ 
 ~~~
+
+De verbinding tussen de twee virtuele machines over het interne netwerk werkt dus.

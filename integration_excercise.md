@@ -7,14 +7,14 @@
 Maak een **script** dat een directory aanmaakt op basis van de datum van vandaag.  
 Een voorbeeld: stel dat het vandaag **22 december 2021** is, dan moet deze map **20211222** heten.  
 
-Geef dit script de naam `create_daily_folder.sh`.  
+Geef dit script de naam `create_daily_directory.sh`.  
 Als je dit script uitvoert, zal het zich als volgt gedragen:
 
 ~~~
 student@studentdeb:~$ date
 Wed 22 Dec 2021 01:35:48 PM CET
-student@studentdeb:~$ ./create_daily_folder.sh
-Creating folder /home/student/202112
+student@studentdeb:~$ ./create_daily_directory.sh
+Creating directory /home/student/202112
 student@studentdeb:~$ ls -ld 20211222
 drwxr-xr-x 2 student student 4096 Dec 22 13:36 20211222
 student@studentdeb:~$
@@ -72,8 +72,8 @@ Dat ziet er dan als volgt uit:
 ~~~
 student@studentdeb:~$ ls -ld 20211222
 drwxr-xr-x 2 student student 4096 Dec 22 13:36 20211222
-student@studentdeb:~$ ./create_daily_folder.sh
-Folder /home/student/202112 exists already
+student@studentdeb:~$ ./create_daily_directory.sh
+Directory /home/student/202112 already exists.
 student@studentdeb:~$ echo $?
 2
 ~~~
@@ -85,10 +85,10 @@ Je hebt de volgende opties ter beschikking om na te kijken of een bestand of map
 ~~~
 -e FILE => FILE bestaat
 -d FILE => FILE bestaat en is een directory
--r FILE => FILE bestaat en je mag het lezen
+-r FILE => FILE bestaat en je kunt het lezen
 -s FILE => FILE bestaat en is niet leeg
--w FILE => FILE bestaat en je mag ernaar schrijven
--x FILE => FILE bestaat en je mag het uitvoeren
+-w FILE => FILE bestaat en je kunt ernaar schrijven
+-x FILE => FILE bestaat en je kunt het uitvoeren
 ~~~
 
 Het volgende voorbeeld kijkt na of het argument een bestand is:
@@ -115,8 +115,8 @@ Het script maakt **zonder argument** een directory aan binnen de directory vanwa
 Zorg er nu voor dat het script deze directory aanmaakt binnen een andere directory als je een extra argument meegeeft.
 
 ~~~
-student@studentdeb:~$ ./create_daily_folder.sh /home/student/Tmp
-Creating folder /home/student/Tmp/20211222
+student@studentdeb:~$ ./create_daily_directory.sh /home/student/Tmp
+Creating directory /home/student/Tmp/20211222
 student@studentdeb:~$ ls -ld /home/student/Tmp/20211222
 drwxr-xr-x 2 student student 4096 Dec 22 13:36 20211222
 ~~~
@@ -124,13 +124,13 @@ drwxr-xr-x 2 student student 4096 Dec 22 13:36 20211222
 Laat het script wel een foutmelding tonen als de bovenliggende directory niet bestaat.
 
 ~~~
-student@studentdeb:~$ ./create_daily_folder.sh /home/student/Blabla
-Cannot create af folder /home/student/Blabla/20211222 because /home/student/Blabla doesn't exist
+student@studentdeb:~$ ./create_daily_directory.sh /home/student/Blabla
+Cannot create directory /home/student/Blabla/20211222 because /home/student/Blabla doesn't exist
 ~~~
 
 #### Deel 4: schrijf alles weg in een logbestand
 
-Schrijf de boodschappen die je tot nog toe hebt gemaakt weg naar een logbestand `create_daily_folder.log`.  
+Schrijf de boodschappen die je tot nog toe hebt gemaakt weg naar een logbestand `create_daily_directory.log`.  
 Dit bestand bevindt zich in de basisdirectory waarin je de directory met de datum aanmaakt.
 
 #### Deel 5: plan dit dagelijks met een crontab

@@ -1,80 +1,68 @@
 ## Pakketbeheer
 
-apt is een commando voor het installeren, bijwerken, verwijderen en 
-beheren van pakketten op Debian, Ubuntu, en gerelateerde Linux-distributies.  
+De opdracht `apt` dient om softwarepakketten op Debian, Ubuntu en gerelateerde Linux-distributies te installeren, bij te werken en te verwijderen. De naam van het programma is een afkorting van Advanced Packaging Tool.
 
-Het combineert de meest gebruikte opdrachten van de tools 2 andere tools  
-- apt-get en apt-cache - met verschillende default-waarden van sommige opties.
+### De pakketindex bijwerken (`apt update`) 
 
+De pakketindex van APT is in feite een database die records bevat van beschikbare pakketten uit de pakketbronnen (repository's) die voor je systeem geconfigureerd zijn.
 
-### Update van de package index (apt update) 
-
-De APT-pakketindex is in feite een database die records bevat 
-van beschikbare pakketten uit de repositories die in voor je systeem 
-zijn geconfigureerd.
-
-Voer de onderstaande opdracht uit om de pakketindex bij te werken. Dit haalt de laatste wijzigingen uit de APT-repository's:
+Voer de onderstaande opdracht uit om de pakketindex bij te werken (dit kan alleen als rootgebruiker):
 
 ~~~
 # apt update
 ~~~
 
-Zie dat je altijd deze package index "update" alvorens een upgrade of een installatie
-uit te voeren.
-
+Zorg dat je altijd deze pakketindex bijwerkt alvorens een upgrade of een installatie uit te voeren.
 
 ### Pakketten upgraden 
 
-#### upgrade-command (apt upgrade)
+#### Pakketten upgraden (`apt upgrade`)
 
-Het regelmatig bijwerken van je software is een heel belangrijk aspect van de systeembeveiliging.  
-Voer het volgende uit om de geïnstalleerde pakketten naar hun nieuwste versies te upgraden:
+Het regelmatig bijwerken van je software is een heel belangrijk aspect van de systeembeveiliging. Als er een beveiligingsfout ontdekt is, wordt die in de software opgelost. Maar dan moet je wel de nieuwste versie installeren om van de oplossing te profiteren. Voer de volgende opdracht uit om de geïnstalleerde pakketten naar hun nieuwste versies te upgraden:
 
 ~~~
 # apt upgrade
 ~~~
 
-Als je 1 enkel pakket wilt upgraden, geeft je de pakketnaam door:
+Als je één specifiek pakket wilt upgraden, geef je de pakketnaam door, bijvoorbeeld:
 
 ~~~
-# apt upgrade package_name
+# apt upgrade nano
 ~~~
 
-(waar je package_name vervangt door de echte package)
+Je kunt hier ook meerdere pakketnamen opgeven, gescheiden door een spatie.
 
+#### Volledige upgrade (`apt full-upgrade`)
 
-#### Volledige upgrade (apt full-upgrade)
-
-Het verschil tussen upgrade en volledige upgrade is dat de laatste 
-de geïnstalleerde pakketten zal verwijderen als dat nodig is 
+Het verschil tussen een upgrade en een volledige upgrade is dat de laatste 
+geïnstalleerde pakketten zal verwijderen als dat nodig is 
 om het hele systeem te upgraden.
 
 ~~~
 # apt full-upgrade
 ~~~
 
+### Pakketten installeren (`apt install`)
 
-### Pakketten installeren (apt install)
-
-Het installeren van pakketten is net zo eenvoudig als het uitvoeren van de volgende opdracht:
-
-~~~
-# apt install pakketnaam
-~~~
-
-Als je meerdere pakketten met 1 opdracht wilt installeren, 
-geeft je ze mee met spaties gescheiden:
+Het installeren van pakketten gaat met (bijvoorbeeld voor het pakket `tree`):
 
 ~~~
-# apt install pakket1 pakket2
+# apt install tree
 ~~~
 
-### Repositories
+Als je meerdere pakketten met één opdracht wilt installeren, 
+geef je ze mee met spaties gescheiden, zoals in:
 
-De pakketten die je installeert worden vanuit een database gedownload.  
-De locatie waar deze pakketten staan noemt men een repository.  
+~~~
+# apt install tree vim
+~~~
 
-Je kan deze locaties wijzigen (of toevoegen) in de file "/etc/apt/sources.list"
+### Repository's
+
+De pakketten die je installeert, worden vanuit een database gedownload.  
+De locatie waar deze pakketten staan, noemt men een pakketbron of repository.  
+
+Je kunt deze locaties wijzigen (of toevoegen) in het bestand `/etc/apt/sources.list`:
 
 ~~~
 # cat /etc/apt/sources.list
@@ -99,69 +87,66 @@ deb-src http://deb.debian.org/debian/ bullseye-updates main
 # For information about how to configure apt package sources,
 # see the sources.list(5) manual.
 # 
-
 ~~~
 
 ### Lokale deb-bestanden
 
-De pakketten die worden geïnstalleerd hebben een specifiek formaat dat we deb noemen.  
-Dit is een compresseerde file die de binaries en andere bestanden bevat die je in je
-systeem kan installeren (een beetje vergelijkbaar met een msi-bestand in Windows).
+De pakketten die worden geïnstalleerd, hebben een specifiek bestandsformaat dat we deb noemen.  
+Dit is een gecomprimeerd archiefbestand dat de programma's en bijbehorende bestanden (man-pagina's, standaard configuratiebestanden, ...) bevat om op je systeem te installeren (een beetje vergelijkbaar met een msi-bestand in Windows).
 
-Je kan deze ook lokaal installeren - zonder tussenkomst van een repository - om dit te doen
-gebruik je hetzelfde commando maar geef je het absolute path naar de deb-file.  
-Anders zal de opdracht proberen het pakket uit de APT-repository's op te halen en te installeren.
+Je kunt zo'n deb-bestand ook lokaal installeren - zonder tussenkomst van een repository. Om dit te doen, gebruik je dezelfde opdracht als we al zagen, maar in plaats van de pakketnaam, geef je het absolute pad naar het deb-bestand door.  
+
+Let op: als je geen absoluut pad gebruikt, zal de opdracht proberen om het pakket uit de APT-repository's op te halen en te installeren.
 
 ~~~
 # apt install /home/student/file.deb
 ~~~
 
 > Het spreekt voor zich dat je moet oppassen met het installeren van 
-> deb-bestaanden om dat deze niet gevalideerd zijn zoals degene van 
-> de officiele debian-repositories.  
-> Installeer daarom enkel deb-files van een vertrouwde bron...
+> deb-bestanden van een willekeurige bron, omdat deze niet gevalideerd zijn zoals degene van 
+> de officiële Debian-repository's.  
+> Installeer daarom alleen deb-bestanden van een vertrouwde bron...
 
-### Pakketten verwijderen (apt remove)
+### Pakketten verwijderen `(apt remove`)
 
-Typ het volgende om een ​​geïnstalleerd pakket te verwijderen:
-
-~~~
-# apt remove pakketnaam
-~~~
-
-Je kan ook meerdere pakketten aanduiden, gescheiden door spaties:
+Typ de volgende opdracht om een geïnstalleerd pakket `vim` te verwijderen:
 
 ~~~
-# apt remove pakket1 pakket2
+# apt remove vim
 ~~~
 
-De opdracht remove zal de gegeven pakketten verwijderen, maar het kan enkele configuratiebestanden achterlaten.  
-Als je het pakket - inclusief alle configuratiebestanden - wilt verwijderen, gebruik je **purge** ipv **remove**:
+Je kunt ook meerdere pakketten aanduiden, gescheiden door spaties:
 
 ~~~
-# apt purge pakketnaam
+# apt remove vim tree
+~~~
+
+De opdracht `apt remove` zal de gegeven pakketten verwijderen, maar zal configuratiebestanden ongemoeid laten.  
+Als je het pakket volledig - inclusief alle configuratiebestanden - wilt verwijderen, gebruik dan `apt pyrge`:
+
+~~~
+# apt purge vim
 ~~~
 
 
-### Verwijdereb ongebruikte pakketten (apt autoremove)
+### Verwijderen van ongebruikte pakketten (`apt autoremove`)
 
-Telkens wanneer een nieuw pakket (dat afhankelijk is van andere pakketten) op het systeem wordt geïnstalleerd, worden de dependencies ook geïnstalleerd.  
+Telkens wanneer een nieuw pakket op het systeem wordt geïnstalleerd, kan het zijn dat die afhangt van andere pakketten. Die afhankelijkheden (*dependencies*) worden dan ook geïnstalleerd.  
 
-Wanneer het pakket wordt verwijderd, blijven de dependencies op het systeem.  
-Deze overgebleven pakketten worden door niets anders meer gebruikt 
-en kunnen worden dus verwijderd.
+Maar wanneer je het pakket daarna verwijdert, blijven de afhankelijkheden op het systeem.  
+Deze overgebleven pakketten worden misschien door niets anders meer gebruikt 
+en kunnen dus eigenlijk worden verwijderd.
 
-Als je deze wil verwijderen, gebruik dan het volgende commando 
-om de onnodige afhankelijkheden te verwijderen:
+Als je deze wilt verwijderen, gebruik dan de volgende opdracht 
+om geïnstalleerde afhankelijkheden die niet meer nodig zijn te verwijderen:
 
 ~~~
 # apt autoremove
 ~~~
 
-### Oplijsten van pakketten (apt list)
+### Tonen van pakketten (`apt list`)
 
-Met het list-commando kan je de beschikbare en geïnstalleerde pakketten weergeven.  
-Gebruik het volgende commando om alle beschikbare pakketten weer te geven:
+Gebruik de volgende opdracht om alle beschikbare pakketten weer te geven:
 
 ~~~
 # apt list
@@ -194,8 +179,8 @@ ad-data-common/stable 0.0.23.1-1.1 all
 ...
 ~~~
 
-Dit commando drukt de lijst af van alle pakketten, inclusief informatie over de versies en architectuur van het pakket.  
-Om erachter te komen of een specifiek pakket is geïnstalleerd, kunt je de uitvoer filteren met het grep-commando.
+Dit toont dus een lijst van alle pakketten die je kunt installeren, inclusief informatie over de versies en architectuur van het pakket.  
+Om erachter te komen of een specifiek pakket geïnstalleerd is, kun je de uitvoer filteren met de opdracht `grep`.
 
 ~~~
 # apt list | grep guake
@@ -204,7 +189,9 @@ guake/stable,now 3.6.3-2 all [installed]
 # 
 ~~~
 
-Om alleen de geïnstalleerde pakketten weer te geven typt u:
+Je ziet dan of het pakket geïnstalleerd is of niet.
+
+Om alleen de geïnstalleerde pakketten weer te geven, typ je:
 
 ~~~
 # apt list --installed
@@ -230,8 +217,7 @@ android-libboringssl/focal,now 8.1.0+r23-2build1 amd64 [installed,automatic]
 ...
 ~~~
 
-Als je de ​​lijst wil krijgen van de pakketten die kunnen "ge-upgraded"
-worden geef je volgend commando:
+Als je de lijst van pakketten wilt die je naar een nieuwere versie kunt bijwerken, gebruik dan de volgende opdracht:
 
 ~~~
 # apt list --upgradeable
@@ -243,9 +229,9 @@ libodbc1/bullseye 2.3.7 amd64 [upgradable from: 2.3.6-0.1build1]
 ...
 ~~~
 
-### Pakketten zoeken (apt search)
+### Pakketten zoeken (`apt search`)
 
-Met dit commando kan je zoeken naar een bepaald pakket:
+Met deze opdracht kun je zoeken naar een bepaald pakket:
 
 ~~~
 # apt search guake
@@ -262,13 +248,12 @@ terminus/stable 1.13.0-1 amd64
 #
 ~~~
 
-Als het wordt gevonden, zullen de pakketten getoond worden waarvan de naam overeenkomt met de zoekterm.
+De opdracht toont dan de pakketten waarvan de naam overeenkomt met de zoekterm.
 
-### Pakketinformatie (apt show)
+### Pakketinformatie opvragen (`apt show`)
 
-Als je meer info wil ivm de dependencies, de installatiegrootte, de pakketbron, ... 
-kan het commando "apt show" nuttig zijn voordat je een nieuw pakket 
-verwijdert of installeert.
+Als je meer informatie wilt over een pakket, zoals de afhankelijkheden, de installatiegrootte, de pakketbron, ... dan kan de opdracht `apt show` nuttig zijn voordat je een nieuw pakket 
+verwijdert of installeert:
 
 ~~~
 # apt show guake

@@ -2,12 +2,12 @@
 
 ## Doel deel 2
 
-In dit deel leggen we de focus op het beheer van je linux-systeem:
+In dit deel leggen we de focus op het **beheer** van een Linux-systeem:
 
-* systemd
-* netwerk-beheer (ifupdown vs systemd-networkd)
+* beheer van systeemdiensten met `systemd`
+* netwerkbeheer
 * logging
 * ...
 
-We maken hier ook gebruik van 2 VM's en introduceren naast **Debian** ook **Fedora** (Workstation)
+We maken hier ook gebruik van 2 virtuele machines en introduceren naast de distributie **Debian** ook **Fedora** (Workstation).
 

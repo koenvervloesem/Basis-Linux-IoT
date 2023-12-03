@@ -12,13 +12,13 @@ Om te starten en het script aan te maken, zijn de volgende stappen aan te raden:
 ~~~
 student@studentdeb:~$ mkdir integration_excercise
 student@studentdeb:~$ cd integration_excercise/
-student@studentdeb:~/integration_excercise$ nano create_daily_folder.sh
+student@studentdeb:~/integration_excercise$ nano create_daily_directory.sh
 ~~~
 
 * Vervolgens mag je niet vergeten om de **permissies** goed te zetten. Het script moet namelijk uitvoerbaar zijn:
 
 ~~~
-student@studentdeb:~/integration_excercise$ chmod u+x create_daily_folder.sh 
+student@studentdeb:~/integration_excercise$ chmod u+x create_daily_directory.sh 
 ~~~
 
 ##### Resultaat
@@ -29,7 +29,7 @@ Het uiteindelijke **script** ziet er als volgt uit:
 #!/bin/bash
 
 current_day=$(date +%Y%m%d)
-logfile=create_daily_folder.log
+logfile=create_daily_directory.log
 
 if [ $# -eq 1 ]; then
         base_path=$1
@@ -44,12 +44,12 @@ fi
 today="$base_path/$(date +%Y%m%d)"
 
 if [ -d $today ]; then
-        message="$today exists already"
+        message="$today already exists."
         echo $message
         echo $message >> $base_path/$logfile
         exit 2
 else
-        message="Creating folder $today"
+        message="Creating directory $today"
         echo $message
         echo $message >> $base_path/$logfile
         mkdir $today
@@ -67,17 +67,17 @@ Let op volgende **kenmerken** in de bovenstaande oplossing:
 * De huidige dag wordt in een variabele geplaatst via **command substitution**.
   Dat doe je door een opdracht binnen `$(...)` te plaatsen. Hiermee kun je de **waarde** van deze opdracht opslaan in een **variabele**.
 * We maken gebruik van **variable substitution** binnen een string door deze te laten voorafgaan door `$` of te plaatsen tussen `${..}`.
-* Er wordt gebruik gemaakt van de opdracht `date`.  
+* Er wordt gebruikgemaakt van de opdracht `date`.  
   In de man-pagina (`man date`) kun je alle informatie terugvinden.  
-  Tip: `man` maakt gebruik van `less` als **pager** (je kunt dus zoeken met `/` en dan je zoekterm).
-* Er wordt gebruikt gemaakt van **redirection** (`>>`) om de uitvoer van `echo` weg te schrijven naar een bestand.  (Let wel op: `>` zal het **bestand overschrijven**).
+  Tip: `man` maakt gebruik van `less` als **pager**. Je kunt dus zoeken met `/` en dan je zoekterm (meer informatie vind je met `man less`).
+* Er wordt gebruikgemaakt van **redirection** (`>>`) om de uitvoer van `echo` weg te schrijven naar een bestand.  (Let wel op: `>` zal het **bestand overschrijven**).
 * De opdracht `exit` wordt gebruikt om de uitvoering van het script te **beëindigen** met een specifieke **exitcode**.
 * We kunnen het bestaan van een directory testen via een `if`-statement gecombineerd met de optie `-d`. Als je hier meer over wilt weten, kun je `man test` raadplegen.
 
-##### `date`-opdracht
+##### De opdracht `date`
 
 Kleine **tip**: voordat je het script schreef, kon je al het één en ander uitproberen op de opdrachtregel...  
-Bijvoorbeeld hieronder een **demonstratie** van het **testen** van `date` met verschillende opties, en het uiteindelijk gebruik van **command substitution**:
+Bijvoorbeeld hieronder een **demonstratie** van het **testen** van `date` met verschillende opties, en het uiteindelijke gebruik van **command substitution**:
 
 ~~~
 student@studentdeb:~$ date +%Y
@@ -100,20 +100,20 @@ student@studentdeb:~$ echo $today
 Een voorbeeld van het uittesten van het script:
 
 ~~~
-student@studentdeb:~/integration_excercise$ ./create_daily_folder.sh /home/student/Documents
-Creating folder /home/student/Documents/20220124
-student@studentdeb:~/integration_excercise$ ./create_daily_folder.sh /home/student/Documents
-/home/student/Documents/20220124 exists already
+student@studentdeb:~/integration_excercise$ ./create_daily_directory.sh /home/student/Documents
+Creating directory /home/student/Documents/20220124
+student@studentdeb:~/integration_excercise$ ./create_daily_directory.sh /home/student/Documents
+/home/student/Documents/20220124 already exists. 
 student@studentdeb:~/integration_excercise$ echo $?
 2
-student@studentdeb:~/integration_excercise$ cat /home/student/Documents/create_daily_folder.log 
-Creating folder /home/student/Documents/20220124
-/home/student/Documents/20220124 exists already
+student@studentdeb:~/integration_excercise$ cat /home/student/Documents/create_daily_directory.log 
+Creating directory /home/student/Documents/20220124
+/home/student/Documents/20220124 already exists.
 student@studentdeb:~/integration_excercise$ 
-student@studentdeb:~$ cat shared/create_daily_folder.log 
-Creating folder /home/student/shared/20220124
-/home/student/shared/20220124 exists already
-/home/student/shared/20220124 exists already
+student@studentdeb:~$ cat shared/create_daily_directory.log 
+Creating directory /home/student/shared/20220124
+/home/student/shared/20220124 already exists.
+/home/student/shared/20220124 already exists. 
 ~~~
 
 #### Crontab aanmaken (deel 5)
@@ -151,8 +151,7 @@ De volgende **crontab** zal elke dag om **18:05** het **script** aanroepen:
 # 
 # m h  dom mon dow   command
 
-# * * * * * /home/student/backup.sh /home/student/blabla
-5 18 * * * /home/student/integration_excercise/create_daily_folder.sh /home/student/shared
+5 18 * * * /home/student/integration_excercise/create_daily_directory.sh /home/student/shared
 ~~~
 
 #### Gebruikers en rechten (deel 6)
@@ -197,5 +196,5 @@ root@studentdeb:~#
 student@studentdeb:~$ ls -l shared
 total 8
 drwxr-sr-x 2 student shared 4096 Jan 24 23:15 20220124
--rw-r--r-- 1 student shared  992 Jan 24 23:15 create_daily_folder.log
+-rw-r--r-- 1 student shared  992 Jan 24 23:15 create_daily_directory.log
 ~~~

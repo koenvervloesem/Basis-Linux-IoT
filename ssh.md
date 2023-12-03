@@ -1,158 +1,97 @@
 
-## Connecteren aan andere machines met ssh
+## Inloggen op machines over het netwerk met ssh
 
-Om op je systeem remote in te loggen wordt veelal ssh gebruiken.  
-Deze secure shell zal - in tegenstelling tot telnet - je toelaten om een beveiligde
-en geencrypteerde verbinding e maken
-
+Om over het netwerk op andere Linux-systemen in te loggen, maakt men meestal gebruik van `ssh` (Secure SHell). Deze verbinding wordt versleuteld, zodat niemand op hetzelfde netwerk de communicatie kan onderscheppen.
 
 ### Installatie en configuratie
 
-Om je systeem open te stellen installeer je op standaard linux-systemen (debian, fedora, ...)
-het openssh-systeem.  
-Let er op dat je zeker het server gedeelte installeert 
-(het client-gedeelte is zo goed als altijd reeds beschikbaar)
+Installeer hiervoor de OpenSSH-server. Op Debian:
 
 ~~~
 # apt install openssh-server
 ~~~
 
-Als je dit op je eigen laptop installeert is het meestal aangeraden dit enkel open te zetten
-wanneer je dit nodig hebt.  
-Dus uit veiligheidsoverwegingen kan je dit disablen met systemctl.
+Op Fedora:
 
+~~~
+$ sudo dnf install openssh-server
+~~~
 
-### Connecteren en testen
+### Verbinden 
 
-Als eerste test kan je eventueel lokaal connecteren.  
-Het formaat om te connecteren is
+Als eerste test kan je eventueel lokaal verbinden met de machine zelf. Dat gebeurt op de volgende manier:
 
 ~~~
 ssh <user>@<host-adres>
 ~~~
 
-Als eerste test kan je vanop je eigen machine als volgt inloggen
+Bijvoorbeeld voor de gebruiker student:
 
 ~~~
 ssh student@localhost
 ~~~
 
-### Banner plaatsen
-
-Een leuke extra is dat je een banner kan configureren.  
-
-> Doelstelling is te tonen hoe en waar je de ssh server moet configureren
-
-
-**Stap 1:** maak een **file** aan met een **banner**
+Om met een andere machine te verbinden, gebruik je het IP-adres of de hostname:
 
 ~~~
-# vi /etc/ssh/sshd-banner
+ssh student@fe80::a00:27ff:fe1c:bf74%wlp2s0
 ~~~
 
-Je kan eventueel de content van onderstaande text invoeren:
+Merk op: gebruik je een link-local IPv6-adres, dan moet je daarachter `%` en de naam van de interface plaatsen.
 
-~~~
-/  \    /  \ ____ |  |   ____  ____   _____   ____   _/  |_  ____   \______ \   ____\_ |__ |__|____    ____  
-\   \/\/   // __ \|  | _/ ___\/  _ \ /     \_/ __ \  \   __\/  _ \   |    |  \_/ __ \| __ \|  \__  \  /    \ 
- \        /\  ___/|  |_\  \__(  <_> )  Y Y  \  ___/   |  | (  <_> )  |    `   \  ___/| \_\ \  |/ __ \|   |  \
-  \__/\  /  \___  >____/\___  >____/|__|_|  /\___  >  |__|  \____/  /_______  /\___  >___  /__(____  /___|  /
-       \/       \/          \/            \/     \/                         \/     \/    \/        \/     \/ 
-~~~
+### Verbinden zonder wachtwoord
 
+Er bestaat nog een veiliger manier om met ssh in te loggen dan met een wachtwoord: met een sleutelpaar.
 
-**Stap 2:** pas de **ssh-configuratie** aan
+#### Sleutels 
 
-~~~
-# nano /etc/sshd/sshd_config
-~~~
-
-Ga tot aan de lijn waar Banner staat
-
-~~~
-...
-Banner None
-...
-~~~
-
-en wijzig deze naar
-
-~~~
-...
-Banner /etc/ssh/sshd-banner
-...
-~~~
-
-**Stap 3:** **herstart** de server
-
-~~~
-# systemctl restart sshd.service
-~~~
-
-
-~~~
-student@studentdeb:~# ssh student@localhost
-The authenticity of host 'localhost (::1)' can't be established.
-ECDSA key fingerprint is SHA256:9cXv37P0GSEFrW80lNxaHzJ+MlMVTeXvOQ0kHsV0BOY.
-Are you sure you want to continue connecting (yes/no/[fingerprint])? yes
-Warning: Permanently added 'localhost' (ECDSA) to the list of known hosts.
- __      __       .__                                  __           ________        ___.   .__               
-/  \    /  \ ____ |  |   ____  ____   _____   ____   _/  |_  ____   \______ \   ____\_ |__ |__|____    ____  
-\   \/\/   // __ \|  | _/ ___\/  _ \ /     \_/ __ \  \   __\/  _ \   |    |  \_/ __ \| __ \|  \__  \  /    \ 
- \        /\  ___/|  |_\  \__(  <_> )  Y Y  \  ___/   |  | (  <_> )  |    `   \  ___/| \_\ \  |/ __ \|   |  \
-  \__/\  /  \___  >____/\___  >____/|__|_|  /\___  >  |__|  \____/  /_______  /\___  >___  /__(____  /___|  /
-       \/       \/          \/            \/     \/                         \/     \/    \/        \/     \/ 
-student@localhost's password: 
-~~~
-
-### Connecteren zonder password
-
-Als je veel moet connecteren op een andere server is soms vervelend
-om altijd je password in te geven.  
-Je kan dit vermijden door een te werken met sleutels
-
-#### Keys
-
-Zulke sleutels worden by default opgeslagen in de directory .ssh/ binnen je home-directory
+Zulke sleutels worden standaard opgeslagen in de directory `~/.ssh`:
 
 ~~~
 $ ls .ssh/
-id_rsa  id_rsa_bb  id_rsa_bb.pub  id_rsa_ehb  id_rsa_ehb.pub  id_rsa.pub  known_hosts  known_hosts.old
+id_ed25519  id_ed25519.pub  id_rsa  id_rsa.pub  known_hosts  known_hosts.old
 $
 ~~~
 
-#### Een key aanmaken
+#### Een sleutelpaar aanmaken
 
-Om aan een server te connecteren kan je een bestaande key gebruiken maar
-we gaan er vanuit dat er nog geen bestaat...
+Om met een server te verbinden, kun je een bestaand sleutelpaar gebruiken, maar we gaan ervan uit dat er nog geen bestaat.
 
-Om zo'n key te genereren gebruik je het commando ssh-keygen.  
-Vul bij de eerste vraag de naam (locatie) van de key in (.ssh/id_student)
+Een sleutelpaar genereren, doe je met de opdracht `ssh-keygen`.
+Vul bij de eerste vraag de locatie van de sleutel in, bijvoorbeeld `~/.ssh/id_student`:
 
 ~~~
 $ ssh-keygen 
 Generating public/private rsa key pair.
-Enter file in which to save the key (/home/bart/.ssh/id_rsa): .ssh/id_student
+Enter file in which to save the key (/home/student/.ssh/id_rsa): .ssh/id_student
 Enter passphrase (empty for no passphrase): 
 Enter same passphrase again: 
 Your identification has been saved in .ssh/id_student
 Your public key has been saved in .ssh/id_student.pub
 The key fingerprint is:
 ....
-$
 ~~~
 
-#### Een key op de server plaatsen
+Als je een passphrase invult, moet je dit elke keer invoeren dat je met de sleutel inlogt. Als je deze passphrase leeg laat, moet dat niet. Dat is uiteraard minder veilig: iedereen die aan je sleutelbestand kan, kan nu op andere machines inloggen waarvoor je deze sleutel ingesteld hebt als inlogmethode.
 
-Om de key op de server te krijgen kan je het commando **ssh-copy-id** gebruiken.  
-Om de voorgaande sleutel te copieren gebruik je onderstaand commando...
+#### Een sleutel op de server plaatsen
+
+Met `ssh-keygen` maak je een publieke en geheime sleutel aan. De publieke sleutel heeft een bestandsnaam die eindigt op .pub.
+
+Die publieke sleutel verplaats je naar de server waarop je wilt inloggen. Dat kan met de opdracht `ssh-copy-id`:
 
 ~~~
 $ ssh-copy-id -i ~/.ssh/id_student student@otherhost
 ~~~
 
+Je moet hiervoor het wachtwoord voor de gebruiker student op otherhost invoeren, want je logt nu nog via het wachtwoord op de andere machine in.
+
 #### Testen
+
+Zodra de publieke sleutel op de andere machine staat, kun je kiezen om via de bijbehorende geheime sleutel op de machine in te loggen:
 
 ~~~
 $ ssh -i ~/.ssh/id_student student@otherhost
 ~~~
+
+Er wordt nu niet meer om het wachtwoord van de gebruiker student op de machine gevraagd, maar wel om de passphrase van het sleutelpaar als je die ingesteld hebt.

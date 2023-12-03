@@ -1,8 +1,8 @@
-## Systemd en het beheer van een Linux Systeem
+## Systemd en het beheer van een Linux-systeem
 
-### Opstarten van een Linux Distro
+### Opstarten van een Linux-distributie
 
-Zoals we eerder hadden gezien wordt een GNU/Linux opgestart via onderstaand schema
+Zoals we eerder gezien hebben wordt een GNU/Linux-systeem opgestart volgens onderstaand schema:
 
 ~~~
 +---------------------+
@@ -10,7 +10,7 @@ Zoals we eerder hadden gezien wordt een GNU/Linux opgestart via onderstaand sche
 +----------+----------+
            |
 +----------v----------+
-|  2ND BOOTLOADER     |  (bv. GRUB, UBoot)
+|  2ND BOOTLOADER     |  (bv. GRUB, U-Boot)
 +----------+----------+
            |
 +----------v----------+
@@ -26,9 +26,9 @@ Zoals we eerder hadden gezien wordt een GNU/Linux opgestart via onderstaand sche
 +---------------------+
 ~~~
 
-Op de moment dat de kernel is opgestart zal deze het feitelijk Operating Systeem opstarten dat je als eindgebruiker zult gebruiken.  
-Dit doet de kernel door het eerste process op te starten namelijk **/sbin/init**.  
-Zoals je hieronder ziet start dit systeem op met PID 1 !!!
+Op het moment dat de kernel opgestart is, zal deze het besturingssystee= opstarten dat je als eindgebruiker zult gebruiken.  
+Dat doet de kernel door het eerste proces op te starten, namelijk `/sbin/init`.  
+Zoals je hieronder ziet, start dit systeem op met PID 1:
 
 ~~~
 $ ps aux | head
@@ -44,8 +44,7 @@ root           9  0.0  0.0      0     0 ?        I<   14:39   0:00 [mm_percpu_wq
 root          10  0.0  0.0      0     0 ?        S    14:39   0:00 [ksoftirqd/0]
 ~~~
 
-Als je dit nauwer kijkt is deze **/sbin/init** is een soft-link naar een **executable** genaamd **systemd**.  
-Als je dit nauwer kijkt gaat zien naar deze link zie je dat het een "soft/symbolic link" of door verwijzing naar een programma genaamd **systemd**
+Als je dit nader bekijkt, is deze `/sbin/init` eigenlijk een softlink naar een programma met de naam `systemd`: 
 
 ~~~
 bart@bvlegion:~$ ls -l /sbin/init 
@@ -55,39 +54,31 @@ bart@bvlegion:~$
 
 ### systemd
 
-Dit 1ste process - genaamd systemd - is verantwoordelijk voor het initialiseren en opstarten van het systeem
-en alle software waar je als gebruiker mee te maken krijgt.  
+Dit eerste proces - genaamd `systemd` - is verantwoordelijk voor het initialiseren en opstarten van het systeem en alle software waarmee je als gebruiker te maken krijgt.  
 
 Dit houdt in dat het onder andere:
 
-* Start **daemons** (services) op
-* Kijkt hier ook na in welke **volgorde** (en dependencies)
-* Geeft de mogelijkheid om deze **on-demand** te **stoppen** en **starten**
-* Heeft een specifiek journaling/logging-systeeem **journald** dat syslog vervangt
-* Voorziet in **vervanging** van een aantal bestaande tools (zoals bijvoorbeeld systemd-timers ipv cron)
+* **daemons** (services of systeemdiensten) opstart
+* zorgt dat die in de juiste **volgorde** opgestart worden
+* de mogelijkheid geeft om daemons **on demand** te **stoppen** en te **starten**
+* daemons naar logbestanden laat schrijven met **journald**
+* daemons op periodieke tijdstippen kan laten uitvoeren met **systemd-timers** (alternatief voor `cron`)
 * ...
-
-> systemd is een opvolger van het vroegere init.d-systeem (vandaar dat de link init noemt) 
-> en bevat libraries, daemons en hulpprogramma's die je kan gebruiken om services 
-> in het Linux-systeem te beheren.
 
 ![](Pictures/systemd.png)
 
 > Nota:  
-> Op sommige embedded systemen en Android zal je ook andere init-systemen zien
-> Dit houden buiten beschouwing van de cursus.
+> Op sommige embedded systemen en Android zul je een ander init-systeem dan `systemd` zien.
+> Daar gaan we in deze cursus niet op in.
 
 ### services
 
-Bedoeling van dit deel van de cursus is je door de basisprincipes van servicebeheer in Linux te leiden.
-Hoe kan je systemd gebruiken om services te beheren en nuttige informatie te krijgen over de status 
-van deze services in je systeem.
+De bedoeling van dit deel van de cursus is om je door de basisprincipes van het beheer van services in Linux te leiden. Je leert met `systemd` services te beheren en  nuttige informatie op te vragen over de status van deze services.
 
 **Services** zijn **processen** die in de achtergrond draaien.  
-Dit kan bijvoorbeeld een **webserver** zijn, een **database** maar ook basisonderdelen van je systeem
-zoals een **networkmanager**, een **windowmanager** van je systeem, ...
+Dat kan bijvoorbeeld een **webserver** zijn, een **database** maar ook basisonderdelen van je besturingssysteem zoals een **network manager**, een **window manager** voor de grafische interface, ...
 
-> Naast service zijn er nog 11 andere unit-types
+> Naast een service kent `systemd` nog andere types **units**:
 > 
 > * Target: group of units
 > * Automount: filesystem auto-mountpoint
@@ -99,19 +90,15 @@ zoals een **networkmanager**, een **windowmanager** van je systeem, ...
 > * Snapshot: systemd saved state
 > * Socket: IPC (inter-process communication) socket
 > * Swap: swap file
-> * Timer: systemd timer.
+> * Timer: systemd timer
 >
-> We gaan deze niet behandelen in de cursus, de focus is op het behandelen
-> van de services.
+> In deze cursus focussen we ons op de services.
 
-### systemctl
+### Services beheren met `systemctl`
 
-Het beheren van deze service kan je doen via **systemctl**.  
-Systemctl is een Linux-command dat wordt gebruikt om systemd en services te besturen en te beheren.  
-Je kan **systemctl** zien als de besturing van  systemd init-service.  
-Het laat je toe te communiceren met systemd en bewerkingen uit te voeren.
+Het beheren van services doe je met de opdracht `systemctl`. Je kunt dit beschouwen als de opdracht om `systemd` aan te sturen. 
 
-Om deze service te beheren heb je een aantal basis-commando's die je toelaten te kijken
+Dit zijn de basisopdrachten:
 
 ~~~
 # systemctl start [name.service]
@@ -119,167 +106,170 @@ Om deze service te beheren heb je een aantal basis-commando's die je toelaten te
 # systemctl restart [name.service]
 # systemctl reload [name.service]
 $ systemctl status [name.service]
-# systemctl is-active [name.service]
+$ systemctl is-active [name.service]
 $ systemctl list-units --type service --all
 ...
 ~~~
 
+Let op: voor sommige opdrachten heb je rootrechten nodig (aangeduid met `#`), voor andere niet (aangeduid met `$`).
+
 ### Service stoppen en starten
-
-#### Starten
-
-Gebruik het **"systemctl start"**-commando om een ​​systemd-service te **starten** en instructies uit te voeren in het eenheidsbestand van de service.  
-
-> Je moet dit doen met root-permissies niet-rootgebruiker, omdat dit de status van het besturingssysteem beïnvloedt:
-
-~~~
-# systemctl start application.service
-~~~
-
-Zoals we eerder vermeldden, weet systemd te zoeken naar *.service-bestanden voor servicebeheeropdrachten.  
-Dus de opdracht kan als volgt worden getypt:
-
-~~~
-# systemctl start application
-~~~
-
-> Hoewel het bovenstaande formaat voor algemeen beheer kunt gebruiken, 
-gebruiken we voor de duidelijkheid het achtervoegsel .service voor de rest van de opdrachten, om expliciet te zijn over het doel waarop we werken.
 
 #### Stoppen
 
-Om een ​​actieve service te stoppen, kunt j in plaats daarvan de opdracht stop gebruiken:
+Als `ssh` een actieve service is, stop je die als volgt:
 
 ~~~
-# systemctl stop application.service
+# systemctl stop ssh.service
 ~~~
 
-#### Restart vs reload
+> Je moet dit als rootgebruiker doen, omdat gewone gebruikers niet de toestand van het besturingssysteem mogen veranderen.
 
-Om een service die al draait te herstarten kan je het **restart-commando** gebruiken
-
-~~~
-# systemctl restart application.service
-~~~
-
-Sommige applicaties kan zijn configuratie opnieuw laden zonder opnieuw op te starten.  
-Om dit te doen bestaat er het commando **reload**:
+Je kunt overigens ook de `.service` weglaten:
 
 ~~~
-# systemctl reload application.service
+# systemctl stop ssh
 ~~~
 
-Als je er niet zeker van bent of de service de capaciteit heeft de configuratie opnieuw te laden.
-Kan je het commando **reload-or-restart** geven.  
+#### Starten
 
-Hiermee wordt de configuratie opnieuw geladen, als de capaciteit beschikbaar is.  
-Anders wordt de service opnieuw gestart, zodat de nieuwe configuratie wordt opgehaald:
+Een niet actieve service starten, doe je als volgt:
 
 ~~~
-#  systemctl reload-or-restart application.service
+# systemctl start ssh.service
 ~~~
 
-### Services automatisch starten (enable of disable)
+Ook hier kun je weer `.service` weglaten.
 
-De voorgaande commandos opdrachten worden gebruikt voor starten of stoppen van services tijdens de huidige sessie.  
-Om systemd te vertellen om services automatisch te starten bij het booten, moet moet je het commando enable te 
-gebruiken:
+#### Herstarten en herladen
 
-~~~
-# systemctl enable application.service
-~~~
-
-Dit zal een symbolische link maken van de systeemkopie van het servicebestand 
-(meestal in /lib/systemd/system of /etc/systemd/system) naar de locatie op schijf 
-waar systemd zoekt naar autostart-bestanden (meestal /etc/systemd/system /some_target.target.wants.  
-
-> We zullen verderop in deze handleiding bespreken wat een target is.
-
-Om te voorkomen dat de service automatisch wordt gestart, typt u:
+Als je een service wil stoppen en opnieuw starten, kan dat met één opdracht:
 
 ~~~
-#  systemctl disable application.service
+# systemctl restart ssh.service
+~~~
+
+Sommige services kunnen hun configuratie opnieuw inladen zonder het hele programma te moeten herstarten. Dat gaat met:  
+
+~~~
+# systemctl reload ssh.service
+~~~
+
+Als je er niet zeker van bent of de service de mogelijkheid heeft om zijn configuratie opnieuw te laden, gebruik dan:
+
+~~~
+# systemctl reload-or-restart ssh.service
+~~~
+
+Hiermee wordt de configuratie opnieuw geladen als de service dat ondersteunt.  
+In het andere geval wordt de service herstart, wat uiteraard ook de configuratie opnieuw inlaadt.
+
+### Services automatisch starten
+
+Met de voorgaande opdrachten kun je services voor de huidige sessie starten of stoppen. Maar als je een service die standaard opstart stopt en daarna je Linux-systeem herstart, start die service ook opnieuw op. Met andere woorden: de toestand van het starten of stoppen blijft niet behouden.  
+Je kunt `systemd` ook opdragen om services automatisch te starten bij het opstarten van het Linux-systeem:
+
+~~~
+# systemctl enable ssh.service
+~~~
+
+Dit zal een symbolische link maken naar het servicebestand 
+(meestal in `/lib/systemd/system` of `/etc/systemd/system`). Die link wordt dan gemaakt op een plaats waar `systemd` zoekt naar bestanden om aytomatisch op te starten.
+
+Om daarentegen juist te voorkomen dat de service automatisch wordt gestart, typ je:
+
+~~~
+# systemctl disable ssh.service
 ~~~
 
 Hiermee wordt de symbolische link verwijderd die aangeeft dat de service automatisch moet worden gestart.
 
-Hou er rekening mee dat het inschakelen van een service deze niet start in de huidige sessie. 
-Als u de service wilt starten en deze ook bij het opstarten wilt inschakelen, 
-moet je zowel het start- als enable-commando geven.
+Hou er rekening mee dat het inschakelen van een service met `enable` deze service niet start in de huidige sessie. 
+Als je de service nu wilt starten én deze ook bij het opstarten wilt inschakelen, 
+moet je twee opdrachten geven:
 
 ~~~
-# systemctl enable application.service
-# systemctl start application.service
+# systemctl enable ssh.service
+# systemctl start ssh.service
 ~~~
 
-### Status van de service
-
-Om na te kijken wat de status van je service is, gebruik je het status-commando
+Maar het kan ook met de optie `--now` voor `enable`:
 
 ~~~
-# systemctl status application.service
+# systemctl enable --now ssh.service
 ~~~
 
-Dit zal je de status van de service doorgeven (enabled/disables, running, ...)
-en een aantal logs
+### Status van een service opvragen
+
+Om na te kijken wat de status van een service is, gebruik je:
 
 ~~~
-● nginx.service - A high performance web server and a reverse proxy server
-   Loaded: loaded (/usr/lib/systemd/system/nginx.service; enabled; vendor preset: disabled)
-   Active: active (running) since Tue 2015-01-27 19:41:23 EST; 22h ago
- Main PID: 495 (nginx)
-   CGroup: /system.slice/nginx.service
-           ├─495 nginx: master process /usr/bin/nginx -g pid /run/nginx.pid; error_log stderr;
-           └─496 nginx: worker process
-Jan 27 19:41:23 desktop systemd[1]: Starting A high performance web server and a reverse proxy server...
-Jan 27 19:41:23 desktop systemd[1]: Started A high performance web server and a reverse proxy server.
+# systemctl status ssh.service
 ~~~
 
-Dit geeft je een mooi overzicht van de huidige status van de applicatie en 
-of er eventuele problemen en/of acties nodig zijn.
-
-Er zijn ook methoden om te controleren op specifieke toestanden.  
-Om bijvoorbeeld te controleren of een eenheid momenteel actief (actief) is, kunt u het is-active commando gebruiken:
+Je krijgt dan te zien of de service ingeschakeld is, actief, wat de locatie van het servicebestand is, wat de PID's van de processen zijn, en de laatste regels van het logbestand:
 
 ~~~
-# systemctl is-active cron.service
+● ssh.service - OpenBSD Secure Shell server
+     Loaded: loaded (/lib/systemd/system/ssh.service; enabled; vendor preset: enabled)
+     Active: active (running) since Tue 2023-11-21 16:01:25 CET; 1h 47min ago
+       Docs: man:sshd(8)
+             man:sshd_config(5)
+    Process: 1414 ExecStartPre=/usr/sbin/sshd -t (code=exited, status=0/SUCCESS)
+   Main PID: 1445 (sshd)
+      Tasks: 1 (limit: 8824)
+     Memory: 3.2M
+        CPU: 32ms
+     CGroup: /system.slice/ssh.service
+             └─1445 "sshd: /usr/sbin/sshd -D [listener] 0 of 10-100 startups"
+
+nov 21 16:01:25 x1 systemd[1]: Starting OpenBSD Secure Shell server...
+nov 21 16:01:25 x1 sshd[1445]: Server listening on 0.0.0.0 port 22.
+nov 21 16:01:25 x1 systemd[1]: Started OpenBSD Secure Shell server.
+nov 21 16:01:25 x1 sshd[1445]: Server listening on :: port 22.
+~~~
+
+Op deze manier kun je eventuele problemen herkennen.
+
+Er zijn ook opdrachten om op te vragen of een service zich in een specifieke toestand bevindt.  
+Om bijvoorbeeld te controleren of een service momenteel actief is:
+
+~~~
+# systemctl is-active ssh.service
 active
-#
 ~~~
 
-Als je wil zien of de service automatisch zal starten gebruik je het volgende commando:
+Of als je wilt weten of de service automatisch opstart samen met je Linux-systeem:
 
 ~~~
 # systemctl is-enabled application.service
 enabled
-#
 ~~~
 
-Beide commando's zullen de exit code op 0 of "niet 0" zetten afhankelijk van het antwoord.  
-Hieronder zie je wat er gebeurt als je een service stopzet
+Beide opdrachten zullen de exitcode op 0 of niet 0 zetten afhankelijk van het antwoord.  
+Hieronder zie je wat er gebeurt als je een service stopzet:
 
 ~~~
-# systemctl is-active cron.service
+# systemctl is-active ssh.service
 active
 # echo $?
 0
-# systemctl stop cron.service
-# systemctl is-active cron.service
+# systemctl stop ssh.service
+# systemctl is-active ssh.service
 inactive
 # echo $?
 3
 ~~~
 
-Wanneer de service actief is krijg je een status 0.  
-Is deze echter stopgezet krijg je een getal verschillend van 0 
-(in het voorbeeld 3)
+Wanneer de service actief is, krijg je een exitcode 0.  
+Is deze echter stopgezet, dan krijg je een getal verschillend van 0 
+(in het voorbeeld 3).
 
-### Overview van de services
+### Overzicht van de services
 
 #### Lijst met huidige units
 
-Om een ​​lijst te zien van alle actieve eenheden die systemd kent, kunnen we de opdracht list-units gebruiken.
-Dit zal je een overzicht geven van alle units die systemd momenteel voorzien zijn in het systeem
+Om een lijst op te vragen van alle actieve eenheden die `systemd` kent, kunnen we de opdracht `list-units` gebruiken:
 
 ~~~
 # systemctl list-units
@@ -293,211 +283,222 @@ getty@tty1.service                        loaded active running Getty on tty1
 . . .
 ~~~
 
-Je kan hier de volgende kolommen onderscheiden:
+De kolommen hebben de volgende betekenis:
 
 * **UNIT:**  
-  De naam van de systemd-eenheid
+  De naam van de eenheid
 * **LOAD:**  
-  Of de configuratie van het apparaat is geladen/geparsed door systemd.  
+  Of de configuratie van de eenheid is geladen door `systemd`.  
   De configuratie van geladen eenheden wordt in het geheugen bewaard.
 * **ACTIVE:**  
-  Een overzichtsstatus over of de unit actief is. 
-  Dit is meestal een vrij eenvoudige manier om te zien of het apparaat succesvol is gestart of niet.
+  De status op hoog niveau: of de unit actief is. 
+  Dit is meestal een vrij eenvoudige manier om te zien of de eenheid succesvol is gestart of niet.
 * **SUB:**  
-  Dit is een status op een lager niveau die meer gedetailleerde informatie over het apparaat aangeeft. 
-  Dit varieert vaak per type van unit, staat en de daadwerkelijke methode waarop de eenheid wordt uitgevoerd.
+  Dit is een status op een lager niveau die gedetailleerdere informatie over de eenheid geeft. 
+  Dit varieert vaak per type van unit.
 * **DESCRIPTION:**  
   Een korte tekstuele beschrijving van wat de unit is/doet.
 
-
-We kunnen ook extra flags toevoegen om systemctl om andere informatie te verkrijgen.   
-Om bijvoorbeeld alle units geladen door systemd (of geprobeerd te laden), kan je de flag --all gebruiken:
+We kunnen ook extra opties toevoegen aan `systemctl` om andere informatie te verkrijgen.   
+Om bijvoorbeeld alle (niet alleen de actieve) units geladen door `systemd` (of geprobeerd te laden) te zien, gebruik je de optie `--all`:
 
 ~~~
 # systemctl list-units --all
 ~~~
 
-Dit toont elke unit die door het systeem is geladen of heeft geprobeerd te laden, ongeacht de huidige status op het systeem.  
-Stel dat je bijvoorbeeld enkel degene wil die niet gestart zijn kan je ook nog een extra query-parameter toevogen
+Stel dat je alleen de units wilt zien die niet gestart zijn, dan kun je ook nog een extra optie toevoegen:
 
 ~~~
 # systemctl list-units --all --state=inactive
 ~~~
 
-Wil je enkel de units zien van het type service (degene waar we geinteresseerd in zijn) kan je
-een filter voegen met de optie type (die je dan aan service matcht)
+Wil je alleen de units zien van het type `service` (degene waarin we hier vooral geïnteresseerd zijn), voeg dan een filter op het type toe:
 
 ~~~
 # systemctl list-units --type=service
 ~~~
 
+### Extra informatie over een unit opvragen
 
-### Extra informatie over een unit
+#### Het bestand van een unit tonen
 
-#### Een unit file tonen
-
-Om het eenheidsbestand weer te geven dat systemd in zijn systeem heeft geladen, 
-kan je de opdracht cat gebruiken (toegevoegd in systemd versie 209).  
-
-Om bijvoorbeeld het unit-bestand van de atd scheduling-daemon te zien, kunnen we het volgende typen:
-
+Om het bestand van een unit weer te geven dat `systemd` in zijn systeem heeft geladen, 
+kun je de opdracht `cat` gebruiken. Voor de service `ssh` iet dat er bijvoorbeeld als volgt uit:  
 
 ~~~
-# systemctl cat atd.service
+$ systemctl cat ssh
+# /lib/systemd/system/ssh.service
 [Unit]
-Description=ATD daemon
+Description=OpenBSD Secure Shell server
+Documentation=man:sshd(8) man:sshd_config(5)
+After=network.target auditd.service
+ConditionPathExists=!/etc/ssh/sshd_not_to_be_run
+
 [Service]
-Type=forking
-ExecStart=/usr/bin/atd
+EnvironmentFile=-/etc/default/ssh
+ExecStartPre=/usr/sbin/sshd -t
+ExecStart=/usr/sbin/sshd -D $SSHD_OPTS
+ExecReload=/usr/sbin/sshd -t
+ExecReload=/bin/kill -HUP $MAINPID
+KillMode=process
+Restart=on-failure
+RestartPreventExitStatus=255
+Type=notify
+RuntimeDirectory=sshd
+RuntimeDirectoryMode=0755
+
 [Install]
 WantedBy=multi-user.target
-# 
+Alias=sshd.service
 ~~~
 
-De output is het unit-bestand zoals bekend bij het momenteel lopende systemd-proces.  
+Op de eerste regel van de uitvoer krijg je ook de locatie van dit bestand te zien, `/lib/systemd/system/ssh.service`.
 
-#### Dependencies
+#### Afhankelijkheden
 
-Om te zien wat de dependencies (afhankelijkheden) zijn kan je het commando **list-dependencies** gebruiken.  
-Hieronder zie je output voor de dependencies voor de sshd-daemon
-
-~~~
-# systemctl list-dependencies sshd.service
-sshd.service
-├─system.slice
-└─basic.target
-  ├─microcode.service
-  ├─rhel-autorelabel-mark.service
-  ├─rhel-autorelabel.service
-  ├─rhel-configure.service
-  ├─rhel-dmesg.service
-  ├─rhel-loadmodules.service
-  ├─paths.target
-  ├─slices.target
-. . .
-# 
-~~~
-
-#### Detail informatie
-
-Je kan het show-comando gebruiken om een overzicht te verkrijgen van 
-alle properties van een service.
+Om te zien wat de afhankelijkheden van een service zijn, kun je de opdracht `list-dependencies` gebruiken:  
 
 ~~~
-# systemctl show sshd.service
-Id=sshd.service
-Names=sshd.service
-Requires=basic.target
-Wants=system.slice
-WantedBy=multi-user.target
-Conflicts=shutdown.target
-Before=shutdown.target multi-user.target
-After=syslog.target network.target auditd.service systemd-journald.socket basic.target system.slice
-Description=OpenSSH server daemon
-. . .
-# 
+$ systemctl list-dependencies ssh
+ssh.service
+● ├─-.mount
+● ├─system.slice
+● └─sysinit.target
+●   ├─apparmor.service
+●   ├─blk-availability.service
+●   ├─dev-hugepages.mount
+●   ├─dev-mqueue.mount
+●   ├─finalrd.service
+●   ├─keyboard-setup.service
+●   ├─kmod-static-nodes.service
+●   ├─lvm2-lvmpolld.socket
+●   ├─lvm2-monitor.service
+●   ├─plymouth-read-write.service
+●   ├─plymouth-start.service
+●   ├─proc-sys-fs-binfmt_misc.automount
+●   ├─setvtrgb.service
+●   ├─sys-fs-fuse-connections.mount
+●   ├─sys-kernel-config.mount
+●   ├─sys-kernel-debug.mount
+●   ├─sys-kernel-tracing.mount
+○   ├─systemd-ask-password-console.path
+●   ├─systemd-binfmt.service
+○   ├─systemd-boot-system-token.service
+●   ├─systemd-journal-flush.service
+●   ├─systemd-journald.service
+○   ├─systemd-machine-id-commit.service
+●   ├─systemd-modules-load.service
+○   ├─systemd-pstore.service
+●   ├─systemd-random-seed.service
+●   ├─systemd-sysctl.service
+●   ├─systemd-sysusers.service
+●   ├─systemd-timesyncd.service
+●   ├─systemd-tmpfiles-setup-dev.service
+●   ├─systemd-tmpfiles-setup.service
+●   ├─systemd-udev-trigger.service
+●   ├─systemd-udevd.service
+●   ├─systemd-update-utmp.service
+●   ├─cryptsetup.target
+●   │ └─systemd-cryptsetup@nvme0n1p5_crypt.service
+●   ├─local-fs.target
+●   │ ├─-.mount
+●   │ ├─boot.mount
+○   │ ├─systemd-fsck-root.service
+●   │ └─systemd-remount-fs.service
+●   ├─swap.target
+●   │ └─dev-mapper-vgubuntu\x2dswap_1.swap
+●   └─veritysetup.target
 ~~~
 
-Je kan je ook beperken tot 1 enkele specfieke property kan je de optie **-p** gebruiken
+#### Detailinformatie
+
+Je kunt ook alle eigenschappen van een service opvragen:
 
 ~~~
-# systemctl show sshd.service -p Conflicts
-Conflicts=shutdown.target
-# 
+$ systemctl show ssh|head
+Type=notify
+Restart=on-failure
+NotifyAccess=main
+RestartUSec=100ms
+TimeoutStartUSec=1min 30s
+TimeoutStopUSec=1min 30s
+TimeoutAbortUSec=1min 30s
+TimeoutStartFailureMode=terminate
+TimeoutStopFailureMode=terminate
+RuntimeMaxUSec=infinity
+...
+~~~
+
+Of vraag één specifieke eigenschap op met de optie `-p`:
+
+~~~
+$ systemctl show ssh -p Description
+Description=OpenBSD Secure Shell server 
 ~~~
 
 ### Masking en unmasking van units
 
-We hebben eerder gezien dan je een service kan starten en stoppen.  
-Via enable/disable kon je ook voorzien of de service al dan niet automatisch start.  
+We hebben eerder gezien dat je een service kunt starten en stoppen, en ook kunt in- en uitschakelen om ze al dan niet automatisch te laten starten bij het opstarten van je Linux-systeem.  
 
-In sommige gevallen wil je echter dat de service niet kan gestart worden (ook niet manueel).  
-Als je deze service dan wil onstartbaar maken gebruik je:
-
-~~~
-# systemctl mask nginx.service
-#
-~~~
-
-Dit voorkomt dat de Nginx-service wordt gestart, automatisch of handmatig, zolang deze is "masked".  
-Als je het list-unit-files commando gebruikt, ziet je dat de service nu wordt aangeduid als "masked":
+In sommige gevallen wil je echter dat de service niet gestart kan worden (ook niet manueel).  
+Dat doe je door ze te maskeren:
 
 ~~~
-# systemctl list-unit-files
-. . .
-kmod-static-nodes.service              static
-ldconfig.service                       static
-mandb.service                          static
-messagebus.service                     static
-nginx.service                          masked
-quotaon.service                        static
-rc-local.service                       static
-rdisc.service                          disabled
-rescue.service                         static
-. . .
-# 
+# systemctl mask ssh.service
 ~~~
+
+Dit voorkomt dat de service wordt gestart, automatisch of handmatig, zolang deze "masked" is.  
+Als je de opdracht `list-unit-files` gebruikt, zie je dat de service nu wordt aangeduid als "masked".
 
 Als je probeert de service dan toch nog te starten, krijg je een boodschap zoals hieronder:
 
 ~~~
-# systemctl start nginx.service
-Failed to start nginx.service: Unit nginx.service is masked.
-To unmask a unit, making it available for use again, use the unmask command:
-# 
+# systemctl start ssh.service
+Failed to start ssh.service: Unit ssh.service is masked.
 ~~~
 
-Om de service terug bruikbaar te maken maak je gebruik van het unmask-commando
+Om de service weer 'bruikbaar' te maken, moet je ze "unmasken":
 
 ~~~
-# systemctl unmask nginx.service
+# systemctl unmask ssh.service
 ~~~
 
-Dit zal de service terug bruikbaar/beschikbaar maken...
+Nu kun je de service wel weer starten.
 
 ### Targets
 
-Targest in systemd fungeren als synchronisatiepunten tijdens het opstarten van uw systeem. 
-Target unit-bestanden, die eindigen op de bestandsextensie .target, vertegenwoordigen de systemd-targets. 
+Targets functioneren in `systemd` als synchronisatiepunten tijdens het opstarten van het systeem. 
+Unit-bestanden waarvan de naam eindigt op de bestandsextensie `.target` vertegenwoordigen de systemd-targets. 
 
-> In vroegere system werden dit runlevels genoemd
+Het doel van target-units is om verschillende systeem-units te groeperen via afhankelijkheden.
 
-Het doel van target-un,its is om verschillende systeem-units te groeperen via dependencies.
+Twee voorbeelden:
 
-2 voorbeelden:
-
-* De graphical.target-unit voor het starten van een grafische sessie, 
-  start systeemservices zoals de GNOME Display Manager (gdm.service) 
-  of Accounts Service (accounts-daemon.service), en activeert ook de multi-user.target-eenheid.
-* De multi-user.target-unit start andere andere essentiële systeemservices zoals NetworkManager (NetworkManager.service) 
-  of D-Bus (dbus.service)
+* De unit `graphical.target` voor het starten van een grafische sessie start systeemdiensten zoals de GNOME Display Manager (`gdm.service`) of Accounts Service (`accounts-daemon.service`) en activeert ook de eenheid `multi-user.target`.
+* De unit `multi-user.target` start onder andere essentiële systeemdiensten zoals NetworkManager (`NetworkManager.service`) en D-Bus (`dbus.service`)
 
 #### Wat is je target?
 
-Je kan de target dat je systeem gebruikt nakijken via het systemctl-commando of door
-naar de /etc/systemd/system/default.target te gaan kijken.
-
-Determine, which target unit is used by default:
+Je kunt het target dat je systeem gebruikt op twee manieren nakijken. Met `systemctl get-default`:
 
 ~~~
-# systemctl get-default
+$ systemctl get-default
 graphical.target
-#
 ~~~
 
-Of via de symbolic link:
+Of door de volgende symbolic link na te gaan:
 
 ~~~
-# ls -l /usr/lib/systemd/system/default.target
+$ ls -l /usr/lib/systemd/system/default.target 
+lrwxrwxrwx 1 root root 16 mrt  2  2023 /usr/lib/systemd/system/default.target -> graphical.target
 ~~~
 
-#### Welke zijn de mogelijk targes
+#### Wat zijn de mogelijke targets?
 
-Als je de mogelijk targets wil zien (of toch deze die geladen zijn) kan je onderstaand commando
-gebruiken:
+Als je de mogelijke targets wil zien (of toch deze die geladen zijn), kun je alle units van het type `target` opvragen:
 
 ~~~
-# systemctl list-units --type target
+$ systemctl list-units --type target
 
 UNIT                  LOAD   ACTIVE SUB    DESCRIPTION
 basic.target          loaded active active Basic System
@@ -525,62 +526,55 @@ SUB    = The low-level unit activation state, values depend on unit type.
 17 loaded units listed.
 ~~~
 
-Bovenstaand commando zal enkel de targets tonen die momenteel actief zijn.  
-Wil je alle targets zien kan je hier de optie --all aan toevoegen.
+Bovenstaande opdracht zal slechts de targets tonen die momenteel actief zijn.  
+Wil je alle targets zien, voeg dan de optie `--all` toe:
 
 ~~~
-# systemctl list-units --type target --all
+$ systemctl list-units --type target --all
 ~~~
 
 #### Target wijzigen
 
-Als je wil dat het systeem by default niet met een grafische interface
-opstart kan het commendo set-default gebruiken.
+Als je wilt dat het systeem standaard niet met een grafische interface
+opstart, gebruik dan de opdracht `set-default` om een andere standaard target in te stellen.
 
-Waar dat we bij het vorige commando zagen dat de start-target op graphical staat...
-
-~~~
-# systemctl get-default
-graphical.target
-~~~
-
-...kan je dze bijvoobeeld omzetten naar naar multi-user waardoor je systeem zal
-opstarten met een prompt
+Bijvoorbeeld:
 
 ~~~
 # systemctl set-default multi-user.target
 rm /etc/systemd/system/default.target
 ln -s /usr/lib/systemd/system/multi-user.target /etc/systemd/system/default.target
-#
 ~~~
 
-Zoals je ziet vervangt deze opdracht het bestand /etc/systemd/system/default.target 
-door eens nieuwe symbolic link naar /usr/lib/systemd/system/name.target waarbij 
-je "naam" vervangt door de target die je wilt gebruiken.  
+Zoals je ziet, vervangt deze opdracht het bestand `/etc/systemd/system/default.target` 
+door een nieuwe symbolic link naar `/usr/lib/systemd/system/multi-user.target`.
 
-#### Isoleren van targets
+#### Targets isoleren
 
-Wil je terugvallen naar een specieke target kan je het isolate commando gebruiken.   
-Het onderstaande comamndo zal er voor zorgen dat je naar multi-user terugkeert en alle
-units verbonden aan graphical afsluit.
+Wil je terugvallen naar een specifieke target, gebruik dan de opdracht `isolate`.   
+Zo zorg je er op de volgende manier voor dat je naar het target `multi-user` terugkeert en alle
+units verbonden aan het target `graphical` afsluit.
 
 ~~~
 # systemctl isolate multi-user.target
 ~~~
 
+#### Belangrijke targets
 
-#### Target-shortcuts
+Er zijn targets bepaald voor belangrijke gebeurtenissen zoals het uitschakelen of opnieuw opstarten. Zo kun je bijvoorbeeld naar de rescuemodus overschakelen met:
 
-Er zijn targets bepaald voor belangrijke gebeurtenissen zoals uitschakelen of opnieuw opstarten.  
-Systemctl heeft echter ook enkele snelkoppelingen die een beetje extra functionaliteit toevoegen.
+~~~
+# systemctl isolate rescue.target
+~~~
 
-Om het systeem bijvoorbeeld in de reddingsmodus (enkele gebruiker) te zetten, 
-kunt u het reddingscommando gebruiken ipv "isolate rescue.target"-commando:
+Maar `systemctl` biedt dit ook in een kortere opdracht aan:
 
 ~~~
 # systemctl rescue
 ~~~
 
+Andere van deze korte opdrachten zijn:
+ 
 ~~~
 # systemctl halt
 ~~~
