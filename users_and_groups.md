@@ -71,10 +71,10 @@ Password:
 root@studentdeb:~#
 ~~~
 
-Vergeet je de `-`, dan worden de omgevingsvariabelen niet aangepast aan de root-gebruiker.
+Vergeet je de `-`, dan worden de omgevingsvariabelen niet aangepast aan de root-gebruiker en verander je niet naar de home-directory van de root-gebruiker.
 
 > *Waarschuwing*  
-> Als **root-gebruiker** kan je zowat alles doen op je systeem.  
+> Als **root-gebruiker** kun je zowat alles doen op je systeem.  
 > Maar vergeet niet: **"With great power comes great responsibility"**.  
 > Bij **foutief gebruik** kan het zijn dat je
 > **onherstelbare schade** toebrengt aan je Linux-systeem, waardoor
@@ -101,7 +101,7 @@ De gebruikte opties zijn:
 * `-s`, `--shell SHELL`  
   Geef een specifieke login-shell voor deze gebruiker bij het inloggen.
 
-Daarnaast kan je nog een aantal andere opties toevoegen:
+Daarnaast kun je nog een aantal andere opties toevoegen:
 
 * `-g`, `--gid GROUP`  
   Geef de primaire groep voor de gebruikersaccount op.
@@ -128,7 +128,7 @@ root@studentdeb:~#
 
 #### Wissel van gebruiker
 
-Zoals we eerder vermeldden, kan je met de opdracht `su` vanuit een shell **wisselen** van **gebruiker**.  
+Zoals we eerder vermeldden, kun je met de opdracht `su` vanuit een shell **wisselen** van **gebruiker**.  
 Het volstaat om na `su` je naam te vermelden (zonder naam zal `su` proberen in te loggen als de root-gebruiker):
 
 ~~~
@@ -141,7 +141,7 @@ bart@studentdeb:~$ pwd
 bart@studentdeb:~$
 ~~~
 
-Merk op dat je ook hier `-` na `su` toevoegt om de omgevingsvariabelen juist te zetten.
+Merk op dat je ook hier `-` na `su` toevoegt om de omgevingsvariabelen juist te zetten en van home-directory te veranderen.
 
 #### Wachtwoordbestand
 
@@ -149,7 +149,7 @@ De informatie die je meegaf aan `useradd` wordt samen met andere gegevens standa
 Bekijk bijvoorbeeld de laatste tien regels van dit bestand (via de opdracht `tail`):
 
 ~~~
-root@studentdeb:~# tail -10 /etc/passwd
+root@studentdeb:~# tail /etc/passwd
 avahi:x:109:115:Avahi mDNS daemon,,,:/run/avahi-daemon:/usr/sbin/nologin
 speech-dispatcher:x:110:29:Speech Dispatcher,,,:/run/speech-dispatcher:/bin/false
 pulse:x:111:117:PulseAudio daemon,,,:/run/pulse:/usr/sbin/nologin
@@ -186,14 +186,14 @@ bart:x:1001:1001:My personal user:/home/bart:/bin/bash
   Dit is de initiële werkdirectory wanneer de shell start.
 * **/bin/bash/** =>  
   Het **standaard** **shell**-programma voor deze gebruiker.  
-  Voor een gewone gebruiker is dit is normaal gesproken het programma dat bij inloggen de opdrachtregelprompt toont. Voor een systeemgebruiker zou hier `/sbin/nologin` kunnen staan als interactieve logins niet zijn toegestaan.
+  Voor een gewone gebruiker is dit normaal gesproken het programma dat bij inloggen de opdrachtregelprompt toont. Voor een systeemgebruiker zou hier `/sbin/nologin` kunnen staan als interactieve logins niet zijn toegestaan.
 
 #### Schaduwbestand 
 
 De wachtwoorden zelf worden in **versleutelde vorm** in een **afzonderlijk bestand** bijgehouden, `/etc/shadow`.
 
 ~~~
-root@studentdeb:~# tail -10 /etc/shadow
+root@studentdeb:~# tail /etc/shadow
 avahi:*:18896:0:99999:7:::
 speech-dispatcher:!:18896:0:99999:7:::
 pulse:*:18896:0:99999:7:::
@@ -207,6 +207,8 @@ bart:$y$j9T$XjMYmgIXJKlf5XiUZTWFe0$skqNAAVJg6a1gPETcar/q8FMxzBH5mHuyXazVGWjpm1:1
 root@studentdeb:~# 
 ~~~
 
+Merk op dat je als gewone gebruiker de inhoud van dit bestand niet kunt bekijken.
+
 ### Groepen
 
 Je kunt in Linux meerdere gebruikers aan een groep toekennen.
@@ -219,7 +221,7 @@ dat eraan is toegekend, de groeps-ID of GID.
 De toewijzing van groepsnamen aan GID's wordt gedefinieerd in het bestand `/etc/group`:
 
 ~~~
-root@studentdeb:~# tail -10 /etc/group
+root@studentdeb:~# tail /etc/group
 pulse:x:117:
 pulse-access:x:118:
 scanner:x:119:saned,student

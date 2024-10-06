@@ -100,7 +100,7 @@ Er zijn dus drie categorieën van gebruikers voor de permissies. Op deze drie ni
 
 We weten nu dat er drie permissieniveaus bestaan. Wanneer en hoe worden deze nu toegepast?
 
-Elk bestand en enkele directory binnen Linux heeft een gebruiker en een groep.
+Elk bestand en elke directory binnen Linux heeft een gebruiker en een groep.
 Beide worden gebruikt om permissies te vergelijken.  
 
 In dit voorbeeld zie je dat **file1** de gebruiker **student** en de groep **student** heeft:
@@ -204,7 +204,7 @@ Zoals eerder gezien geeft de opdracht `ls -l` ons meer **gedetailleerde** inform
 
 ~~~
 student@studentdeb:~$ ls -l test.txt 
--rwxr--r-- 1 student students 192 Oct 27 14:33 test.txt
+-rwxr-xr-- 1 student students 192 Oct 27 14:33 test.txt
 ~~~
 
 De informatie kunnen we als volgt interpreteren:
@@ -224,12 +224,12 @@ De informatie kunnen we als volgt interpreteren:
 Samengevat betekent dit dat dit bestand (test.txt) **eigendom** is van de gebruiker **student** en de groep **students**.  
 
 * **Iedereen** heeft het recht om dit bestand te **lezen**.
-* Alleen de gebruiker **student** zelf leden van de groep **students** hebben het **recht** deze **uit te voeren**.
+* Alleen de gebruiker **student** of leden van de groep **students** hebben het **recht** deze **uit te voeren**.
 * Alleen de gebruiker **student** kan dit bestand bewerken.
 
 #### Permissies en eigenaars van directory's
 
-**Ook** voor **directory's** kan je dit **nakijken**. Maar als je dit met `ls -l` doet, zie je alleen
+Ook voor **directory's** kun je dit nakijken. Maar als je dit met `ls -l` doet, zie je alleen
 de rechten op de subdirectory's of bestanden:
 
 ~~~
@@ -252,8 +252,8 @@ Hier zie je dan de **rechten** en andere informatie op de **directory zelf**.
 
 ### Wijzigen van permissies met chmod
 
-Met de opdracht `chmod` kan je deze rechten toevoegen of afnemen...  
-Je kan deze opdracht op twee manieren toepassen:
+Met de opdracht `chmod` kun je deze rechten toevoegen of afnemen...  
+Je kunt deze opdracht op twee manieren toepassen:
 
 * met symbolen
 * met getallen
@@ -457,7 +457,7 @@ total 0
 -rw-r--r-- 1 bart student 0 Nov 24 14:05 test_file
 ~~~
 
-Je kan hetzelfde doen met de opdracht `chgrp`. Dan heb je geen dubbele punt nodig:
+Je kunt hetzelfde doen met de opdracht `chgrp`. Dan heb je geen dubbele punt nodig:
 
 ~~~
 root@studentdeb:/home/student# chgrp bart test_dir
@@ -467,7 +467,7 @@ root@studentdeb:/home/student# chgrp bart test_dir
 #### Tegelijk gebruiker en groep wijzigen
 
 Tenslotte zetten we `test_dir` terug naar de oorspronkelijke gebruiker en groep.  
-Je kan dit in één keer doen door de gebruiker en groep te combineren met een dubbele punt 
+Je kunt dit in één keer doen door de gebruiker en groep te combineren met een dubbele punt 
 (user:group):
 
 ~~~
@@ -651,7 +651,7 @@ Hoe komt het dat deze permissies niet 666 en 777 zijn?
 
 #### umask
 
-Dit komt door de **umask**. Dit is een waarde die wordt ingeladen **per shell-sessie**. Je kan deze opvragen met de opdracht `umask`:
+Dit komt door de **umask**. Dit is een waarde die wordt ingeladen **per shell-sessie**. Je kunt deze opvragen met de opdracht `umask`:
 
 ~~~
 student@studentdeb:~$ umask
@@ -659,9 +659,9 @@ student@studentdeb:~$ umask
 student@studentdeb:~$ 
 ~~~
 
-Deze waarde is hier **0022** en de cijfers worden **afgetrokken** (niet helemaal, we nuanceren later) van die van de **permissies**.  
+Deze waarde is hier **0022** en de cijfers worden **afgetrokken** (niet helemaal correct, we nuanceren later) van die van de **permissies**.  
 
-In eerder voorbeeld zien we dat:
+In het eerder voorbeeld zien we dat:
 
 * **0777** min **0022** wordt **0755** voor de **directory**
 * **0666** min **0022** wordt **0644** voor een **bestand**
@@ -814,7 +814,7 @@ chmod +t /home/operators
 
 ##### Clean up
 
-Je kan volgend script gebruiken om alle gebruikers, groepen en folders te verwijderen
+Je kunt volgend script gebruiken om alle gebruikers, groepen en folders te verwijderen
 
 ~~~bash
 # Delete the users

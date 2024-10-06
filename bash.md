@@ -323,7 +323,7 @@ student@studentdeb:~$ echo $PATH
 /usr/local/bin:/usr/bin:/bin:/usr/local/games:/usr/games
 ~~~
 
-Als je echter je huidge workdirectory toevoegt aan `PATH`...
+Als je echter je huidge werkdirectory toevoegt aan `PATH`...
 
 ~~~
 student@studentdeb:~$ export PATH=/home/student/:$PATH
@@ -711,7 +711,7 @@ ls: cannot access 'hello.sh.not': No such file or directory
 student@studentdeb:~$ 
 ~~~
 
-Je kan ook zorgen dat **beide** streams **tegelijkertijd** worden weggeschreven.  
+Je kunt ook zorgen dat **beide** streams **tegelijkertijd** worden weggeschreven.  
 In onderstaand voorbeeld:
 
 * vragen we zowel een bestaand als niet-bestaand bestand op
@@ -729,7 +729,7 @@ student@studentdeb:~$
 
 ##### Redirect van zowel stdout als stderr via &>
 
-Als je zowel stdout als stderr tegelijkertijd wil omleiden, kan je `&>` gebruiken.  
+Als je zowel stdout als stderr tegelijkertijd wil omleiden, kun je `&>` gebruiken.  
 In het **voorbeeld** hieronder zullen **beide streams** naar één bestand worden weggeschreven.
 
 ~~~
