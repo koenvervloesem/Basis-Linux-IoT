@@ -1,153 +1,50 @@
-## Een tekstbestand aanmaken of openen
+#### Tekstbestanden aanmaken, openen of bekijken
 
-Je hebt niet op elk Linux-systeem een grafische omgeving tot je beschikking waarin je een grafisch teksteditor opent om tekstbestanden aan te passen. Op de opdrachtregel kun je de editor `nano` gebruiken:
+Tot nu toe hebben we bestanden aangemaakt met `touch`, maar die opdracht creëert gewoon een leeg bestand. Om tekst aan een (nieuw of bestaand) bestand toe te voegen, kun je de editor `nano` gebruiken:
 
 ~~~
-nano /tmp/nano_test
+nano data/README.txt 
 ~~~
 
 Bestaat dit bestand nog niet, dan wordt het door `nano` aangemaakt.  
-Bestaat het wel, dan leest `nano` de huidige inhoud in en kan je die wijzigen.
+Bestaat het wel, dan leest `nano` de huidige inhoud in en kun je die wijzigen.
 
-### Werken met de interface van `nano`
+##### Werken met de interface van `nano`
 
 Na het openen van een tekstbestand staat aan de bovenzijde links de versie van `nano`, in het midden de locatie van het geopende bestand, en rechts de term "Modified" indien het bestand door de gebruiker is aangepast.
 
 Daaronder vind je de inhoud van het tekstbestand. Helemaal onderaan vind je een aantal sneltoetsen voor veel gebruikte acties, zoals het opslaan van en zoeken in het bestand, en het afsluiten van het programma.
 
-~~~
-^G Get Help	^O WriteOut	^R Read File	^Y Prev Page	^K Cut Text	^C Cur Pos
-^X Exit	^J Justify	^W Where Is	^V Next Page	^U UnCut Text	^T To Spell
-~~~
+![](Pictures/nano.png)
 
 Het teken `^` (caret, of dakje) staat voor de Ctrl-toets op het toetsenbord.  
-Deze sneltoetsen zijn ook via een F-toets (F1 t/m F12) bovenaan het toetsenbord aan te roepen (in de volgorde F1 voor ^G, F2 voor ^X, F3 voor ^O, enzovoorts).  
-
-Hieronder vind je een vertaling van de snelkoppelingen:
-
-~~~
-^G Helpinformatie	^O Opslaan	^R Bestand invoegen	^Y Vorige pagina	^K Knip tekst	^C Huidige positie
-^X Afsluiten	^J Uitlijnen	^W Zoeken	^V Volgende pagina	^U Plak tekst	^T Spellinghulp
-~~~
 
 In plaats van de Ctrl-toets kun je ook tweemaal op de Esc-toets drukken.  
-Enkele andere sneltoetsen, die in de helpinformatie (^G) uitgebreid worden beschreven, kunnen met de Meta-, Esc- of Alt-toets aangeroepen worden. Zo staat M-} (regel inspringen) bijvoorbeeld voor de combinatie Alt/Esc/Meta+}.
+Enkele andere sneltoetsen vind je in de helpinformatie (^G).
 
-Verder kun je vrijuit typen en de pijltjestoetsen gebruiken om door het bestand te navigeren. Tussentijds opslaan doe je aan de hand van de WriteOut-sneltoets (^O). Zodra je het bestand afsluit met ^X, zul je gevraagd worden of je niet opgeslagen wijzigingen wilt opslaan of negeren.
-
-
-### Voorbeeld
-
-In deze cursus bekijken we gewoon de basis van `nano`.
-Voor een volledige uitleg kun je terecht op <https://www.nano-editor.org/docs.php>.
-
-Je opent een bestand door de opdracht `nano` te typen gevolgd door de bestandsnaam als argument:  
-
-~~~
-student@studentdeb:~$ nano nano_test
-~~~
-
-Als dit bestand reeds bestaat, dan zal `nano` het bestaande bestand openen.  
-In het geval van een niet bestaand bestand opent `nano` een leeg bestand.
-
-~~~
-  GNU nano 5.4                                               nano_test *                                                      
-
-
-
-
-
-
-
-
-
-
-^G Help        ^O Write Out   ^W Where Is    ^K Cut         ^T Execute     ^C Location    M-U Undo       M-A Set Mark
-^X Exit        ^R Read File   ^\ Replace     ^U Paste       ^J Justify     ^_ Go To Line  M-E Redo       M-6 Copy
-
-~~~
-
-Onderaan het bestand zie je diverse sneltoetsen voor opdrachten.
-Je kunt nu gewoon tekst typen, net als in een grafische teksteditor.
-
-~~~
-  GNU nano 5.4                                               nano_test *                                                      
-Hello World nano
-Dit is een nano test
-
-
-
-
-
-
-
-
-^G Help        ^O Write Out   ^W Where Is    ^K Cut         ^T Execute     ^C Location    M-U Undo       M-A Set Mark
-^X Exit        ^R Read File   ^\ Replace     ^U Paste       ^J Justify     ^_ Go To Line  M-E Redo       M-6 Copy
-~~~
-
-Als je de inhoud wilt opslaan, druk je op Ctrl+O.  
-Onderaan vraagt de editor (File Name to Write) om de bestandsnaam te bevestigen. 
+Verder kun je vrijuit typen en de pijltjestoetsen gebruiken om door het bestand te navigeren. Tussentijds opslaan doe je aan de hand van de WriteOut-sneltoets (^O). Onderaan vraagt de editor (File Name to Write) om de bestandsnaam te bevestigen. 
 Als je het bestand onder een andere naam wilt opslaan, vul dan een andere naam in voor je bevestigt.
 
-~~~
-  GNU nano 5.4                                               nano_test *                                                      
-Hello World nano
-Dit is een nano test
+Zodra je nano afsluit met ^X, zul je gevraagd worden of je niet opgeslagen wijzigingen wilt opslaan of negeren.
 
+##### Inhoud bekijken
 
-
-File Name to Write: nano_test   
-^G Help        ^O Write Out   ^W Where Is    ^K Cut         ^T Execute     ^C Location    M-U Undo       M-A Set Mark
-^X Exit        ^R Read File   ^\ Replace     ^U Paste       ^J Justify     ^_ Go To Line  M-E Redo       M-6 Copy
-~~~
-
-Daarna kun je verder de tekst aanvullen.
-
+Om de inhoud van een bestand te bekijken, kun je dit met nano openen. Maar dit is eigenlijk bedoeld om het bestand te bewerken. Als je niets wilt aanpassen, maar gewoon wilt zien wat er in het bestand staat, kun je de opdracht `cat` gebruiken met als argument de bestandsnaam:
 
 ~~~
-  GNU nano 5.4                                               nano_test *                                                      
-Hello World nano
-Dit is een nano test
-Nog wat tekst
-
-
-
-^G Help        ^O Write Out   ^W Where Is    ^K Cut         ^T Execute     ^C Location    M-U Undo       M-A Set Mark
-^X Exit        ^R Read File   ^\ Replace     ^U Paste       ^J Justify     ^_ Go To Line  M-E Redo       M-6 Copy
+student@studentdeb:~$ cat data/README.txt
+Dit is een tekstbestand.
+student@studentdeb:~$
 ~~~
 
-Afsluiten doe je met Ctrl+X.  
+### Oefening
 
-Aangezien je nog een regel hebt toegevoegd, vraagt de editor je of je de wijzigingen 
-wilt opslaan.  
-Bevestig met Y.
+Maak een bestand `~/oefening1/bestanden/leesmij.txt` aan en plaats daarin de volgende tekst:
 
-~~~
-  GNU nano 5.4                                               nano_test *                                                      
-Hello World nano
-Dit is een nano test
-Nog wat tekst
+```
+Dit is een bestand met informatie over deze directory.
+```
 
+Kopieer dit bestand naar de directory `~/oefening1/kopie/README.txt`.
 
-
-Save modified buffer? Y
-
- Y Yes
- N No           ^C Cancel
-~~~
-
-Daarna krijg je weer zoals eerder de vraag om het bestand op te slaan 
-(eventueel onder een andere naam).
-
-~~~
-  GNU nano 5.4                                               nano_test *                                                      
-Hello World nano
-Dit is een nano test
-
-
-
-File Name to Write: nano_test   
-^G Help        ^O Write Out   ^W Where Is    ^K Cut         ^T Execute     ^C Location    M-U Undo       M-A Set Mark
-^X Exit        ^R Read File   ^\ Replace     ^U Paste       ^J Justify     ^_ Go To Line  M-E Redo       M-6 Copy
-~~~
+Toon de inhoud van beide bestanden om te controleren of ze effectief kopieën zijn.

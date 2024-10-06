@@ -2,13 +2,13 @@
 
 ## Doel van de cursus
 
-Met deze cursus willen we bereiken dat je als "IoT'er" je weg kan vinden binnen een GNU/Linux-systeem.  
+Met deze cursus willen we bereiken dat je als IoT-technicus je weg kan vinden binnen een GNU/Linux-systeem.  
 Het is geen cursus over besturingssystemen of een *deep dive* in Linux-distributies.  
 De cursus heeft als doel om wat handigheid op te bouwen in het werken met Linux.
 
 ### Cursusmateriaal
 
-De cursus wordt deel per deel op Toledo beschikbaar gesteld in html-, pdf- en epub-formaat.
+De cursus wordt deel per deel op Toledo beschikbaar gesteld.
 
 Let op: dit is een 'levend document'. De cursus wordt elke les bijgewerkt en in zijn nieuwste versie op Toledo geüpload.
 
@@ -16,16 +16,15 @@ Wie aanvullende verdieping wil, mag altijd vragen om verwijzingen naar goede boe
 
 ### Stijl van lesgeven
 
-Dit is een **praktische cursus**, dus we vliegen er direct in met praktijk.
+Dit is een **praktische cursus**. We vliegen er onmiddellijk in met praktijk. Het is ook de bedoeling dat je in de les zelf meevolgt met de voorbeelden, zaken zelf uitprobeert en opdrachten uitvoert.
 
 ### Opdrachten op Toledo
 
 Alle **oefeningen** uit de cursus die je **moet maken** worden aangeduid in Toledo **onder opdrachten**.
 
-
 ### Evaluatie
 
-De ECTS-fiche van het vak beschrijft hoe je geëvalueerd wordt: <https://onderwijsaanbod.leuven.ucll.be/2023/syllabi/n/MGI32BN.htm>
+De ECTS-fiche van het vak beschrijft hoe je geëvalueerd wordt: <https://onderwijsaanbod.leuven.ucll.be/2024/syllabi/n/MGI32BN.htm>
 
 De verdeling van de punten is:
 
@@ -44,19 +43,19 @@ In eerste zit is er dus geen examen.
 ## Waarom Linux binnen IoT?
 
 * Basiskennis vanuit het standpunt van een IoT-gebruiker/ontwikkelaar 
-* 7 lessen
-  * Focus op praktische kennis als gebruiker
-  * Dus je wordt geen systeembeheerder
-* Focus op beheer en gebruik vanuit de terminal (de grafische omgeving is bijkomstig)
-* Wel praktisch gericht
-  * Inloggen op een Linux-machine (via de console)
-  * Configureren en opzetten een Linux-distributie
-  * Navigeren binnen een Linux-machine
-  * Basisvaardigheden om bestanden, directory's en gebruikers te beheren
-  * Automatisatie
-  * Configuratie
-  * Netwerk configureren en opzetten
-  * Logging
+* 7 lessen:
+  * We focussen op praktische kennis als gebruiker
+  * Je wordt dus geen systeembeheerder
+* De nadruk ligt op beheer en gebruik vanuit de terminal (de grafische omgeving is bijkomstig)
+* Praktische insteek:
+  * inloggen op een Linux-machine (via de console)
+  * configureren en opzetten van een Linux-distributie
+  * navigeren binnen een Linux-machine
+  * basisvaardigheden om bestanden, directory's en gebruikers te beheren
+  * automatisatie
+  * configuratie
+  * netwerk configureren en opzetten
+  * logging
   * ... 
 
 ## Wat is Linux? Is het een besturingssysteem?
@@ -71,18 +70,18 @@ Linux is een **kernel**, dat is het **deel** van je **besturingssysteem** dat in
 * Voorzien in een **bestandssysteem**
 * ...
 
-Zo'n kernel kan je beshouwen als de **motor** van het **besturingssysteem**.  
-Deze zorgt er voor dat je **toepassingen**, **scripts** en andere **software** kan **draaien** **zonder** de **details** te moeten kennen van de **hardware**.
+Zo'n kernel kun je beschouwen als de **motor** van het **besturingssysteem**.  
+Deze zorgt er voor dat je **toepassingen**, **scripts** en andere **software** kunt **draaien** **zonder** de **details** te moeten kennen van de **hardware**.
 
 ### GNU/Linux
 
 Met een motor alleen ben je niet veel. Je moet als gewone eindgebruiker met het besturingssysteem kunnen werken.  
 Daarvoor worden en binnen een besturingssysteem - bovenop deze kernel - vele andere elementen voorzien, zoals:
 
-* Shell
+* Shell waaraan je opdrachten kunt geven
 * Hulpmiddelen
-* Services
-* Bibliotheken
+* Services die op de achtergrond allerlei taken uitvoeren
+* Bibliotheken met functionaliteit die gedeeld wordt door diverse programma's
 * Window managers
 * Compiler, linker, assembler, debugger, ...
 * Andere tools zoals teksteditors, documentatie, ...
@@ -98,15 +97,21 @@ Het eigenlijke besturingssysteem dat wij gaan gebruiken in de cursus is **GNU/Li
     |    GNU      | 
     |             | 
     +------+------+ 
-           |   * system calls
-           |   * ioctl
-           |   * files
-           v   * ...    
+           |   
+           |   system calls
+           |   
+           v  
     +-------------+ 
     |             | 
     |    LINUX    | 
     |             | 
     +-------------+ 
+           |
+           |
+           |
+           v
+
+        Hardware
 ~~~
 
 ### Een beetje geschiedenis...
@@ -150,7 +155,7 @@ tot het meest gebruikte en gedeelde stuk software uit de geschiedenis.
 Rond 1992 combineerde men de Linux-kernel als ontbrekend puzzelstuk met GNU en ontstond er een nieuw
 besturingssysteem dat een paar jaar later een enorme impact zou hebben op de wereld.
 
-> Zie ook https://www.cs.cmu.edu/~awb/linux.history.html voor een diepgaandere uitleg over de geschiedenis van Linux.
+Zie ook <https://www.cs.cmu.edu/~awb/linux.history.html> voor een diepgaandere uitleg over de geschiedenis van Linux.
 
 
 ### GNU/Linux-distributies
@@ -217,7 +222,7 @@ bijvoorbeeld ook de basis van Android.
     +-------------+          +-------------+
 ~~~
 
-Zie https://source.android.com voor het Android Open Source Project (AOSP).
+Zie <https://source.android.com> voor het Android Open Source Project (AOSP).
 
 Daarnaast zijn er in embedded Linux veel alternatieve systemen op basis van de Linux-kernel
 die niet noodzakelijk gebruikmaken van GNU-software.
