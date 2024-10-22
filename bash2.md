@@ -12,7 +12,7 @@ Eerder hadden we functionaliteit gezien zoals:
     via **Ctrl+R** kun je door alle opdrachten zoeken die een bepaalde tekst bevatten
   * De opdracht `history`
 
-Een aantal andere functies die je het leven gemakkelijker maken zijn:
+Er zijn nog enkele andere functies die je het leven gemakkelijker maken:
 
 * **Wildcards**/pattern matching (of globbing)
 * **Tilde** expansion
@@ -86,7 +86,7 @@ total 0
 
 Dit teken `*` komt overeen met **0 of meer willekeurige tekens**.
 
-Je kan deze *wildcard* overal in een bestandsnaam toevoegen. Bijvoorbeeld om alle shell-bestanden te bekijken waarvan de naam begint met **hello** en de extensie eindigt met **sh**:
+Je kunt deze *wildcard* overal in een bestandsnaam toevoegen. Bijvoorbeeld om alle shell-bestanden te bekijken waarvan de naam begint met **hello** en de extensie eindigt met **sh**:
 
 ~~~
 student@studentdeb:~$ ls -l hello*sh
@@ -183,7 +183,7 @@ file11
 
 #### Tilde expansion
 
-We kennen de **tilde** (`~`) al om te verwijzen de **home-directory** van de gebruiker.  
+We kennen de **tilde** (`~`) al om te verwijzen naar de **home-directory** van de gebruiker.  
 Je kunt er echter ook mee verwijzen naar de home-directory **van een andere gebruiker**:
 
 ~~~
@@ -231,7 +231,7 @@ student@studentdeb:~/Tmp$ echo file{a..c}.txt
 filea.txt fileb.txt filec.txt
 ~~~
 
-Je kan ook accolades **combineren**.  
+Je kunt ook accolades **combineren**.  
 In het onderstaand voorbeeld zie je dat alle **combinaties** (2 * 2 = 4) worden gegenereerd:
 
 ~~~
@@ -355,7 +355,7 @@ $
 
 ##### Voorwaarde omdraaien
 
-Je kan je test ook omdraaien. Stel dat je het omgekeerde
+Je kunt je test ook omdraaien. Stel dat je het omgekeerde
 wil van groter dan 100. Dan draai je de voorwaarde om door er een uitroepteken voor te plaatsen:
 
 ~~~bash
@@ -612,7 +612,7 @@ echo "Moved from $old_directory to $(pwd)"
 ~~~
 
 Als je dit script uitvoert, zou je verwachten dat je een directory zou stijgen...  
-Zeker als je de uitvoer van dit script bekijke, **Moved from /home/bart/Tmp to /home/bart**.
+Zeker als je de uitvoer van dit script bekijkt, **Moved from /home/bart/Tmp to /home/bart**.
 
 ~~~
 bart@bvlegion:~/Tmp$ chmod u+x up.sh 
@@ -666,7 +666,7 @@ bart@bvlegion:~$ pwd
 /home/bart
 ~~~
 
-Ook zie je dat de variabele `old_directoty` nog altijd zichtbaar is binnen de shell:
+Ook zie je dat de variabele `old_directory` nog altijd zichtbaar is binnen de shell:
 
 ~~~
 bart@bvlegion:~$ echo $old_directory

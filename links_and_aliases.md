@@ -1,6 +1,6 @@
 ## Links en aliassen
 
-Twee handige tools binnen Linux-systeem zijn links en aliassen. Je kunt beide beschouwen als een soort *shortcuts*, één op het niveau van bestanden, het andere op het niveau van opdrachten. 
+Twee handige tools binnen een Linux-systeem zijn links en aliassen. Je kunt beide beschouwen als een soort *shortcuts*, één op het niveau van bestanden, het andere op het niveau van opdrachten. 
 
 ### Alias
 
