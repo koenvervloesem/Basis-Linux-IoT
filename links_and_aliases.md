@@ -111,7 +111,7 @@ alias zgrep='zgrep --color=auto'
 
 #### Een alias ontwijken
 
-Zoals we zagen, herdefiniëren vele aliassen bestaande opdrachten, vaak door er opties aan toe te voegen. Maat wat als je de originele opdracht wilt uitvoeren, zonder rekening te houden met die alias? Dat kan door er een backslash (`\`) voor te zetten.
+Zoals we zagen, herdefiniëren vele aliassen bestaande opdrachten, vaak door er opties aan toe te voegen. Maar wat als je de originele opdracht wilt uitvoeren, zonder rekening te houden met die alias? Dat kan door er een backslash (`\`) voor te zetten.
 
 Stel dat je de volgende alias aanmaakt...
 

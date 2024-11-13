@@ -452,8 +452,8 @@ Je kunt ook combinaties van voorwaarden maken:
 ||           => of
 ~~~
 
-Volgende script gaat het vergelijk maken of een eerste getal 
-tussen de 2 andere argumenten ligt
+Het volgende script maakt de vergelijking of een eerste getal 
+tussen de twee andere argumenten ligt:
 
 ~~~bash
 #!/bin/bash
@@ -490,7 +490,7 @@ done
 Deze lijst kun je ook genereren met de opdracht `seq`:  
 
 ~~~
-bart@bvlegion:~$ seq 1 10
+student@studentdeb:~$ seq 1 10
 1
 2
 3
@@ -501,7 +501,7 @@ bart@bvlegion:~$ seq 1 10
 8
 9
 10
-bart@bvlegion:~$
+student@studentdeb:~$
 ~~~
 
 In een script pas je dit dan zo toe:
@@ -612,40 +612,40 @@ echo "Moved from $old_directory to $(pwd)"
 ~~~
 
 Als je dit script uitvoert, zou je verwachten dat je een directory zou stijgen...  
-Zeker als je de uitvoer van dit script bekijkt, **Moved from /home/bart/Tmp to /home/bart**.
+Zeker als je de uitvoer van dit script bekijkt, **Moved from /home/student/Tmp to /home/student**.
 
 ~~~
-bart@bvlegion:~/Tmp$ chmod u+x up.sh 
-bart@bvlegion:~/Tmp$ pwd
-/home/bart/Tmp
-bart@bvlegion:~/Tmp$ ./up.sh 
-Moved from /home/bart/Tmp to /home/bart
-bart@bvlegion:~/Tmp$ 
+student@studentdeb:~/Tmp$ chmod u+x up.sh 
+student@studentdeb:~/Tmp$ pwd
+/home/student/Tmp
+student@studentdeb:~/Tmp$ ./up.sh 
+Moved from /home/student/Tmp to /home/student
+student@studentdeb:~/Tmp$ 
 ~~~
 
 Maar als je de opdracht `pwd` gebruikt, zie je dat je je nog altijd op **dezelfde locatie** bevindt:
 
 ~~~
-bart@bvlegion:~/Tmp$ pwd
-/home/bart/Tmp
-bart@bvlegion:~/Tmp$
+student@studentdeb:~/Tmp$ pwd
+/home/student/Tmp
+student@studentdeb:~/Tmp$
 ~~~
 
 Ook de variabele `old_directory` is **nergens te bespeuren** (leeg):
 
 ~~~
-bart@bvlegion:~/Tmp$ echo $old_directory
+student@studentdeb:~/Tmp$ echo $old_directory
 
-bart@bvlegion:~/Tmp$ 
+student@studentdeb:~/Tmp$ 
 ~~~
 
 Het is echter mogelijk om dit script **binnen de huidige shell uit te voeren**.  
 Dit principe noemt men **sourcing**. Om dit te doen, moet je eenvoudigweg de opdracht om je script uit te voeren laten voorafgaan door `.` of `source`:
 
 ~~~
-bart@bvlegion:~/Tmp$ . ./up.sh 
-Moved from /home/bart/Tmp to /home/bart
-bart@bvlegion:~$ 
+student@studentdeb:~/Tmp$ . ./up.sh 
+Moved from /home/student/Tmp to /home/student
+student@studentdeb:~$ 
 ~~~
 
 Let op: het is belangrijk dat er na de eerste punt een spatie komt!
@@ -653,24 +653,24 @@ Let op: het is belangrijk dat er na de eerste punt een spatie komt!
 De versie met `source` ziet er zo uit:
 
 ~~~
-bart@bvlegion:~/Tmp$ source ./up.sh 
-Moved from /home/bart/Tmp to /home/bart
-bart@bvlegion:~$ 
+student@studentdeb:~/Tmp$ source ./up.sh 
+Moved from /home/student/Tmp to /home/student
+student@studentdeb:~$ 
 ~~~
 
 Je ziet al aan de prompt dat de directory deze keer wel gewijzigd is.  
 De uitvoer van de opdracht `pwd` hieronder bevestigt dit:
 
 ~~~
-bart@bvlegion:~$ pwd
-/home/bart
+student@studentdeb:~$ pwd
+/home/student
 ~~~
 
 Ook zie je dat de variabele `old_directory` nog altijd zichtbaar is binnen de shell:
 
 ~~~
-bart@bvlegion:~$ echo $old_directory
-/home/bart/Tmp
-bart@bvlegion:~$ 
+student@studentdeb:~$ echo $old_directory
+/home/student/Tmp
+student@studentdeb:~$ 
 ~~~
 

@@ -9,5 +9,4 @@ In dit deel leggen we de focus op het **beheer** van een Linux-systeem:
 * logging
 * ...
 
-We maken hier ook gebruik van 2 virtuele machines en introduceren naast de distributie **Debian** ook **Fedora** (Workstation).
-
+We maken hier ook gebruik van twee virtuele machines en introduceren naast de distributie **Debian** ook **Fedora**.

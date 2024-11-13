@@ -103,7 +103,7 @@ de *user space* (in contrast met de *kernel space*).
 Het eerste programma dat in de user space opgestart wordt, zal verschillende services opstarten. Dit initialisatieprogramma krijgt proces-ID 1, terwijl het ouderproces (**parent process**), namelijk de kernel, PID 0 heeft.
 
 ~~~
-bart@bvlegion:~$ ps -f 1
+student@studentdeb:~$ ps -f 1
 UID          PID    PPID  C STIME TTY      STAT   TIME CMD
 root           1       0  0 Apr23 ?        Ss     0:05 /sbin/init splash
 ~~~
@@ -111,9 +111,9 @@ root           1       0  0 Apr23 ?        Ss     0:05 /sbin/init splash
 In dit geval is het programma `/sbin/init` een symbolische link:
 
 ~~~
-bart@bvlegion:~$ ls -l /sbin/init 
+student@studentdeb:~$ ls -l /sbin/init 
 lrwxrwxrwx 1 root root 20 Jan 10 05:56 /sbin/init -> /lib/systemd/systemd
-bart@bvlegion:~$ 
+student@studentdeb:~$ 
 ~~~
 
 Op de meeste Linux desktop- en serversystemen is dit proces met PID 1 `systemd`. Dit zal vanaf de opstart van de Linux-distributie de verschillende services die je nodig hebt als gebruiker opstarten, beheren en controleren.
@@ -296,7 +296,7 @@ Wanneer een proces een signaal ontvangt, onderbreekt het proces zijn uitvoering 
 Een overzicht van deze signalen verkrijg je via de opdracht `kill -l` (zo dadelijk meer over de opdracht `kill`):
 
 ~~~
-bart@bvlegion:~$ kill -l
+student@studentdeb:~$ kill -l
  1) SIGHUP	 2) SIGINT	 3) SIGQUIT	 4) SIGILL	 5) SIGTRAP
  6) SIGABRT	 7) SIGBUS	 8) SIGFPE	 9) SIGKILL	10) SIGUSR1
 11) SIGSEGV	12) SIGUSR2	13) SIGPIPE	14) SIGALRM	15) SIGTERM
@@ -344,7 +344,7 @@ Dit is een speciaal signaal, omdat een proces het niet kan negeren. Wanneer een 
 
 Dit signaal kun je gebruiken om een proces geforceerd te beëindigen. Doe dat wel altijd met de hoogste voorzichtigheid, omdat het proces niet de kans krijgt om opruimtaken uit te voeren.
 
-Vaak stuur je eerst het signaal SIGTERM als je een proces wilt beëindigen. Geef het proces wat tijd om zijn opruimtaken uit te voeren. Als het dan nog niet stopt, stuur het dan pass een SIGKILL-signaal.
+Vaak stuur je eerst het signaal SIGTERM als je een proces wilt beëindigen. Geef het proces wat tijd om zijn opruimtaken uit te voeren. Als het dan nog niet stopt, stuur het dan pas een SIGKILL-signaal.
 
 ### Signalen sturen met de opdracht `kill`
 
@@ -366,7 +366,7 @@ Als eerste starten we een langdurende job (die de prompt zal onderbreken):
 $ sleep 5000
 ~~~
 
-We openen nu een aparte terminal om het PID van dit proces op te zoeken:
+We openen nu een aparte terminal (dat kan bijvoorbeeld met Ctrl+Alt+F2) om het PID van dit proces op te zoeken:
 
 * Terminal 2:
 
@@ -390,7 +390,7 @@ $ ps -f 50663 | grep sleep
 bvo      50663 57255  0 13:49 pts/23   T      0:00 sleep 5000
 ~~~
 
-In terminal 1 zie je nu dat de prompt weer beschikbaar is.  
+In terminal 1 (waarnaar je kunt overschakelen met Ctrl+Alt+F1) zie je nu dat de prompt weer beschikbaar is.  
 Daar kunnen we zien (via de opdracht `jobs` die we zo dadelijk verder uitleggen) dat deze job in de toestand **Stopped** staat:
 
 * Terminal 1:
@@ -401,7 +401,7 @@ $ jobs
 $ 
 ~~~
 
-De job staat dan wel in de stop-state (**T** in de uitvoer van `ps`), dit betekent echter niet dat deze job beëindigd is.  
+De job staat dan wel in de stop-state (**T** in de uitvoer van `ps`), dat betekent echter niet dat deze job beëindigd is.  
 We kunnen deze job herstarten via het SIGSTART-signaal (18):
 
 * Terminal 2:
@@ -525,7 +525,7 @@ De volgende opdracht zoekt het woord blabla in alle bestanden binnen mijn home-d
 Dit is een job die meer dan een paar minuten kan duren afhankelijk van de grootte van je home-directory.
 
 ~~~
-bart@bvlegion:~$ rgrep "blabla" . | less
+student@studentdeb:~$ rgrep "blabla" . | less
 ~~~
 
 Dit heeft nu een job gestart met twee processen (`grep` en `less`).
@@ -538,9 +538,9 @@ Dit zal deze job stoppen (of pauzeren). Je krijgt dan een boodschap zoals hieron
 
 ~~~
 [1]+  Stopped                 rgrep "blabla" . | less
-bart@bvlegion:~$ pwd 
-/home/bart
-bart@bvlegion:~$
+student@studentdeb:~$ pwd 
+/home/student
+student@studentdeb:~$
 ~~~
 
 Bemerk ook dat de prompt nu beschikbaar is en ik andere opdrachten in de shell kan uitvoeren (geïllustreerd met `pwd`).
@@ -554,7 +554,7 @@ Deze tabel kun je raadplegen via de opdracht `jobs`.
 Deze duidt aan dat er momenteel één job draaiende is. Bemerk ook dat deze een id heeft gekregen (in dit geval 1):
 
 ~~~
-bart@bvlegion:~$ jobs
+student@studentdeb:~$ jobs
 [1]+  Stopped                 rgrep "blabla" . | less
 ~~~
 
@@ -562,17 +562,17 @@ Dit id (1 in het voorbeeld) is niet te verwarren met de PID.
 De PID kun je ook opvragen door een extra optie mee te geven aan jobs (`-l`):
 
 ~~~
-bart@bvlegion:~$ jobs -l
+student@studentdeb:~$ jobs -l
 [1]+ 84420 Stopped                 rgrep "blabla" .
      84421                       | less
-bart@bvlegion:~$ 
+student@studentdeb:~$ 
 ~~~
 
 Je ziet hier dat er meerdere processen verbonden zijn aan deze job, namelijk met PID 88420 en 88421. De bijbehorende opdrachten worden ook getoond.  
 Bestudeer deze processen nu via `ps`:
 
 ~~~
-bart@bvlegion:~$ ps -l
+student@studentdeb:~$ ps -l
 F S   UID     PID    PPID  C PRI  NI ADDR SZ WCHAN  TTY          TIME CMD
 0 S  1000    3116    2861  0  80   0 -  2870 do_wai pts/6    00:00:00 bash
 0 T  1000   84420    3116  0  80   0 -  2428 do_sig pts/6    00:00:01 grep
