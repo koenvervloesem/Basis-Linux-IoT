@@ -793,41 +793,6 @@ Elke gebruiker beschikt over een eigen crontab. Die gebruik je via de opdracht `
 * `crontab -r` => crontab verwijderen (*remove*)
 
 Binnen zo'n crontab kun je meerdere regels plaatsen. Elke regel staat dan voor een geplande taak.  
-De regel start steeds met de definitie van het tijdstip.
-
-De vorm van een regel lijkt op het eerste gezicht intimiderend, maar de opbouw is logisch.
-Een crontab-regel bestaat uit zes velden, die telkens gescheiden worden door witruimte (één of meerder spaties of tabs):
-
-~~~
-+------------- minuten (0 - 59) 
-¦ +-------------- uren (0 - 23)
-¦ ¦ +--------------- dag van de maand (1 - 31)
-¦ ¦ ¦ +---------------- maand (1 - 12)
-¦ ¦ ¦ ¦ +----------------- weekdag (0 - 6) (0 is zondag, 1 is maandag, ..., 7 is eveneens zondag)
-¦ ¦ ¦ ¦ ¦
-¦ ¦ ¦ ¦ ¦
-* * * * *     plaats hier je opdracht
-~~~
-
-Een correcte regel kan er dus als volgt uit zien:
-
-~~~
-05 18 * * 3     echo "hello $(date)" >> /home/student/test.txt
-~~~
-
-De bovenstaande regel zorgt ervoor dat éénmaal per week, namelijk op woensdag om 18.05, "hello" gevolgd door de datum en het tijdstip naar een bestand test.txt in de home-directory van de gebruiker student geschreven wordt.
-
-Als je dit nu elke dag wilt, dan vervang je de `3` door een `*`:
-
-~~~
-05 18 * * *     echo "hello $(date)" >> /home/student/test.txt
-~~~
-
-Als je deze periodieke taak tijdelijk wilt uitschakelen, voeg dan een commentaarteken (`#`) aan het begin van de regel toe:
-
-~~~
-# 05 18 * * *     echo "hello $(date)" >> /home/student/test.txt
-~~~
 
 ### Eerste keer gebruikmaken van cron
 
@@ -874,7 +839,7 @@ Vervolgens opent `nano` een standaard crontab met uitleg in commentaarregels:
 # m h  dom mon dow   command
 ~~~
 
-Hieraan kun je nu regels toevoegen. Op de volgende manier voeg je bijvoorbeeld elke minuut een regel met het tijdstip toe aan het bestand `/home/student/test.txt`:
+Hieraan kun je nu regels toevoegen om periodiek taken uit te voeren. Op de volgende manier voeg je bijvoorbeeld elke minuut een regel met het tijdstip toe aan het bestand `/home/student/test.txt`:
 
 ~~~
 * * * * * echo "$(date)" >> /home/student/test.txt
@@ -924,6 +889,42 @@ student@studentdeb:~$ student@studentdeb:~$ cat /home/student/student.txt
 Wed 22 Dec 2021 04:30:46 PM CET
 Wed 22 Dec 2021 04:31:46 PM CET
 student@studentdeb:~$ 
+~~~
+
+Meer in het algemeen geldt dat elke regel steeds met de definitie van het tijdstip start, en daarna de opdracht die op dat tijdstip uitgevoerd moet worden.
+
+De vorm van een regel lijkt op het eerste gezicht intimiderend, maar de opbouw is logisch.
+Een crontab-regel bestaat uit zes velden, die telkens gescheiden worden door witruimte (één of meerdere spaties of tabs):
+
+~~~
++------------- minuten (0 - 59) 
+¦ +-------------- uren (0 - 23)
+¦ ¦ +--------------- dag van de maand (1 - 31)
+¦ ¦ ¦ +---------------- maand (1 - 12)
+¦ ¦ ¦ ¦ +----------------- weekdag (0 - 6) (0 is zondag, 1 is maandag, ..., 7 is eveneens zondag)
+¦ ¦ ¦ ¦ ¦
+¦ ¦ ¦ ¦ ¦
+* * * * *     plaats hier je opdracht
+~~~
+
+Een correcte regel kan er dus als volgt uit zien:
+
+~~~
+05 18 * * 3     echo "hello $(date)" >> /home/student/test.txt
+~~~
+
+De bovenstaande regel zorgt ervoor dat één keer per week, namelijk op woensdag om 18:05, "hello" gevolgd door de datum en het tijdstip naar een bestand test.txt in de home-directory van de gebruiker student geschreven wordt.
+
+Als je dit nu elke dag wilt, dan vervang je de `3` door een `*`:
+
+~~~
+05 18 * * *     echo "hello $(date)" >> /home/student/test.txt
+~~~
+
+Als je deze periodieke taak tijdelijk wilt uitschakelen, voeg dan een commentaarteken (`#`) aan het begin van de regel toe:
+
+~~~
+# 05 18 * * *     echo "hello $(date)" >> /home/student/test.txt
 ~~~
 
 #### Andere opties

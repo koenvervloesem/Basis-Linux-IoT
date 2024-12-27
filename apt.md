@@ -1,6 +1,6 @@
 ## Pakketbeheer
 
-De opdracht `apt` dient om softwarepakketten op Debian, Ubuntu en gerelateerde Linux-distributies te installeren, bij te werken en te verwijderen. De naam van het programma is een afkorting van Advanced Packaging Tool.
+De opdracht `apt` dient om softwarepakketten op Debian, Ubuntu en gerelateerde Linux-distributies te installeren, bij te werken naar nieuwere versies en te verwijderen. De naam van het programma is een afkorting van Advanced Packaging Tool.
 
 ### De pakketindex bijwerken (`apt update`) 
 
@@ -18,7 +18,7 @@ Zorg dat je altijd deze pakketindex bijwerkt alvorens een upgrade of een install
 
 #### Pakketten upgraden (`apt upgrade`)
 
-Het regelmatig bijwerken van je software is een heel belangrijk aspect van de systeembeveiliging. Als er een beveiligingsfout ontdekt is, wordt die in de software opgelost. Maar dan moet je wel de nieuwste versie installeren om van de oplossing te profiteren. Voer de volgende opdracht uit om de geïnstalleerde pakketten naar hun nieuwste versies te upgraden:
+Het regelmatig bijwerken van je software is een belangrijk aspect van de systeembeveiliging. Als er een beveiligingsfout ontdekt is, wordt die in de software opgelost. Maar dan moet je wel de nieuwste versie installeren om van de oplossing te profiteren. Voer de volgende opdracht uit om de geïnstalleerde pakketten naar hun nieuwste versies te upgraden:
 
 ~~~
 # apt upgrade
@@ -122,7 +122,7 @@ Je kunt ook meerdere pakketten aanduiden, gescheiden door spaties:
 ~~~
 
 De opdracht `apt remove` zal de gegeven pakketten verwijderen, maar zal configuratiebestanden ongemoeid laten.  
-Als je het pakket volledig - inclusief alle configuratiebestanden - wilt verwijderen, gebruik dan `apt pyrge`:
+Als je het pakket volledig - inclusief alle configuratiebestanden - wilt verwijderen, gebruik dan `apt purge`:
 
 ~~~
 # apt purge vim
@@ -131,11 +131,11 @@ Als je het pakket volledig - inclusief alle configuratiebestanden - wilt verwijd
 
 ### Verwijderen van ongebruikte pakketten (`apt autoremove`)
 
-Telkens wanneer een nieuw pakket op het systeem wordt geïnstalleerd, kan het zijn dat die afhangt van andere pakketten. Die afhankelijkheden (*dependencies*) worden dan ook geïnstalleerd.  
+Telkens wanneer je een nieuw pakket op het systeem installeert, kan het zijn dat dit afhangt van andere pakketten. Die afhankelijkheden (*dependencies*) worden dan ook geïnstalleerd.  
 
 Maar wanneer je het pakket daarna verwijdert, blijven de afhankelijkheden op het systeem.  
 Deze overgebleven pakketten worden misschien door niets anders meer gebruikt 
-en kunnen dus eigenlijk worden verwijderd.
+en zijn dus eigenlijk overbodig.
 
 Als je deze wilt verwijderen, gebruik dan de volgende opdracht 
 om geïnstalleerde afhankelijkheden die niet meer nodig zijn te verwijderen:
@@ -189,7 +189,7 @@ guake/stable,now 3.6.3-2 all [installed]
 # 
 ~~~
 
-Je ziet dan of het pakket geïnstalleerd is of niet.
+Je ziet dan of het pakket geïnstalleerd is of niet doordat er `[installed]` achter staat.
 
 Om alleen de geïnstalleerde pakketten weer te geven, typ je:
 
@@ -217,7 +217,7 @@ android-libboringssl/focal,now 8.1.0+r23-2build1 amd64 [installed,automatic]
 ...
 ~~~
 
-Als je de lijst van pakketten wilt die je naar een nieuwere versie kunt bijwerken, gebruik dan de volgende opdracht:
+Als je de lijst van pakketten wilt zien die je naar een nieuwere versie kunt bijwerken, gebruik dan de volgende opdracht:
 
 ~~~
 # apt list --upgradeable
@@ -245,7 +245,6 @@ guake-indicator/stable 1.4.5-1 amd64
 
 terminus/stable 1.13.0-1 amd64
   Drop-down or in-window terminal for X11 and Wayland
-#
 ~~~
 
 De opdracht toont dan de pakketten waarvan de naam overeenkomt met de zoekterm.

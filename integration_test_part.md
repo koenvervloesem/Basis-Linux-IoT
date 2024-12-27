@@ -12,7 +12,7 @@ Voeg beide gebruikers aan de groep **lectoren** toe.
 Maak een directory **/home/lectoren/leerstof** aan en een directory **/home/lectoren/examens**.   
 Zorg ervoor dat niemand de directory's leerstof en examens kan deleten.
 
-Zorg ervoor dat enkel gwen en mark bestanden kunnen toevoegen aan beide directory's. Alle gebruikers op het systeem hebben toegang tot /home/lectoren/leerstof.
+Zorg ervoor dat alleen gwen en mark bestanden kunnen toevoegen aan beide directory's. Alle gebruikers op het systeem hebben toegang tot /home/lectoren/leerstof.
 
 Buiten mark en gwen heeft er niemand toegang tot de directory /home/lectoren/examens.
 

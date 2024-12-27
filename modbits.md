@@ -764,7 +764,7 @@ De **setup**:
 * Een directory `/home/operators`
   * Enkel **root** en leden van de groep **operators** kunnen bestanden binnen deze directory **lezen, creëren en verwijderen** 
   * Bestanden die je aanmaakt binnen deze map worden **automatisch toegekend** aan de groep **operators**
-  * Let wel, elke **gebruiker** mag **enkel bestanden verwijderen** die **zij/hij heeft aangemaakt**
+  * Let wel, elke **gebruiker** mag **alleen bestanden verwijderen** die **zij/hij heeft aangemaakt**
 
 Gebruik in je opdrachten de numerieke permissies.
 

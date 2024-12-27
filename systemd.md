@@ -26,7 +26,7 @@ Zoals we eerder gezien hebben wordt een GNU/Linux-systeem opgestart volgens onde
 +---------------------+
 ~~~
 
-Op het moment dat de kernel opgestart is, zal deze het besturingssystee= opstarten dat je als eindgebruiker zult gebruiken.  
+Op het moment dat de kernel opgestart is, zal deze het besturingssysteem opstarten dat je als eindgebruiker zult gebruiken.  
 Dat doet de kernel door het eerste proces op te starten, namelijk `/sbin/init`.  
 Zoals je hieronder ziet, start dit systeem op met PID 1:
 
@@ -47,9 +47,9 @@ root          10  0.0  0.0      0     0 ?        S    14:39   0:00 [ksoftirqd/0]
 Als je dit nader bekijkt, is deze `/sbin/init` eigenlijk een softlink naar een programma met de naam `systemd`: 
 
 ~~~
-bart@bvlegion:~$ ls -l /sbin/init 
+student@studentdeb:~$ ls -l /sbin/init 
 lrwxrwxrwx 1 root root 20 Apr 21 14:54 /sbin/init -> /lib/systemd/systemd
-bart@bvlegion:~$ 
+student@studentdeb:~$ 
 ~~~
 
 ### systemd
@@ -62,7 +62,7 @@ Dit houdt in dat het onder andere:
 * zorgt dat die in de juiste **volgorde** opgestart worden
 * de mogelijkheid geeft om daemons **on demand** te **stoppen** en te **starten**
 * daemons naar logbestanden laat schrijven met **journald**
-* daemons op periodieke tijdstippen kan laten uitvoeren met **systemd-timers** (alternatief voor `cron`)
+* daemons op periodieke tijdstippen kan laten uitvoeren met **systemd-timers** (een alternatief voor `cron`)
 * ...
 
 ![](Pictures/systemd.png)
@@ -91,8 +91,8 @@ Dat kan bijvoorbeeld een **webserver** zijn, een **database** maar ook basisonde
 > * Socket: IPC (inter-process communication) socket
 > * Swap: swap file
 > * Timer: systemd timer
->
-> In deze cursus focussen we ons op de services.
+
+In deze cursus focussen we ons op de services.
 
 ### Services beheren met `systemctl`
 
@@ -174,15 +174,15 @@ Je kunt `systemd` ook opdragen om services automatisch te starten bij het opstar
 ~~~
 
 Dit zal een symbolische link maken naar het servicebestand 
-(meestal in `/lib/systemd/system` of `/etc/systemd/system`). Die link wordt dan gemaakt op een plaats waar `systemd` zoekt naar bestanden om aytomatisch op te starten.
+(meestal in `/lib/systemd/system` of `/etc/systemd/system`). Die link wordt dan gemaakt op een plaats waar `systemd` zoekt naar bestanden om automatisch op te starten.
 
-Om daarentegen juist te voorkomen dat de service automatisch wordt gestart, typ je:
+Om daarentegen juist te voorkomen dat de service automatisch gestart wordt, type je:
 
 ~~~
 # systemctl disable ssh.service
 ~~~
 
-Hiermee wordt de symbolische link verwijderd die aangeeft dat de service automatisch moet worden gestart.
+Hiermee wordt de symbolische link verwijderd die aangeeft dat de service automatisch gestart moet worden.
 
 Hou er rekening mee dat het inschakelen van een service met `enable` deze service niet start in de huidige sessie. 
 Als je de service nu wilt starten én deze ook bij het opstarten wilt inschakelen, 
@@ -204,7 +204,7 @@ Maar het kan ook met de optie `--now` voor `enable`:
 Om na te kijken wat de status van een service is, gebruik je:
 
 ~~~
-# systemctl status ssh.service
+$ systemctl status ssh.service
 ~~~
 
 Je krijgt dan te zien of de service ingeschakeld is, actief, wat de locatie van het servicebestand is, wat de PID's van de processen zijn, en de laatste regels van het logbestand:
@@ -235,14 +235,14 @@ Er zijn ook opdrachten om op te vragen of een service zich in een specifieke toe
 Om bijvoorbeeld te controleren of een service momenteel actief is:
 
 ~~~
-# systemctl is-active ssh.service
+$ systemctl is-active ssh.service
 active
 ~~~
 
 Of als je wilt weten of de service automatisch opstart samen met je Linux-systeem:
 
 ~~~
-# systemctl is-enabled application.service
+$ systemctl is-enabled application.service
 enabled
 ~~~
 
@@ -250,14 +250,14 @@ Beide opdrachten zullen de exitcode op 0 of niet 0 zetten afhankelijk van het an
 Hieronder zie je wat er gebeurt als je een service stopzet:
 
 ~~~
-# systemctl is-active ssh.service
+$ systemctl is-active ssh.service
 active
-# echo $?
+$ echo $?
 0
-# systemctl stop ssh.service
-# systemctl is-active ssh.service
+$ sudo systemctl stop ssh.service
+$ systemctl is-active ssh.service
 inactive
-# echo $?
+$ echo $?
 3
 ~~~
 
@@ -272,7 +272,7 @@ Is deze echter stopgezet, dan krijg je een getal verschillend van 0
 Om een lijst op te vragen van alle actieve eenheden die `systemd` kent, kunnen we de opdracht `list-units` gebruiken:
 
 ~~~
-# systemctl list-units
+$ systemctl list-units
 UNIT                                      LOAD   ACTIVE SUB     DESCRIPTION
 atd.service                               loaded active running ATD daemon
 avahi-daemon.service                      loaded active running Avahi mDNS/DNS-SD Stack
@@ -303,19 +303,19 @@ We kunnen ook extra opties toevoegen aan `systemctl` om andere informatie te ver
 Om bijvoorbeeld alle (niet alleen de actieve) units geladen door `systemd` (of geprobeerd te laden) te zien, gebruik je de optie `--all`:
 
 ~~~
-# systemctl list-units --all
+$ systemctl list-units --all
 ~~~
 
 Stel dat je alleen de units wilt zien die niet gestart zijn, dan kun je ook nog een extra optie toevoegen:
 
 ~~~
-# systemctl list-units --all --state=inactive
+$ systemctl list-units --all --state=inactive
 ~~~
 
 Wil je alleen de units zien van het type `service` (degene waarin we hier vooral geïnteresseerd zijn), voeg dan een filter op het type toe:
 
 ~~~
-# systemctl list-units --type=service
+$ systemctl list-units --type=service
 ~~~
 
 ### Extra informatie over een unit opvragen
@@ -323,7 +323,7 @@ Wil je alleen de units zien van het type `service` (degene waarin we hier vooral
 #### Het bestand van een unit tonen
 
 Om het bestand van een unit weer te geven dat `systemd` in zijn systeem heeft geladen, 
-kun je de opdracht `cat` gebruiken. Voor de service `ssh` iet dat er bijvoorbeeld als volgt uit:  
+kun je de opdracht `cat` gebruiken. Voor de service `ssh` ziet dat er bijvoorbeeld als volgt uit:  
 
 ~~~
 $ systemctl cat ssh
@@ -440,7 +440,7 @@ Description=OpenBSD Secure Shell server
 
 We hebben eerder gezien dat je een service kunt starten en stoppen, en ook kunt in- en uitschakelen om ze al dan niet automatisch te laten starten bij het opstarten van je Linux-systeem.  
 
-In sommige gevallen wil je echter dat de service niet gestart kan worden (ook niet manueel).  
+In sommige gevallen wil je echter dat de service nooit gestart kan worden (ook niet manueel).  
 Dat doe je door ze te maskeren:
 
 ~~~

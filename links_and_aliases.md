@@ -279,17 +279,17 @@ We demonstreren dit via:
 * een soft link met de naam "world.txt"
 
 ~~~
-bart@bvlegion:~/Tmp$ echo "test" > hello.txt
-bart@bvlegion:~/Tmp$ ln -s hello.txt world.txt
+student@studentdeb:~/Tmp$ echo "test" > hello.txt
+student@studentdeb:~/Tmp$ ln -s hello.txt world.txt
 ~~~
 
 We gebruiken hiervoor de opdracht `ln` met de optie `-s` die ervoor zorgt dat dit een soft link wordt.  
 Bekijk nu deze twee bestanden met `ls -l`:
 
 ~~~
-bart@bvlegion:~/Tmp$ ls -l *txt
--rw-rw-r-- 1 bart bart 5 May 16 21:28 hello.txt
-lrwxrwxrwx 1 bart bart 9 May 16 21:28 world.txt -> hello.txt
+student@studentdeb:~/Tmp$ ls -l *txt
+-rw-rw-r-- 1 student student 5 May 16 21:28 hello.txt
+lrwxrwxrwx 1 student student 9 May 16 21:28 world.txt -> hello.txt
 ~~~
 
 We observeren hier twee kenmerken van de symbolic link:
@@ -300,9 +300,9 @@ We observeren hier twee kenmerken van de symbolic link:
 We kunnen nu de symbolic link gebruiken als was dit het originele bestand:
 
 ~~~
-bart@bvlegion:~/Tmp$ cat world.txt 
+student@studentdeb:~/Tmp$ cat world.txt 
 test
-bart@bvlegion:~/Tmp$ 
+student@studentdeb:~/Tmp$ 
 ~~~
 
 #### inodes en links...
@@ -314,10 +314,10 @@ Een inode is eigenlijk een afkorting voor **index node** en is een gegevensstruc
 Elke inode slaat de locaties op de schijf op van het bestand of de map, samen met eigenschappen zoals het tijdstip van de laatste wijziging, de eigenaar en groep, de permissies, ... Elke inode heeft ook een unieke index, een getal. Dat kun je opvragen met de optie `-i` bij `ls`. Voor ons voorbeeld geeft dit:
 
 ~~~
-bart@bvlegion:~/Tmp$ ls -li *txt
-21367519 -rw-rw-r-- 1 bart bart 5 May 16 21:28 hello.txt
-21369308 lrwxrwxrwx 1 bart bart 9 May 16 21:28 world.txt -> hello.txt
-bart@bvlegion:~/Tmp$ 
+student@studentdeb:~/Tmp$ ls -li *txt
+21367519 -rw-rw-r-- 1 student student 5 May 16 21:28 hello.txt
+21369308 lrwxrwxrwx 1 student student 9 May 16 21:28 world.txt -> hello.txt
+student@studentdeb:~/Tmp$ 
 ~~~
 
 Je ziet hier twee verschillende inodes:
@@ -328,15 +328,15 @@ Je ziet hier twee verschillende inodes:
 Zoals je ziet heeft de soft link een andere inode dan het originele bestand. Je zou dit als volgt kunnen voorstellen:
 
 ~~~
-+--------------+--------------+-----+--------------+
-| FILESYSTEM:  |   world.txt  |     |  hello.txt   |
-+-----------------------------+     +--------------+
-| INODE:       |   21367519   |     |   21369308   |
-+-----------------------------+     +--------------+
-               |=> /home/bart/|     |              |
-               |  hello.txt   +---->+    test      |
-               |              |     |              |
-               +--------------+     +--------------+
++--------------+-----------------+-----+--------------+
+| FILESYSTEM:  |   world.txt     |     |  hello.txt   |
++--------------------------------+     +--------------+
+| INODE:       |   21367519      |     |   21369308   |
++--------------------------------+     +--------------+
+               |=> /home/student/|     |              |
+               |  hello.txt      +---->+    test      |
+               |                 |     |              |
+               +-----------------+     +--------------+
 
 ~~~
 
@@ -345,17 +345,17 @@ De soft link en het bestand waarnaar de link verwijst, staan dus op twee verschi
 Als je het originele bestand verwijdert, zal de soft link blijven bestaan:
 
 ~~~
-bart@bvlegion:~/Tmp$ rm hello.txt
-bart@bvlegion:~/Tmp$ ls -li *txt
-21369308 lrwxrwxrwx 1 bart bart 9 May 16 21:28 world.txt -> hello.txt
+student@studentdeb:~/Tmp$ rm hello.txt
+student@studentdeb:~/Tmp$ ls -li *txt
+21369308 lrwxrwxrwx 1 student student 9 May 16 21:28 world.txt -> hello.txt
 ~~~
 
 Maar je krijgt vanzelfsprekend een foutmelding als je deze soft link probeert te gebruiken:
 
 ~~~
-bart@bvlegion:~/Tmp$ cat world.txt 
+student@studentdeb:~/Tmp$ cat world.txt 
 cat: world.txt: No such file or directory
-bart@bvlegion:~/Tmp$ 
+student@studentdeb:~/Tmp$ 
 ~~~
 
 #### Hard links
@@ -365,19 +365,19 @@ Een ander type link is de **hard link**.
 Verwijder de bestanden en maak het originele bestand opnieuw aan. We maken nu ook een nieuwe link aan, maar zonder de optie `-s` bij `ln`. Zo maken we een hard link aan:
 
 ~~~
-bart@bvlegion:~/Tmp$ rm *txt
-bart@bvlegion:~/Tmp$ echo "test" > hello.txt
-bart@bvlegion:~/Tmp$ ln hello.txt world.txt
-bart@bvlegion:~/Tmp$ cat world.txt 
+student@studentdeb:~/Tmp$ rm *txt
+student@studentdeb:~/Tmp$ echo "test" > hello.txt
+student@studentdeb:~/Tmp$ ln hello.txt world.txt
+student@studentdeb:~/Tmp$ cat world.txt 
 test
 ~~~
 
 Bekijk nu de inodes van beide bestanden:
 
 ~~~
-bart@bvlegion:~/Tmp$ ls -li *txt
-21367519 -rw-rw-r-- 2 bart bart 5 May 16 21:32 hello.txt
-21367519 -rw-rw-r-- 2 bart bart 5 May 16 21:32 world.txt
+student@studentdeb:~/Tmp$ ls -li *txt
+21367519 -rw-rw-r-- 2 student student 5 May 16 21:32 hello.txt
+21367519 -rw-rw-r-- 2 student student 5 May 16 21:32 world.txt
 ~~~
 
 Je ziet dat beide bestanden hetzelfde inode hebben. Je maakt dus twee namen voor hetzelfde bestand, oftewel twee verwijzingen naar dezelfde locatie:
@@ -399,12 +399,12 @@ Eigenlijk is elk bestand dat je op het bestandssysteem aanmaakt een hard link, o
 Als je nu het oorspronkelijk bestand (hello.txt) verwijdert, wordt de eigenlijke inode (bestand) niet verwijderd, aangezien er nog naar verwezen wordt door world.txt:
 
 ~~~
-bart@bvlegion:~/Tmp$ rm hello.txt 
-bart@bvlegion:~/Tmp$ ls -li *txt
-21367519 -rw-rw-r-- 1 bart bart 5 May 16 21:32 world.txt
-bart@bvlegion:~/Tmp$ cat world.txt 
+student@studentdeb:~/Tmp$ rm hello.txt 
+student@studentdeb:~/Tmp$ ls -li *txt
+21367519 -rw-rw-r-- 1 student student 5 May 16 21:32 world.txt
+student@studentdeb:~/Tmp$ cat world.txt 
 test
-bart@bvlegion:~/Tmp$ 
+student@studentdeb:~/Tmp$ 
 ~~~
 
 #### Hard link of soft link gebruiken?

@@ -67,7 +67,7 @@ Het eigenlijke besturingssysteem dat wij gaan gebruiken in de cursus is **GNU/Li
 
 #### Een beetje geschiedenis...
 
-GNU is een software-project dat opgestart werd in 1984 (+- 10 jaar voor Linux) door **Richard M. Stallman** (ook soms verwezen als RMS) en beoogde een compleet UNIX-compatibel systeem dat bestaat uit enkel "Free Software" (komen zo dadelijk terug op deze term).
+GNU is een software-project dat opgestart werd in 1984 (+- 10 jaar voor Linux) door **Richard M. Stallman** (ook soms verwezen als RMS) en beoogde een compleet UNIX-compatibel systeem dat bestaat uit alleen "Free Software" (komen zo dadelijk terug op deze term).
 
 > GNU staat voor "GNU's not UNIX", Stallman kon het gekibbel en licentievoorwaarden binnen de UNIX-wereld niet meer verkroppen
 
