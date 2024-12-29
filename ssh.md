@@ -5,21 +5,15 @@ Om over het netwerk op andere Linux-systemen in te loggen, maakt men meestal geb
 
 ### Installatie en configuratie
 
-Installeer hiervoor de OpenSSH-server. Op Debian:
+Installeer hiervoor de OpenSSH-server op Debian:
 
 ~~~
-# apt install openssh-server
-~~~
-
-Op Fedora:
-
-~~~
-$ sudo dnf install openssh-server
+$ sudo apt install openssh-server
 ~~~
 
 ### Verbinden 
 
-Als eerste test kan je eventueel lokaal verbinden met de machine zelf. Dat gebeurt op de volgende manier:
+Als eerste test kun je eventueel lokaal verbinden met de machine zelf. Dat gebeurt op de volgende manier:
 
 ~~~
 ssh <user>@<host-adres>
@@ -34,7 +28,7 @@ ssh student@localhost
 Om met een andere machine te verbinden, gebruik je het IP-adres of de hostname:
 
 ~~~
-ssh student@fe80::a00:27ff:fe1c:bf74%wlp2s0
+ssh student@fe80::a00:27ff:fece:9412%enp0s8
 ~~~
 
 Merk op: gebruik je een link-local IPv6-adres, dan moet je daarachter `%` en de naam van de interface plaatsen.

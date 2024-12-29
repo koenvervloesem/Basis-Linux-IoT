@@ -1,5 +1,7 @@
 ## Netwerken in Linux
 
+Je hebt nu twee virtuele machines met Debian draaien: **studentdeb** en **studentdeb2**.
+
 ### IP-adressen raadplegen
 
 Om alle IP-adressen van een Linux-systeem te bekijken, gebruik je:
@@ -10,29 +12,15 @@ $ ip address
     link/loopback 00:00:00:00:00:00 brd 00:00:00:00:00:00
     inet 127.0.0.1/8 scope host lo
        valid_lft forever preferred_lft forever
-    inet6 ::1/128 scope host 
+    inet6 ::1/128 scope host noprefixroute 
        valid_lft forever preferred_lft forever
-2: enp8s0: <NO-CARRIER,BROADCAST,MULTICAST,UP> mtu 1500 qdisc fq_codel state DOWN group default qlen 1000
-    link/ether e8:6a:64:6f:42:ef brd ff:ff:ff:ff:ff:ff
-3: wlp7s0: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500 qdisc noqueue state UP group default qlen 1000
-    link/ether 28:3a:4d:7d:d8:05 brd ff:ff:ff:ff:ff:ff
-    inet 10.25.87.235/19 brd 10.25.95.255 scope global dynamic noprefixroute wlp7s0
-       valid_lft 529sec preferred_lft 529sec
-    inet6 fe80::78e3:ad08:bfb0:eebd/64 scope link noprefixroute 
-       valid_lft forever preferred_lft forever
-4: virbr0: <NO-CARRIER,BROADCAST,MULTICAST,UP> mtu 1500 qdisc noqueue state DOWN group default qlen 1000
-    link/ether 52:54:00:72:55:08 brd ff:ff:ff:ff:ff:ff
-    inet 192.168.122.1/24 brd 192.168.122.255 scope global virbr0
-       valid_lft forever preferred_lft forever
-5: virbr0-nic: <BROADCAST,MULTICAST> mtu 1500 qdisc fq_codel master virbr0 state DOWN group default qlen 1000
-    link/ether 52:54:00:72:55:08 brd ff:ff:ff:ff:ff:ff
-6: br-5c2c35c13eda: <NO-CARRIER,BROADCAST,MULTICAST,UP> mtu 1500 qdisc noqueue state DOWN group default 
-    link/ether 02:42:7f:b2:00:23 brd ff:ff:ff:ff:ff:ff
-    inet 172.18.0.1/16 brd 172.18.255.255 scope global br-5c2c35c13eda
-       valid_lft forever preferred_lft forever
-7: docker0: <NO-CARRIER,BROADCAST,MULTICAST,UP> mtu 1500 qdisc noqueue state DOWN group default 
-    link/ether 02:42:b3:1a:8b:c2 brd ff:ff:ff:ff:ff:ff
-    inet 172.17.0.1/16 brd 172.17.255.255 scope global docker0
+2: enp0s3: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500 qdisc fq_codel state UP group default qlen 1000
+    link/ether 08:00:27:6a:b3:73 brd ff:ff:ff:ff:ff:ff
+    inet 10.0.2.15/24 brd 10.0.2.255 scope global dynamic enp0s3
+       valid_lft 86296sec preferred_lft 86296sec
+    inet6 fd00::a00:27ff:fe6a:b373/64 scope global dynamic mngtmpaddr 
+       valid_lft 86297sec preferred_lft 14297sec
+    inet6 fe80::a00:27ff:fe6a:b373/64 scope link 
        valid_lft forever preferred_lft forever
 ~~~
 
@@ -42,57 +30,55 @@ of de afgekorte versie:
 $ ip a
 ~~~
 
+Elke netwerkinterface heeft een volgnummer (zoals 1, 2 hierboven) en een naam (zoals `lo` en `enp0s3` hierboven). De eerste is de _loopback interface_, die de computer gebruikt om met zichzelf te communiceren. De tweede is in dit geval een (virtuele) ethernetinterface.
+
 #### Beperken tot IP-versie
 
-Als je alleen de IPv4-adressen wilt zien...
+Als je alleen de IPv4-adressen wilt zien, voeg je de optie `-4` toe:
 
 ~~~
 $ ip -4 a
 1: lo: <LOOPBACK,UP,LOWER_UP> mtu 65536 qdisc noqueue state UNKNOWN group default qlen 1000
     inet 127.0.0.1/8 scope host lo
        valid_lft forever preferred_lft forever
-3: wlp7s0: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500 qdisc noqueue state UP group default qlen 1000
-    inet 10.25.87.235/19 brd 10.25.95.255 scope global dynamic noprefixroute wlp7s0
-       valid_lft 505sec preferred_lft 505sec
-4: virbr0: <NO-CARRIER,BROADCAST,MULTICAST,UP> mtu 1500 qdisc noqueue state DOWN group default qlen 1000
-    inet 192.168.122.1/24 brd 192.168.122.255 scope global virbr0
-       valid_lft forever preferred_lft forever
-6: br-5c2c35c13eda: <NO-CARRIER,BROADCAST,MULTICAST,UP> mtu 1500 qdisc noqueue state DOWN group default 
-    inet 172.18.0.1/16 brd 172.18.255.255 scope global br-5c2c35c13eda
-       valid_lft forever preferred_lft forever
-7: docker0: <NO-CARRIER,BROADCAST,MULTICAST,UP> mtu 1500 qdisc noqueue state DOWN group default 
-    inet 172.17.0.1/16 brd 172.17.255.255 scope global docker0
-       valid_lft forever preferred_lft forever
-$
+2: enp0s3: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500 qdisc fq_codel state UP group default qlen 1000
+    inet 10.0.2.15/24 brd 10.0.2.255 scope global dynamic enp0s3
+       valid_lft 86265sec preferred_lft 86265sec
 ~~~
 
-... of alleen de IPv6-adressen:
+... of de optie `-6` voor alleen de IPv6-adressen:
 
 ~~~
 $ ip -6 a
 1: lo: <LOOPBACK,UP,LOWER_UP> mtu 65536 state UNKNOWN qlen 1000
-    inet6 ::1/128 scope host 
+    inet6 ::1/128 scope host noprefixroute 
        valid_lft forever preferred_lft forever
-3: wlp7s0: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500 state UP qlen 1000
-    inet6 fe80::78e3:ad08:bfb0:eebd/64 scope li
-$
+2: enp0s3: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500 state UP qlen 1000
+    inet6 fd00::a00:27ff:fe6a:b373/64 scope global dynamic mngtmpaddr 
+       valid_lft 86249sec preferred_lft 14249sec
+    inet6 fe80::a00:27ff:fe6a:b373/64 scope link 
+       valid_lft forever preferred_lft forever
 ~~~
 
 #### Beperken tot interface
 
-Als je wilt focussen op één interface:
+Als je de gegevens van een specifieke interface wilt zien, geef je de naam op na het subcommando `show`:
 
 ~~~
-$ ip a show wlp7s0
-3: wlp7s0: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500 qdisc noqueue state UP group default qlen 1000
-    link/ether 28:3a:4d:7d:d8:05 brd ff:ff:ff:ff:ff:ff
-    inet 10.25.87.235/19 brd 10.25.95.255 scope global dynamic noprefixroute wlp7s0
-       valid_lft 873sec preferred_lft 873sec
-    inet6 fe80::78e3:ad08:bfb0:eebd/64 scope link noprefixroute 
+$ ip a show enp0s3
+2: enp0s3: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500 qdisc fq_codel state UP group default qlen 1000
+    link/ether 08:00:27:6a:b3:73 brd ff:ff:ff:ff:ff:ff
+    inet 10.0.2.15/24 brd 10.0.2.255 scope global dynamic enp0s3
+       valid_lft 85918sec preferred_lft 85918sec
+    inet6 fd00::a00:27ff:fe6a:b373/64 scope global dynamic mngtmpaddr 
+       valid_lft 86129sec preferred_lft 14129sec
+    inet6 fe80::a00:27ff:fe6a:b373/64 scope link 
        valid_lft forever preferred_lft forever
 ~~~
 
 ### Bewerken van IP-adressen
+
+Vaak wordt een interface geconfigureerd zodat die automatisch een IP-adres toegewezen krijgt via DHCP (Dynamic Host Configuration Protocol).
 
 #### IP-adres toekennen
 
@@ -169,16 +155,15 @@ Je kunt de cache van bekende IP-adressen opvragen:
 
 ~~~
 $ ip neigh show
-10.25.95.254 dev wlp7s0 lladdr de:fa:ce:db:ab:e1 REACHABLE
-$
+10.0.2.2 dev enp0s3 lladdr 52:55:0a:00:02:02 STALE 
+10.0.2.3 dev enp0s3 lladdr 52:55:0a:00:02:03 STALE 
+fe80::2 dev enp0s3 lladdr 52:56:00:00:00:02 router STALE 
 ~~~
 
 Of de afgekorte versie:
 
 ~~~
 $ ip n show
-10.25.95.254 dev wlp7s0 lladdr de:fa:ce:db:ab:e1 REACHABLE
-$
 ~~~
  
 Drie statussen zijn mogelijk in de uitvoer:
@@ -196,13 +181,8 @@ Om de verschillende routes naar ip-domeinen op te lijsten, gebruik je:
 
 ~~~
 $ ip route list
-default via 10.25.95.254 dev wlp7s0 proto dhcp metric 600 
-10.25.64.0/19 dev wlp7s0 proto kernel scope link src 10.25.87.235 metric 600 
-169.254.0.0/16 dev virbr0 scope link metric 1000 linkdown 
-172.17.0.0/16 dev docker0 proto kernel scope link src 172.17.0.1 linkdown 
-172.18.0.0/16 dev br-5c2c35c13eda proto kernel scope link src 172.18.0.1 linkdown 
-192.168.122.0/24 dev virbr0 proto kernel scope link src 192.168.122.1 linkdown 
-$ 
+default via 10.0.2.2 dev enp0s3 
+10.0.2.0/24 dev enp0s3 proto kernel scope link src 10.0.2.15 
 ~~~
 
 Of afgekort:
@@ -211,7 +191,7 @@ Of afgekort:
 ip r list
 ~~~
 
-En je kan ook de list-optie weglaten:
+En je kunt ook de list-optie weglaten:
 
 ~~~
 ip r

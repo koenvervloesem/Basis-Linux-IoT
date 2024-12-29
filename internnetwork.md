@@ -15,69 +15,13 @@ Zoals je hieronder ziet, wordt hiervoor een NAT-adapter voorzien zodat er door V
 De bedoeling is nu echter dat we onze twee virtuele machines met elkaar laten
 communiceren via een intern netwerk.
 
-Om dat te kunnen doen, kun je in VirtualBox een intern netwerk (of
-als alternatief een host-only network) aanmaken.
+Om dat te kunnen doen, kun je in VirtualBox een intern netwerk (of als alternatief een host-only network) aanmaken.
 
-Schakel dus voor beide virtuele machines een tweede netwerkadapter in, kies **Internal Network** en geef het netwerk bij beide machines dezelfde naam **studentnet**.
-
-Voor **studentfed**:
-
-![](Pictures/10000000000002F600000223EF15E24ED8DEE9C5.png)
-
-en voor **studentdeb** doe je exact hetzelfde:
-
-![](Pictures/10000000000002FB0000022A8184213687799D55.png)
+Schakel dus voor beide virtuele machines een tweede netwerkadapter in (in het tabbled **Adapter 2**, maar dit kun je alleen als de virtuele machine uitgeschakeld is), kies **Internal Network** en geef het netwerk bij beide machines dezelfde naam **studentnet**.
 
 ### Testen
 
-We zien op beide virtuele machines een nieuwe NIC verschijnen.  
-Op studentfed is dit enp0s8. We zien via de opdracht `ip a` dat deze niet standaard ingeschakeld wordt.
-
-~~~
-[student@fedora ~]$ ip a
-1: lo: <LOOPBACK,UP,LOWER_UP> mtu 65536 qdisc noqueue state UNKNOWN group default qlen 1000
-    link/loopback 00:00:00:00:00:00 brd 00:00:00:00:00:00
-    inet 127.0.0.1/8 scope host lo
-       valid_lft forever preferred_lft forever
-    inet6 ::1/128 scope host 
-       valid_lft forever preferred_lft forever
-2: enp0s3: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500 qdisc fq_codel state UP group default qlen 1000
-    link/ether 08:00:27:8c:ba:ef brd ff:ff:ff:ff:ff:ff
-    inet 10.0.2.15/24 metric 1024 brd 10.0.2.255 scope global dynamic enp0s3
-       valid_lft 86278sec preferred_lft 86278sec
-    inet6 fe80::a00:27ff:fe8c:baef/64 scope link 
-       valid_lft forever preferred_lft forever
-3: enp0s8: <BROADCAST,MULTICAST> mtu 1500 qdisc noop state DOWN group default qlen 1000
-    link/ether 08:00:27:1c:bf:74 brd ff:ff:ff:ff:ff:ff
-~~~
-
-Om deze op te starten, gebruik je de onderstaande opdracht:
-
-~~~
-[student@fedora ~]$ sudo ip link set enp0s8 up
-[student@fedora ~]$ ip a
-1: lo: <LOOPBACK,UP,LOWER_UP> mtu 65536 qdisc noqueue state UNKNOWN group default qlen 1000
-    link/loopback 00:00:00:00:00:00 brd 00:00:00:00:00:00
-    inet 127.0.0.1/8 scope host lo
-       valid_lft forever preferred_lft forever
-    inet6 ::1/128 scope host 
-       valid_lft forever preferred_lft forever
-2: enp0s3: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500 qdisc fq_codel state UP group default qlen 1000
-    link/ether 08:00:27:8c:ba:ef brd ff:ff:ff:ff:ff:ff
-    inet 10.0.2.15/24 metric 1024 brd 10.0.2.255 scope global dynamic enp0s3
-       valid_lft 86200sec preferred_lft 86200sec
-    inet6 fe80::a00:27ff:fe8c:baef/64 scope link 
-       valid_lft forever preferred_lft forever
-3: enp0s8: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500 qdisc fq_codel state UP group default qlen 1000
-    link/ether 08:00:27:1c:bf:74 brd ff:ff:ff:ff:ff:ff
-    inet6 fe80::a00:27ff:fe1c:bf74/64 scope link 
-       valid_lft forever preferred_lft forever
-~~~
-
-Merk op: op Fedora kun je standaard niet als root-gebruiker inloggen. Maar als we een opdracht laten voorafgaan door `sudo`, kunnen we die ook met rootrechten uitvoeren.
-
-We zien dat er automatisch een link-local IPv6-adres aangemaakt wordt, dat we kunnen gebruiken om te testen.  
-Aan de studentdeb-kant voeren we dezelfde procedure uit, per toeval zien we dat hier dezelfde NIC-naam wordt gekozen...
+Start beide virtuele machines op. Je ziet op beide via de opdracht `ip a` een nieuwe NIC verschijnen, `enp0s8`. Je ziet ook dat die standaard niet ingeschakeld wordt: de status staat op **DOWN** en er wordt geen IP-adres toegekend.
 
 ~~~
 student@studentdeb:~$ ip a
@@ -85,76 +29,54 @@ student@studentdeb:~$ ip a
     link/loopback 00:00:00:00:00:00 brd 00:00:00:00:00:00
     inet 127.0.0.1/8 scope host lo
        valid_lft forever preferred_lft forever
-    inet6 ::1/128 scope host 
+    inet6 ::1/128 scope host noprefixroute 
        valid_lft forever preferred_lft forever
-2: enp0s3: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500 qdisc pfifo_fast state UP group default qlen 1000
-    link/ether 08:00:27:33:7a:d1 brd ff:ff:ff:ff:ff:ff
+2: enp0s3: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500 qdisc fq_codel state UP group default qlen 1000
+    link/ether 08:00:27:6a:b3:73 brd ff:ff:ff:ff:ff:ff
     inet 10.0.2.15/24 brd 10.0.2.255 scope global dynamic enp0s3
-       valid_lft 86386sec preferred_lft 86386sec
-    inet6 fe80::a00:27ff:fe33:7ad1/64 scope link 
+       valid_lft 86347sec preferred_lft 86347sec
+    inet6 fd00::a00:27ff:fe6a:b373/64 scope global dynamic mngtmpaddr 
+       valid_lft 86348sec preferred_lft 14348sec
+    inet6 fe80::a00:27ff:fe6a:b373/64 scope link 
        valid_lft forever preferred_lft forever
 3: enp0s8: <BROADCAST,MULTICAST> mtu 1500 qdisc noop state DOWN group default qlen 1000
-    link/ether 08:00:27:4a:c5:21 brd ff:ff:ff:ff:ff:ff
+    link/ether 08:00:27:ce:94:12 brd ff:ff:ff:ff:ff:ff
 ~~~
 
-We starten deze ook op (let op: eerst inloggen als root).
+Om deze op te starten, gebruik je de onderstaande opdracht:
 
 ~~~
-root@studentdeb:~# ip link set enp0s8 up
-root@studentdeb:~# ip a
-1: lo: <LOOPBACK,UP,LOWER_UP> mtu 65536 qdisc noqueue state UNKNOWN group default qlen 1000
-    link/loopback 00:00:00:00:00:00 brd 00:00:00:00:00:00
-    inet 127.0.0.1/8 scope host lo
-       valid_lft forever preferred_lft forever
-    inet6 ::1/128 scope host 
-       valid_lft forever preferred_lft forever
-2: enp0s3: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500 qdisc pfifo_fast state UP group default qlen 1000
-    link/ether 08:00:27:33:7a:d1 brd ff:ff:ff:ff:ff:ff
-    inet 10.0.2.15/24 brd 10.0.2.255 scope global dynamic enp0s3
-       valid_lft 86320sec preferred_lft 86320sec
-    inet6 fe80::a00:27ff:fe33:7ad1/64 scope link 
-       valid_lft forever preferred_lft forever
-3: enp0s8: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500 qdisc pfifo_fast state UP group default qlen 1000
-    link/ether 08:00:27:4a:c5:21 brd ff:ff:ff:ff:ff:ff
-    inet6 fe80::a00:27ff:fe4a:c521/64 scope link tentative 
+student@studentdeb:~$ sudo ip link set enp0s8 up
+student@studentdeb:~$ ip a show enp0s8
+3: enp0s8: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500 qdisc fq_codel state UP group default qlen 1000
+    link/ether 08:00:27:ce:94:12 brd ff:ff:ff:ff:ff:ff
+    inet6 fe80::a00:27ff:fece:9412/64 scope link 
        valid_lft forever preferred_lft forever
 ~~~
+
+We zien dat er automatisch een link-local IPv6-adres aangemaakt wordt, dat we kunnen gebruiken om te testen.  
+
+Op de andere virtuele machine voer je dezelfde test uit en schakel je de interface ook in.
 
 We zien dat hier ook een IPv6-adres wordt gegenereerd.  
-We kunnen nu op basis van deze link-local-adressen even testen:
+We kunnen nu op basis van deze link-local-adressen testen of de machines elkaar kunnen bereiken:
 
 ~~~
-root@studentdeb:~# ping fe80::a00:27ff:fe1c:bf74%enp0s8
-PING fe80::a00:27ff:fe1c:bf74%enp0s8(fe80::a00:27ff:fe1c:bf74%enp0s8) 56 data bytes
-64 bytes from fe80::a00:27ff:fe1c:bf74%enp0s8: icmp_seq=1 ttl=64 time=1.84 ms
-64 bytes from fe80::a00:27ff:fe1c:bf74%enp0s8: icmp_seq=2 ttl=64 time=1.16 ms
-64 bytes from fe80::a00:27ff:fe1c:bf74%enp0s8: icmp_seq=3 ttl=64 time=0.895 ms
-64 bytes from fe80::a00:27ff:fe1c:bf74%enp0s8: icmp_seq=4 ttl=64 time=1.73 ms
-64 bytes from fe80::a00:27ff:fe1c:bf74%enp0s8: icmp_seq=5 ttl=64 time=1.02 ms
+student@studentdeb:~$ ping fe80::a00:27ff:fece:9412%enp0s8
+PING fe80::a00:27ff:fece:9412%enp0s8(fe80::a00:27ff:fece:9412%enp0s8) 56 data bytes
+64 bytes from fe80::a00:27ff:fece:9412%enp0s8: icmp_seq=1 ttl=64 time=0.046 ms
+64 bytes from fe80::a00:27ff:fece:9412%enp0s8: icmp_seq=2 ttl=64 time=0.080 ms
+64 bytes from fe80::a00:27ff:fece:9412%enp0s8: icmp_seq=3 ttl=64 time=0.087 ms
+64 bytes from fe80::a00:27ff:fece:9412%enp0s8: icmp_seq=4 ttl=64 time=0.060 ms
+64 bytes from fe80::a00:27ff:fece:9412%enp0s8: icmp_seq=5 ttl=64 time=0.079 ms
 ^C
---- fe80::a00:27ff:fe1c:bf74%enp0s8 ping statistics ---
-5 packets transmitted, 5 received, 0% packet loss, time 4004ms
-rtt min/avg/max/mdev = 0.895/1.327/1.843/0.384 ms
-root@studentdeb:~# 
+--- fe80::a00:27ff:fece:9412%enp0s8 ping statistics ---
+5 packets transmitted, 5 received, 0% packet loss, time 4093ms
+rtt min/avg/max/mdev = 0.046/0.070/0.087/0.015 ms
 ~~~
 
 Merk op: na het link-local IPv6-adres moet je `%` en de naam van de interface plaatsen.
 
-We testen ondertussen ook van de andere kant:
+Druk op Ctrl+C om het pingen te beëindigen.
 
-~~~
-[student@fedora ~]$ ping fe80::a00:27ff:fe4a:c521%enp0s8
-PING fe80::a00:27ff:fe4a:c521%enp0s8(fe80::a00:27ff:fe4a:c521%enp0s8) 56 data bytes
-64 bytes from fe80::a00:27ff:fe4a:c521%enp0s8: icmp_seq=1 ttl=64 time=0.441 ms
-64 bytes from fe80::a00:27ff:fe4a:c521%enp0s8: icmp_seq=2 ttl=64 time=0.568 ms
-64 bytes from fe80::a00:27ff:fe4a:c521%enp0s8: icmp_seq=3 ttl=64 time=0.523 ms
-64 bytes from fe80::a00:27ff:fe4a:c521%enp0s8: icmp_seq=4 ttl=64 time=0.473 ms
-64 bytes from fe80::a00:27ff:fe4a:c521%enp0s8: icmp_seq=5 ttl=64 time=0.520 ms
-^C
---- fe80::a00:27ff:fe4a:c521%enp0s8 ping statistics ---
-5 packets transmitted, 5 received, 0% packet loss, time 4078ms
-rtt min/avg/max/mdev = 0.441/0.505/0.568/0.043 ms
-[student@fedora ~]$ 
-~~~
-
-De verbinding tussen de twee virtuele machines over het interne netwerk werkt dus.
+Test hetzelfde ook van de andere kant. De verbinding tussen de twee virtuele machines over het interne netwerk werkt dus.
