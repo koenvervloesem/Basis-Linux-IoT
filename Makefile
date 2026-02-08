@@ -47,7 +47,8 @@ CHAPTER_02 += ssh.md
 
 
 
-CHAPTERS += $(CHAPTER_01) $(CHAPTER_02)
+CHAPTERS += $(CHAPTER_01)
+#CHAPTERS += $(CHAPTER_01) $(CHAPTER_02)
 
 all:
 	pandoc $(CHAPTERS) -o dist/basis_linux.epub --css ./Style/base.css\

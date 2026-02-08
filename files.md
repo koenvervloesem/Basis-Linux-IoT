@@ -49,7 +49,7 @@ student@studentdeb:~ $
 
 Dit is wat we noemen de **prompt** (shell prompt of gebruikersprompt). Deze:
 
-* geeft aan welke **gebruiker** ingelogd is (student)
+* geeft aan welke **gebruiker** ingelogd is (student) op welke **machine** (studentdeb)
 * geeft aan wat het huidige **pad** - of **werkdirectory** - is (`~` komt overeen met de home-directory van de gebruiker)
 * geeft je de mogelijkheid om een **opdracht** in te typen
 
@@ -83,7 +83,7 @@ Hetzelfde kun je bereiken via de toetsencombinatie **Ctrl+L**.
 
 #### Argumenten
 
-Een opdracht is telkens een **programma** dat wordt uitgevoerdzelfs het eenvoudige programma `clear` dat we zonet hebben gebruikt.
+Een opdracht is telkens een **programma** dat wordt uitgevoerd, zelfs het eenvoudige programma `clear` dat we zonet hebben gebruikt.
 
 Aan veel van deze programma's kun je een **argument** toevoegen.  
 Laten we dit direct illustreren via een tweede opdracht, `echo`:
@@ -268,7 +268,7 @@ student@studentdeb:~$ echo
 
 Soms kan het zijn dat je een opdracht intypt die niet uit zichzelf zal stoppen (bedoeld of onbedoeld).
 
-Stel bijvoorbeeld dat je de volgende opdracht typt:
+Stel dat je de volgende opdracht typt:
 
 ~~~
 $ cat /dev/random
@@ -359,7 +359,7 @@ Dit pad gebruik je om naar een bestand in de hiërarchie te verwijzen.
 Bijvoorbeeld het pad naar de directory /home/student geeft aan dat:
 
 * **student** een subdirectory is van **home**
-* **home** van de **root**-directory
+* **home** een subdirectory is van de **root**-directory
 
 Dit ziet er in een boomstructuur als volgt uit:
 
@@ -374,7 +374,7 @@ Naar deze bestanden kun je dan gemakkelijk verwijzen via een pad. Bijvoorbeeld h
 
 #### Werkdirectory
 
-Als je een interactieve shell of command line opent, start deze in een specifieke directory.  
+Als je een interactieve shell of command line opent, start deze in een specifieke directory, namelijk de home-directory van de gebruiker.  
 Je kunt opvragen in welke directory je exact aan het werken bent via de opdracht `pwd` ofwel "**pr**int **w**orking **d**irectory":
 
 ~~~
@@ -521,13 +521,16 @@ Een aantal andere opties van `ls` die handig kunnen zijn:
 * `-R`: recursief, geef ook de inhoud van subdirectory's weer
 * `-a`: geef ook verborgen bestanden weer (die beginnen met een punt)
 * `-d`: geef bij directory's niet de inhoud ervan weer, maar slechts de directorynaam zelf
+* `-h`: geef de groottes niet in bytes aan maar in 'menselijke' ('human') termen, zoals kilobytes (K), megabytes (M), ...
+
+Als je meerdere opties tegelijk wilt gebruiken, hoef je niet telkens de `-` te herhalen, maar kun je de opties achter elkaar plakken. Zo hoef je niet `ls -l -a -h` te typen, maar volstaat `ls -lah`.
 
 #### HOME-directory
 
 /home/student/ is de **home-directory**, net zoals je onder Windows een home-directory `C:\Users\student` zou hebben.  
 
 Als je een shell-sessie opent, kom je automatisch terecht in deze home-directory.  
-Als je van een andere werkdirectory weer naar je home-directory wilt terugkeren, gebruik dan `cd` zonder argument.
+Als je van een andere werkdirectory weer naar je home-directory wilt terugkeren, gebruik dan `cd` zonder argument. Dat werkt ongeacht in welke directory je je bevindt.
 
 ~~~
 student@studentdeb:~/data$ pwd

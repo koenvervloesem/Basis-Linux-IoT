@@ -13,11 +13,11 @@ We installeren voor de cursus de Linux-distributie **Debian** (<https://www.debi
 
 #### Debian downloaden
 
-We moeten eerst een installatiebestand van een Linux-distributie downloaden. We maken gebruik van Debian 12 (bookworm). Ga hiervoor naar de website <https://www.debian.org> en klik op de knop **Download**.
+We moeten eerst een installatiebestand van een Linux-distributie downloaden. We maken gebruik van Debian 13 ("trixie"). Ga hiervoor naar de website <https://www.debian.org> en klik op de knop **Download**.
 
 ![](Pictures/debian-website.png)
 
-De download neemt +- 630 MB in beslag. Het betreft hier een ISO-image die een minimale installatie voorziet van Debian. Hou er dus rekening mee dat je tijdens de installatie nog een internetverbinding nodig hebt omdat er dan extra software gedownload wordt.
+De download neemt +- 745 MB in beslag. Het betreft hier een ISO-image dat een minimale installatie voorziet van Debian. Hou er dus rekening mee dat je tijdens de installatie nog een internetverbinding nodig hebt omdat er dan extra software gedownload wordt.
 
 #### VirtualBox installeren
 
@@ -43,7 +43,7 @@ Vanuit dit overzicht kun je deze **machines configureren en opstarten**.
 
 #### Virtuele machine aanmaken
 
-We starten met het aanmaken van een virtuele machine. Klik daarvoor op de knop **New** in de balk bovenaan of het menu **MAchine / New...** of de toetsencombinatie Ctrl+N.
+We starten met het aanmaken van een virtuele machine. Klik daarvoor op de knop **New** in de balk bovenaan of het menu **Machine / New...** of de toetsencombinatie Ctrl+N.
 
 Vul in het scherm dat verschijnt de volgende gegevens in:
 
@@ -114,7 +114,7 @@ Merk op: VirtualBox waarschuwt je dat de virtuele machine je toetsenbord en muis
 
 #### Locatie- en taalgegevens kiezen
 
-De eerste stap is het selecteren van de taal. Kies voor **English**. Als je immers tijdens het werken met het Debian-systeem tegen foutmeldingen aanloopt, is het gemakkelijker om naar uitleg over Engelstalige foutmeldingen te zoeken dan naar de Nederlandstalige varianten.
+De eerste stap is het selecteren van de taal voor de installatie. Kies voor **English**. Als je immers tijdens de installatie van Debian tegen foutmeldingen aanloopt, is het gemakkelijker om naar uitleg over Engelstalige foutmeldingen te zoeken dan naar de Nederlandstalige varianten.
 
 ![](Pictures/debian-install-language.png)
 
@@ -126,8 +126,7 @@ Kies vervolgens voor **Europe** en klik op **Continue**. Dan kun je eindelijk **
 
 ![](Pictures/debian-install-location-belgium.png)
 
-Aan een taal wordt ook een "locale" gekoppeld die aanduidt welke variant
-van de taal er gebruikt wordt. We houden het bij de standaardkeuze **United States** met de code **en\_US.UTF-8**:
+Aan een taal wordt ook een "locale" gekoppeld die aanduidt welke variant van de taal er gebruikt wordt. We houden het bij de standaardkeuze **United States** met de code **en\_US.UTF-8**, zodat we bij foutmeldingen tijdens het werken met het Debian-systeem eenvoudiger hulp kunnen vinden:
 
 ![](Pictures/debian-install-locale.png)
 
@@ -150,13 +149,13 @@ Dit is een account waarmee je alle beheerdersrechten hebt (te vergelijken met Ad
 
 Kies een wachtwoord dat je kunt onthouden. Je gaat dit immers waarschijnlijk niet elke dag invoeren, aangezien de lessen om de twee weken doorgaan...
 
-Gezien het hier om een proefopstelling gaat, stelen we voor om als wachtwoord eenvoudigweg **student** in te stellen.
+Gezien het hier om een proefopstelling gaat, stellen we voor om als wachtwoord eenvoudigweg **student** in te stellen.
 
 Waarschuwing: kies **nooit** zo'n eenvoudig wachtwoord voor productiedoeleinden op een echte Linux-machine.
 
 ![](Pictures/debian-install-root-password.png)
 
-Vervolgens vraagt het systeem je om een **standaardgebruiker** aan te maken. Deze gebruik je voor taken die geen rootrechten nodig hebben. Je geeft deze gebruiker achtereenvolgens een volledige naam (dat mag je eigen naam zijn), een gebruikersnaam (volledig in kleine letters) en een wachtwoord. Kies als gebruikersnaam **student** en als wachtwoord **student** (hetzelfde als bij root).
+Vervolgens vraagt het systeem je om een **standaardgebruiker** aan te maken. Deze gebruik je voor taken die geen rootrechten nodig hebben. Je geeft deze gebruiker achtereenvolgens een volledige naam (dat mag je eigen naam zijn), een gebruikersnaam (volledig in kleine letters en zonder speciale tekens zoals accenten) en een wachtwoord. Kies als gebruikersnaam **student** en als wachtwoord **student** (hetzelfde als bij root).
 
 Waarschuwing: ook hier weer kiezen we alleen maar een eenvoudig wachtwoord zodat je dit niet zou vergeten. In de praktijk kies je een sterker wachtwoord en het liefst niet hetzelfde als het rootwachtwoord.
 
@@ -172,7 +171,7 @@ In de stap erna kies je of je afzonderlijke partities op de harde schijf wilt aa
 
 ![](Pictures/debian-install-hd-partition.png)
 
-Het systeem stelt vervolgens een **overzicht** voor van wat het op de harde schijf zal aanpassen:
+Het systeem toont vervolgens een **overzicht** van wat het op de harde schijf zal aanpassen:
 
 ![](Pictures/debian-install-hd-partition-overview.png)
 

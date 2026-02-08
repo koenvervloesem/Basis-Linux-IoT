@@ -24,7 +24,7 @@ Alle **oefeningen** uit de cursus die je **moet maken** worden aangeduid in Tole
 
 ### Evaluatie
 
-De ECTS-fiche van het vak beschrijft hoe je geëvalueerd wordt: <https://onderwijsaanbod.leuven.ucll.be/2024/syllabi/n/MGI32BN.htm>
+De ECTS-fiche van het vak beschrijft hoe je geëvalueerd wordt: <https://onderwijsaanbod.ucll.be/syllabi/n/MGI32B?ids=55754089%2C55754854>
 
 De verdeling van de punten is:
 
@@ -76,10 +76,9 @@ Deze zorgt er voor dat je **toepassingen**, **scripts** en andere **software** k
 ### GNU/Linux
 
 Met een motor alleen ben je niet veel. Je moet als gewone eindgebruiker met het besturingssysteem kunnen werken.  
-Daarvoor worden en binnen een besturingssysteem - bovenop deze kernel - vele andere elementen voorzien, zoals:
+Daarvoor worden er binnen een besturingssysteem - bovenop deze kernel - vele andere elementen voorzien, zoals:
 
 * Shell waaraan je opdrachten kunt geven
-* Hulpmiddelen
 * Services die op de achtergrond allerlei taken uitvoeren
 * Bibliotheken met functionaliteit die gedeeld wordt door diverse programma's
 * Window managers

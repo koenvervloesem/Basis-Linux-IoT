@@ -37,6 +37,8 @@ Dit is een tekstbestand.
 student@studentdeb:~$
 ~~~
 
+Gaat het om een lang bestand, dan is de hele inhoud niet op je scherm te zien. In een grafische terminalemulator kun je dan terugscrollen om eerdere inhoud te bekijken, op de command line kan dat niet. Dan is het programma `less` handiger.
+
 ### Oefening
 
 Maak een bestand `~/oefening1/bestanden/leesmij.txt` aan en plaats daarin de volgende tekst:
