@@ -272,7 +272,7 @@ Stel dat je de volgende opdracht typt:
 
 ~~~
 $ cat /dev/random
-... heel wat rommel op je schermt...
+... heel wat rommel op je scherm...
 $
 ~~~
 
