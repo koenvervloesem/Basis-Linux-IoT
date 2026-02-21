@@ -797,7 +797,7 @@ student@studentdeb:~$ wc < lsall
 student@studentdeb:~$ 
 ~~~
 
-##### Redirection van stdin/stdout vanuit een ander proces/opdracht naar stdin via |
+##### Redirection van stdout vanuit een ander proces/opdracht naar stdin via |
 
 In bovenstaand voorbeeld werkten we nog altijd met een tussenbestand - lsall - om de uitvoer
 van de `ls`-opdracht te verbinden met de invoer van de `wc`-opdracht.
@@ -822,7 +822,7 @@ Bemerk hier wel dat deze pipe-operator alleen stdout van de ene opdracht verbind
 ~~~
 
 
-##### Redirection vanuit een ander proces/opdracht naar stdin via |&
+##### Redirection van stdout en stderr vanuit een ander proces/opdracht naar stdin via |&
 
 Wil je toch zowel stdout als stderr omleiden naar stdin van een ander programma, dan dien je dit te doen met een variant van de pipe-operator, namelijk `|&`.
 

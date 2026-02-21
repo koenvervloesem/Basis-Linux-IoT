@@ -186,7 +186,7 @@ bart:x:1001:1001:My personal user:/home/bart:/bin/bash
   Dit is de initiële werkdirectory wanneer de shell start.
 * **/bin/bash/** =>  
   Het **standaard** **shell**-programma voor deze gebruiker.  
-  Voor een gewone gebruiker is dit normaal gesproken het programma dat bij inloggen de opdrachtregelprompt toont. Voor een systeemgebruiker zou hier `/sbin/nologin` kunnen staan als interactieve logins niet zijn toegestaan.
+  Voor een gewone gebruiker is dit normaal gesproken het programma dat bij inloggen de opdrachtregelprompt toont. Voor een systeemgebruiker zou hier `/sbin/nologin` of `/bin/false` kunnen staan als interactieve logins niet zijn toegestaan.
 
 #### Schaduwbestand 
 
