@@ -297,7 +297,7 @@ We observeren hier twee kenmerken van de symbolic link:
 * het type is `l` in plaats van `-`
 * na de naam van de link volgt een pijltje (`->`) en dan de naam van het bestand waarnaar wordt gelinkt
 
-We kunnen nu de symbolic link gebruiken als was dit het originele bestand:
+We kunnen nu de symbolic link gebruiken alsof dit het originele bestand is:
 
 ~~~
 student@studentdeb:~/Tmp$ cat world.txt 

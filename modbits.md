@@ -626,7 +626,7 @@ drwxrwsrwx 2 student student 4096 Nov 24 19:48 derde
 
 Op een Linux-systeem worden standaard de volgende **permissies** toegekend:
 
-* Voor bestanden **0666** of **rw-rw-rw**
+* Voor bestanden **0666** of **rw-rw-rw-**
 * Voor directory's **0777** of **rwxrwxrwx**
 
 #### Standaardpermissies in de praktijk
@@ -739,7 +739,7 @@ Op niveau van bit-operaties (boolean algebra) wordt er een &-operatie uitgevoerd
 644 <= 420 400 400 <= 110 100 100
 ~~~
 
-In code (C-code bijvoorbeeld, zie het vak "Embedded programmeren") zou je dit als volgt kunnen uitdrukken:
+In code (C-code bijvoorbeeld, zie het vak "Embedded programmeren" volgend jaar) zou je dit als volgt kunnen uitdrukken:
 
 ~~~c
 default_permissie = 666;
@@ -749,83 +749,4 @@ permissie = default_permissie & ~(umask);
 
 ### Oefening
 
-#### Opgave
-
-In deze oefening maak je een map aan die gebruikers binnen dezelfde groep kunnen gebruiken 
-om bestanden te delen waartoe de hele groep toegang heeft.  
-
-De **setup**:
-
-* **vier gebruikers**
-  * **hilde, marie, jan, joris**
-  * **wachtwoord** is hetzelfde als hun **naam**
-* Een groep noem je **operators**
-  * De vier voorgaande **gebruikers** behoren tot deze **groep**
-* Een directory `/home/operators`
-  * Enkel **root** en leden van de groep **operators** kunnen bestanden binnen deze directory **lezen, creëren en verwijderen** 
-  * Bestanden die je aanmaakt binnen deze map worden **automatisch toegekend** aan de groep **operators**
-  * Let wel, elke **gebruiker** mag **alleen bestanden verwijderen** die **zij/hij heeft aangemaakt**
-
-Gebruik in je opdrachten de numerieke permissies.
-
-* **Bewaar** al de opdrachten die je hiervoor gebruikte (in volgorde) in een **script** (`make_operators.sh`)
-* **Demonstreer** deze permissies in de **shell** en copy-paste deze bash-sessie in een apart tekstbestand (permissions.txt)
-
-Bonus-vraag:
-
-* Maak een **script** dat deze **directory, groepen en gebruikers** opkuist (verwijdert) uit het systeem.
-
-#### Oplossing
-
-Voor het **eerste deel** kon je bijna alle opdrachten in een **script** plaatsen.  
-Met **uitzondering** van het initialiseren van het wachtwoord, dit moet je interactief doen.
-(Er bestaan manieren om dit ook binnen het script te doen, maar dat valt buiten het bestek van deze cursus.)
-
-##### Script
-
-~~~bash
-#!/bin/bash
-
-# Create users and groups
-useradd -c "Hilde" -m -s /bin/bash hilde
-useradd -c "Marie" -m -s /bin/bash marie
-useradd -c "Jan" -m -s /bin/bash jan
-useradd -c "Joris" -m -s /bin/bash joris
-groupadd operators
-
-# Add users to groups
-usermod -aG operators hilde
-usermod -aG operators marie
-usermod -aG operators jan
-usermod -aG operators joris
-mkdir /home/operators
-
-# Set root as owner and operators as group
-chown root:operators /home/operators
-
-# Only users and groups are allowed to access the files inside
-chmod a-rwx /home/operators
-chmod g=rwsx /home/operators
-chmod u=rwx /home/operators
-
-# Set sticky bit on folder in order to avoid deletions by other users
-chmod +t /home/operators
-~~~
-
-##### Clean up
-
-Je kunt volgend script gebruiken om alle gebruikers, groepen en folders te verwijderen
-
-~~~bash
-# Delete the users
-userdel -r -f joris
-userdel -r -f jan
-userdel -r -f marie
-userdel -r -f hilde
-
-# Delete the operators-group
-groupdel operators
-
-# Delete the operators-directory
-rm -rf /home/operators
-~~~
+Zie de opdracht op Toledo

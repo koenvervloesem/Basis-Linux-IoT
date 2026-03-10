@@ -165,7 +165,7 @@ student@studentdeb:~$
 * UID => het ID van de gebruiker verbonden aan het proces
 * PPID => het ID van het ouderproces (het proces dat dit proces opgestart heeft)
 * C => het percentage in processorbelasting
-* STIME => de moment dat het proces is gestart
+* STIME => het moment dat het proces is gestart
 
 Merk op: het PPID van het proces met CMD `ps -f` is hetzelfde als het PID van het proces met CMD `bash`. Dit wil zeggen dat die laatste het ouderproces van het eerste is. En dat klopt: we hebben `ps -f` in deze Bash-sessie uitgevoerd.
 
@@ -521,7 +521,7 @@ Een eerste belangrijk principe om te begrijpen is dan een job kan bestaan uit me
 ~~~
 
 Laten we starten met een job die normaal gezien veel tijd moet innemen.  
-De volgende opdracht zoekt het woord blabla in alle bestanden binnen mijn home-directory.  
+De volgende opdracht zoekt het woord blabla in alle bestanden binnen de home-directory.  
 Dit is een job die meer dan een paar minuten kan duren afhankelijk van de grootte van je home-directory.
 
 ~~~
