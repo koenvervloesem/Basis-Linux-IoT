@@ -320,7 +320,7 @@ De belangrijkste (meest gebruikte) signalen zijn SIGTERM, SIGQUIT, SIGSTOP, SIGI
 
 SIGTERM- en SIGQUIT-signalen zijn bedoeld om een proces te beëindigen. Het zijn beide 'vriendelijke' manieren van vragen, want programma's kunnen dit signaal negeren of er een specifieke behandeling aan koppelen.
 
-SIGTERM is het standaardsignaal wanneer we de opdracht `kill` gebruiken. SIGQUIT genereert ook een bestand met de inhoud van het geheugen voordat het proces beëindigd wordt. Dat is nuttig om problemen te analyseren.
+SIGTERM is het standaardsignaal wanneer we de opdracht `kill` gebruiken. SIGQUIT genereert ook een bestand met de inhoud van het geheugen (een _core dump_) voordat het proces beëindigd wordt. Dat is nuttig om problemen te analyseren.
 
 #### SIGSTOP (19) en SIGCONT (18)
 
@@ -501,7 +501,7 @@ We bekijken in dit deel van de cursus hoe die jobs gelinkt zijn aan processen, h
 
 #### Een job/opdracht => meerdere processen
 
-Een eerste belangrijk principe om te begrijpen is dan een job kan bestaan uit meerdere processen:
+Een eerste belangrijk principe om te begrijpen is dat een job kan bestaan uit meerdere processen:
 
 ~~~
 +--------+
@@ -929,18 +929,7 @@ Als je deze periodieke taak tijdelijk wilt uitschakelen, voeg dan een commentaar
 
 #### Andere opties
 
-Zoals we eerder aangaven, zorgt het asterisk-teken (`*`) ervoor dat de specifieke
-precisie (minuut - uur - dag - maand - weekdag) niet uitmaakt.
-
-In het onderstaande voorbeeld zal cron ervoor zorgen dat het script wordt 
-uitgevoerd om 18 uur en 5 minuten.  
-De dag, maand of weekdag maakt hierbij niet uit:
-
-~~~
-05 18 * * *     echo "hello $(date)" >> /home/student/test.txt
-~~~
-
-Je kunt dit echter nog verfijnen met behulp van een aantal andere opties.
+Crontab kent nog een aantal nuttige opties.
 
 ##### Lijst
 
