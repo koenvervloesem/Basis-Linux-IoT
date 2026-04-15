@@ -2,7 +2,7 @@
 
 ### Opstarten van een Linux-distributie
 
-Zoals we eerder gezien hebben wordt een GNU/Linux-systeem opgestart volgens onderstaand schema:
+Zoals we eerder gezien hebben, wordt een GNU/Linux-systeem opgestart volgens onderstaand schema:
 
 ~~~
 +---------------------+
@@ -111,7 +111,7 @@ $ systemctl list-units --type service --all
 ...
 ~~~
 
-Let op: voor sommige opdrachten heb je rootrechten nodig (aangeduid met `#`), voor andere niet (aangeduid met `$`).
+Let op: voor sommige opdrachten heb je rootrechten nodig (aangeduid met `#`), voor andere niet (aangeduid met `$`). Kortweg: alle opdrachten die iets aan de toestand van je systeem veranderen, vereisen rootrechten; alle opdrachten die louter de toestand van je systeem opvragen, vereisen dat niet.
 
 ### Service stoppen en starten
 
@@ -587,4 +587,42 @@ Andere van deze korte opdrachten zijn:
 # systemctl reboot
 ~~~
 
+### De systemd journal
 
+Naast het beheren van services met `systemctl`, is het belangrijk om te weten waar je informatie vindt als er iets misgaat. Daarvoor gebruik je op een systeem met systemd het programma `journalctl`.
+
+Linux-systemen met systemd gebruiken een centrale logdienst: de systemd journal. Die wordt beheerd door de service `systemd-journald`, die logs verzamelt van de kernel, services en applicaties. Omdat dit gecentraliseerd is, kun je dit logboek gemakkelijk doorzoeken, terwijl klassiek logbestanden verspreid stonden (en deels nog staan) in `/var/log`.
+
+Toegang tot de systemd journal krijg je met het programma `journalctl`. Voer je dit zonder extra opties uit, dan krijg je de volledige journal te zien, geopend in een pager (vaak `less`). Hierdoor kun je scrollen met de pijltjestoetsen, zoeken met `/zoekterm` en afsluiten doe je met q.
+
+Meestal ben je alleen geïnteresseerd in de laatste X regels, bijvoorbeeld:
+
+~~~
+journalctl -n 50
+~~~
+
+Of je kunt 'live' meekijken met de optie `-f` (voor _follow_):
+
+~~~
+journalctl -f
+~~~
+
+Je kunt ook de logs van een specifieke service bekijken:
+
+~~~
+journalctl -u ssh
+~~~
+
+Dit is vaak de eerste stap bij troubleshooting van een service.
+
+Als je weet wanneer een probleem begonnen is, kun je hier ook op filteren en alleen de logs erna opvragen:
+
+~~~
+journalctl --since "1 hour ago"
+~~~
+
+Overigens heb je vaak rootrechten nodig om delen van de systemd journal te bekijken. Voer journalctl dan met sudo uit:
+
+~~~
+sudo journalctl
+~~~

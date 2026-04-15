@@ -164,7 +164,7 @@ $ egrep "[^0-9][0-9]{4}[^0-9]" /etc/passwd
 koan:x:1000:1000:Koen Vervloesem,,,:/home/koan:/bin/bash
 ```
 
-Wil je letterlijk naar een zoekterm zoeken en die niet als reguliere expressie interpreteren, gebruik dan `fgrep`. Je kunt met grep ook recursief alle bestanden onder een gegeven directory doorzoeken. Da doe jet met `rgrep`.
+Wil je letterlijk naar een zoekterm zoeken en die niet als reguliere expressie interpreteren, gebruik dan `fgrep`. Je kunt met grep ook recursief alle bestanden onder een gegeven directory doorzoeken. Dat doe je met `rgrep`.
 
 ### Tekst bekijken
 

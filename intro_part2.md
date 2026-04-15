@@ -4,6 +4,7 @@
 
 In dit deel leggen we de focus op het **beheer** van een Linux-systeem:
 
+* software installeren
 * beheer van systeemdiensten met `systemd`
 * netwerkbeheer
 * logging

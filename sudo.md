@@ -4,7 +4,7 @@ We hebben in het eerste deel van de cursus gezien dat je gebruikersnaam (eigenli
 
 Maar lange tijd als rootgebruiker ingelogd blijven is ook een risico: als je een fout maakt, is de schade groter. Het introduceert ook beveiligingsrisico's. Soms moet je ook door elkaar opdrachten uitvoeren met rootrechten en andere opdrachten die deze rechten niet nodig hebben. Elke keer uit de rootsessie uitloggen en weer inloggen daartussen is omslachtig, en dat niet doen verhoogt de risico's.
 
-Daarom is er een alternatief: `sudo`, wat staat voor 'superuser do'. Hiermee kun je één opdracht in de shell met rootrechten uitvoeren, terwijl je als normale gebruiker ingelogd bent.
+Daarom is er een alternatief: `sudo`, wat staat voor 'su do' en dus 'substitute user do'. Hiermee kun je één opdracht in de shell met rootrechten (of met de rechten van gelijk welke andere gebruiker) uitvoeren, terwijl je als normale gebruiker ingelogd bent.
 
 ### Installatie en configuratie
 
